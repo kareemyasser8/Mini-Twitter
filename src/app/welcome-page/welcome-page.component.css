@@ -1,0 +1,38 @@
+.welcome-page {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+}
+
+.website-logo-section{
+  width: 90%;
+}
+
+.website-logo{
+  width: 50px;
+}
+
+.form-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.form-side .form-section {
+  height: 70vh;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.cover-side {
+  background-image: url('../../assets/online-reading-2021-09-24-03-31-17-utc.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 172, 238,0.7);
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+}

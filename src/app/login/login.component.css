@@ -1,0 +1,26 @@
+form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Login-btn{
+  margin-top: 14px;
+  height:55px;
+  color: white;
+  font-weight: bolder;
+	border-radius:5px;
+  background-color: #00acee;
+  border: none;
+}
+
+.Login-btn:hover{
+  background-color: #29b4eb;
+  transition: ease 0.3s;
+}
+
+button[disabled]{
+  /* border: 1px solid #999999; */
+  background-color: #50c7f7;
+  /* color: #666666; */
+}

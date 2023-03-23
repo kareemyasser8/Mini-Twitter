@@ -1,1 +1,15 @@
-@import "~bootstrap/dist/css/bootstrap.css"
+@import "~bootstrap/dist/css/bootstrap.css";
+@font-face {
+  font-family: 'Chirp Heavy';
+  src: url('../src/assets/fonts/ChirpHeavy.otf') format('opentype');
+}
+
+h2{
+  margin-bottom: 30px;
+  font-family: 'Chirp Heavy', sans-serif;
+  font-weight: bolder;
+}
+
+.form-control.ng-touched.ng-invalid{
+  border: 2px solid red;
+}

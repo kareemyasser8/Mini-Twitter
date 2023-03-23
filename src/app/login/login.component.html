@@ -1,1 +1,45 @@
-<p>login works!</p>
+<h2>Log in to Mini Twitter</h2>
+<form #f="ngForm" (ngSubmit)="submit(f)">
+  <div class="form-floating mb-3">
+
+    <input
+      required
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+      ngModel
+      name="email"
+      #email="ngModel"
+      type="email"
+      class="form-control"
+      id="floatingInput"
+      placeholder="name@example.com"
+      [ngClass]="{'is-invalid': email.touched && !email.valid}">
+
+    <label for="floatingInput">Phone, email, or username</label>
+
+    <div class="invalid-feedback" *ngIf="email.touched && !email.valid">
+      <div *ngIf="email.errors?.['required']">Email is required</div>
+      <div *ngIf="email.errors?.['pattern']">Email is invalid</div>
+    </div>
+
+  </div>
+  <div class="form-floating">
+
+    <input
+      required
+      ngModel
+      name="password"
+      #password="ngModel"
+      type="password"
+      class="form-control"
+      id="floatingPassword"
+      placeholder="Password"
+      [ngClass]="{'is-invalid': password.touched && !password.valid}">
+    <label for="floatingPassword">Password</label>
+
+    <div class="invalid-feedback" *ngIf="password.touched && !password.valid">
+      <div *ngIf="password.errors?.['required']">Password is required</div>
+    </div>
+
+  </div>
+  <button [disabled]="!f.valid" type="submit" class="Login-btn">Login</button>
+</form>
