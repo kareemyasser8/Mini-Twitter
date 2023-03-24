@@ -29,10 +29,29 @@
 }
 
 .cover-side {
-  background-image: url('../../assets/online-reading-2021-09-24-03-31-17-utc.jpg');
+  background-image: url('../../assets/background.jpg');
   background-size: cover;
   background-position: center;
-  background-color: rgba(0, 172, 238,0.7);
+  background-color: rgba(20, 93, 228, 0.87);
   background-blend-mode: overlay;
   background-repeat: no-repeat;
+}
+
+@media (max-width: 1075px) {
+  .cover-side {
+    display: none;
+    width: 0%;
+  }
+
+  .form-side{
+    width: 100%;
+  }
+}
+
+@media (max-width: 660px) {
+  .form-side{
+    width: 100%;
+    height: 100vh;
+    /* margin-bottom: 100px; */
+  }
 }
