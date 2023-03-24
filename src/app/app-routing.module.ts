@@ -5,7 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+  { path: '', redirectTo: 'welcome/login', pathMatch: 'full' },
   {
     path: 'welcome',
     component: WelcomePageComponent,
