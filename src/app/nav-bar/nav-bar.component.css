@@ -1,0 +1,57 @@
+.navbar{
+  min-height:100vh;
+  width: 220px;
+  background-color: #14171A;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 0;
+  gap: 2rem;
+}
+
+.miniTwitterLogoBar{
+  height: 60px;
+  width: 100%;
+  background-color: #1DA1F2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.miniTwitterLogoBar i{
+  font-size: 200%;
+  color: #eff0f1;
+}
+
+.navbar-items ul{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-left: 0px;
+}
+
+.navbar-items li{
+  display: flex;
+  align-items: center;
+  color: #AAB8C2;
+  height: 50px;
+  width: 110%;
+  /* background-color: rgb(61, 61, 61); */
+  margin-top: 5px;
+  /* border-radius: 2px; */
+  gap: 1.5rem;
+}
+
+.navbar-items .active{
+  color: #f1f4f7;
+  font-weight: bold;
+}
+
+.navbar-items li:hover{
+  color: #f1f4f7;
+  transition: 0.3s ease;
+  cursor: pointer;
+}

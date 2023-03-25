@@ -1,4 +1,6 @@
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
 @font-face {
   font-family: 'Chirp Heavy';
   src: url('../src/assets/fonts/ChirpHeavy.otf') format('opentype');
