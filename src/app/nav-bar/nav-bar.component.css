@@ -1,6 +1,6 @@
 .navbar{
   min-height:100vh;
-  width: 220px;
+  width: 100%;
   background-color: #14171A;
   display: flex;
   flex-direction: column;
@@ -38,10 +38,7 @@
   align-items: center;
   color: #AAB8C2;
   height: 50px;
-  width: 110%;
-  /* background-color: rgb(61, 61, 61); */
   margin-top: 5px;
-  /* border-radius: 2px; */
   gap: 1.5rem;
 }
 

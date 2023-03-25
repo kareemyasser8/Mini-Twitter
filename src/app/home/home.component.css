@@ -1,4 +1,15 @@
-.home{
+.home-page{
   min-height:100vh;
   background-color: #F5F8FA;
+  display: flex;
+  /* width: 100%; */
+}
+
+.navbar-side{
+  width: 220px;
+}
+
+.home-feed{
+  width: calc(100% - 220px);
+  background-color: #dadcdd;
 }
