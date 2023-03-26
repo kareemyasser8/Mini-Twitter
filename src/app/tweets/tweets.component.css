@@ -1,0 +1,65 @@
+.tweet-container{
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgb(223, 222, 222);
+  /* padding-bottom: 0px; */
+}
+
+.tweet-body{
+  display: flex;
+  padding: 20px;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.tweet-options{
+  display: flex;
+  width: 100%;
+}
+
+.user-profile-picture{
+  width: 50px;
+  cursor: pointer;
+}
+
+.user-profile-picture img{
+  width: 100%;
+  border-radius: 50%;
+}
+
+.tweet-name-and-text{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* border: 1px solid red; */
+}
+
+.user-name{
+  font-weight: bold;
+}
+
+.tweet-time{
+  width: 70px;
+  /* border: 1px solid red; */
+}
+
+.tweet-time span{
+  color: #AAB8C2;
+}
+
+.tweet-options{
+  display: flex;
+  align-self: center;
+  width: 100%;
+  height: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
+  /* background-color: red; */
+  justify-content: space-between;
+}
+
+.tweet-options .bi-heart-fill{
+  color: rgb(219, 94, 111);
+}

@@ -12,6 +12,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { HomeWrapperComponent } from './home-wrapper/home-wrapper.component';
 import { CreateTweetComponent } from './create-tweet/create-tweet.component';
+import { TweetsComponent } from './tweets/tweets.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CreateTweetComponent } from './create-tweet/create-tweet.component';
     SearchBarComponent,
     HomeWrapperComponent,
     CreateTweetComponent,
+    TweetsComponent,
   ],
   imports: [
     BrowserModule,
