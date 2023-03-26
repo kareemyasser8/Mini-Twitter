@@ -8,7 +8,7 @@
 }
 
 .user-picture-section{
-  width: 5%;
+  width: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,12 +16,12 @@
 }
 
 .user-picture{
-  width: 50px
+  width: 100%;
 }
 
 .user-picture img{
   width: 100%;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .new-tweet{
@@ -46,7 +46,7 @@
 
 .tweetBtn-andLimit span{
   width: 1px;
-  background-color: #657786;
+  background-color: #AAB8C2;
   height: 100%;
   margin-left: 10px;
   margin-right: 10px;
