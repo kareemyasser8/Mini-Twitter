@@ -1,0 +1,60 @@
+.create-tweet-container{
+  width: 100%;
+  background-color: white;
+  display: flex;
+  border-radius: 3px;
+  gap: 0.5rem;
+  padding: 20px;
+}
+
+.user-picture-section{
+  width: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+
+.user-picture{
+  width: 50px
+}
+
+.user-picture img{
+  width: 100%;
+  border-radius: 5px;
+}
+
+.new-tweet{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tweetBtn-andLimit{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  /* border: 1px solid red; */
+}
+
+.btn{
+  width: 100px;
+  background-color: #1DA1F2;
+  border: 0;
+}
+
+.tweetBtn-andLimit span{
+  width: 1px;
+  background-color: #657786;
+  height: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.tweetBtn-andLimit label{
+  color: #657786;
+  margin-top: auto;
+  margin-bottom: auto;
+
+}

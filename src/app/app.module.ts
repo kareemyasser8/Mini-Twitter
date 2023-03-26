@@ -10,6 +10,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { HomeWrapperComponent } from './home-wrapper/home-wrapper.component';
+import { CreateTweetComponent } from './create-tweet/create-tweet.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     HomeComponent,
     NavBarComponent,
     SearchBarComponent,
+    HomeWrapperComponent,
+    CreateTweetComponent,
   ],
   imports: [
     BrowserModule,

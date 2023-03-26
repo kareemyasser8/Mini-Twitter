@@ -1,0 +1,12 @@
+.home-feed-container{
+  width: 90%;
+  min-height: 50vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-tweets{
+  width: 100%;
+  border-radius: 5px;
+}
