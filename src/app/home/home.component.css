@@ -2,18 +2,27 @@
   min-height:100vh;
   background-color: #F5F8FA;
   display: flex;
-  /* width: 100%; */
 }
 
 .navbar-side{
   width: 220px;
+  /* position: fixed; */
 }
 
 .home-content{
-  width: calc(100% - 220px);
+  /* width: calc(100% - 220px); */
+  flex: 1;
   background-color: #dadcdd;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+}
+
+@media screen and (max-width: 990px) {
+  .navbar-side{
+    width: 70px;
+  }
+
 
 }
