@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { TweetsService } from './../tweets.service';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'create-tweet',
@@ -13,15 +14,10 @@ export class CreateTweetComponent implements OnInit {
 
   maxTweetLength = 150;
   tweetLength = 0;
-  @Output() tweetCreated = new EventEmitter()
 
+  constructor(private tweetsService:TweetsService) {
 
-  // tweetForm = new FormGroup({
-  //   tweet: new FormControl()
-  // })
-
-
-  constructor() { }
+   }
 
   ngOnInit(): void {
   }
@@ -32,11 +28,13 @@ export class CreateTweetComponent implements OnInit {
 
   createTweet(tweetform: NgForm){
     if(tweetform.invalid) return
-    const tweet = {
-      tweet: tweetform.value.tweet
-    }
-    console.log(tweet);
-    this.tweetCreated.emit(tweet)
+    // const tweet = {
+    //   tweet: tweetform.value.tweet
+    // }
+
+    this.tweetsService.addTweet(tweetform.value.tweet)
+    tweetform.resetForm();
+    console.log(tweetform.value.tweet);
   }
 
 }

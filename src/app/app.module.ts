@@ -13,6 +13,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { HomeWrapperComponent } from './home-wrapper/home-wrapper.component';
 import { CreateTweetComponent } from './create-tweet/create-tweet.component';
 import { TweetsComponent } from './tweets/tweets.component';
+import { TweetsService } from './tweets.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { TweetsComponent } from './tweets/tweets.component';
     ReactiveFormsModule
 
   ],
-  providers: [],
+  providers: [TweetsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
