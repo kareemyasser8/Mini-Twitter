@@ -1,11 +1,6 @@
 <div class="home-feed-container">
     <h3 class="page-title">Home</h3>
-    <create-tweet></create-tweet>
-    <tweets></tweets>
-    <tweets></tweets>
-    <tweets></tweets>
-    <tweets></tweets>
-    <tweets></tweets>
-    <tweets></tweets>
+    <create-tweet (tweetCreated)="onTweetAdded($event)" ></create-tweet>
+    <tweets [tweets]="storedTweets" ></tweets>
     <div class="separator"></div>
 </div>

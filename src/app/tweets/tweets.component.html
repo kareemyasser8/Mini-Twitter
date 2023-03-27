@@ -1,11 +1,11 @@
-<div class="tweet-container">
+<div class="tweet-container" *ngFor="let i of tweets">
   <div class="tweet-body">
     <div class="user-profile-picture">
       <img src="../../assets/defaultProfilePicture.png" alt="">
     </div>
     <div class="tweet-name-and-text">
       <div class="user-name">Kareem Yasser</div>
-      <div class="tweet-text">Text messaging, or texting, is the act of composing and sending electronic messages, typically consisting of alphabetic and numeric characters, between two or more users of mobile devices, desktops/laptops, or another</div>
+      <div class="tweet-text">{{i.tweet}}</div>
     </div>
     <div class="tweet-time">
       <span>23h</span>

@@ -7,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeWrapperComponent implements OnInit {
 
+  storedTweets=[];
+
   constructor() { }
+
+  onTweetAdded(tweet){
+    this.storedTweets.push(tweet);
+  }
 
   ngOnInit(): void {
   }

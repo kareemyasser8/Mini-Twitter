@@ -4,15 +4,26 @@
       <img src="../../assets/defaultProfilePicture.png" alt="">
     </div>
   </div>
-  <div class="new-tweet">
+  <form class="new-tweet" (submit)="createTweet(tweetForm)" #tweetForm="ngForm">
     <div class="form-group">
-      <textarea class="form-control" placeholder="What is happening ?" style="resize: none;" rows="3"></textarea>
+      <textarea
+        ngModel
+        required
+        (keyup)="countCharacters(tweet.value)"
+        maxlength="{{maxTweetLength}}"
+        name="tweet"
+        #tweet="ngModel"
+        class="form-control"
+        placeholder="What is happening ?"
+        style="resize: none;"
+        rows="3"></textarea>
     </div>
     <div class="tweetBtn-andLimit">
-      <label> 0/280</label>
+      <label>{{tweetLength}}/{{maxTweetLength}}</label>
       <span></span>
-      <button class="btn btn-primary">Tweet</button>
+
+      <button class="btn btn-primary" [disabled]="tweetForm.invalid" type="submit">Tweet</button>
     </div>
 
-  </div>
+  </form>
 </div>
