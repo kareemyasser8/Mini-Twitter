@@ -12,7 +12,21 @@
     </div>
   </div>
   <div class="tweet-options">
-    <i class="bi bi-heart-fill"></i>
+      <div class="tweet-like-comment">
+
+        <div class="comment">
+          <i class="bi bi-chat"></i>
+          <span>0</span>
+        </div>
+
+        <div class="like" (click)="clickLike()">
+            <i class="bi" [ngClass]="{'bi-heart': likeClicked== false,'bi-heart-fill':likeClicked==true}" ></i>
+          <span>{{tweetLike}}</span>
+        </div>
+
+      </div>
+
     <i class="bi bi-three-dots-vertical"></i>
   </div>
+
 </div>

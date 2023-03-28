@@ -15,10 +15,24 @@ export class TweetsComponent implements OnInit, OnDestroy {
 
   tweets = []
   tweetsSubscription : Subscription
+  tweetLike = 399;
+  likeClicked = false;
 
   constructor(private tweetsService:TweetsService) {
 
    }
+
+
+  clickLike(){
+    if(this.likeClicked == false){
+      this.likeClicked = true
+      this.tweetLike += 1;
+    }else{
+      this.likeClicked = false
+      this.tweetLike -= 1;
+    }
+  }
+
 
   ngOnInit(): void {
     this.tweets = this.tweetsService.getTweets();

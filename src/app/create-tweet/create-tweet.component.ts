@@ -33,6 +33,7 @@ export class CreateTweetComponent implements OnInit {
     // }
 
     this.tweetsService.addTweet(tweetform.value.tweet)
+    this.tweetLength = 0;
     tweetform.resetForm();
     console.log(tweetform.value.tweet);
   }
