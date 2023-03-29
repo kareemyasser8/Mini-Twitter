@@ -1,3 +1,4 @@
+import { CreateReplyComponent } from './create-reply/create-reply.component';
 import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';

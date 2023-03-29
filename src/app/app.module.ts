@@ -14,6 +14,10 @@ import { HomeWrapperComponent } from './home-wrapper/home-wrapper.component';
 import { CreateTweetComponent } from './create-tweet/create-tweet.component';
 import { TweetsComponent } from './tweets/tweets.component';
 import { TweetsService } from './tweets.service';
+import { CreateReplyComponent } from './create-reply/create-reply.component';
+import { TweetBodyComponent } from './tweet-body/tweet-body.component';
+import { TweetOptionsComponent } from './tweet-options/tweet-options.component';
+import { NgPipesModule } from 'ngx-pipes';
 
 @NgModule({
   declarations: [
@@ -27,12 +31,17 @@ import { TweetsService } from './tweets.service';
     HomeWrapperComponent,
     CreateTweetComponent,
     TweetsComponent,
+    CreateReplyComponent,
+    TweetBodyComponent,
+    TweetOptionsComponent,
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgPipesModule,
 
   ],
   providers: [TweetsService],

@@ -1,0 +1,37 @@
+.tweet-body{
+  display: flex;
+  padding: 20px;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.user-profile-picture{
+  width: 50px;
+  cursor: pointer;
+}
+
+.user-profile-picture img{
+  width: 100%;
+  border-radius: 50%;
+}
+
+.tweet-name-and-text{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* border: 1px solid red; */
+}
+
+.user-name{
+  font-weight: bold;
+}
+
+.tweet-time{
+  width: max-content;
+  /* border: 1px solid red; */
+  text-align: end;
+}
+
+.tweet-time span{
+  color: #AAB8C2;
+}

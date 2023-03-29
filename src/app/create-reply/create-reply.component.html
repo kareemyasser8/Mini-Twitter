@@ -1,0 +1,10 @@
+<div class="reply-modal-background" *ngIf="showModal == true">
+    <div class="reply-container">
+        <div class="X-container" (click)="closeModel()">
+          <i class="bi bi-x"></i>
+        </div>
+        <tweet-body [tweetBody]="tweetToReply"></tweet-body>
+        <create-tweet></create-tweet>
+    </div>
+</div>
+

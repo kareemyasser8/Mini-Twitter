@@ -1,0 +1,23 @@
+<div class="tweet-options">
+  <div class="tweet-like-comment">
+
+    <div class="comment" (click)="clickComment()">
+      <i class="bi bi-chat"></i>
+      <span>{{tweetBody.comments}}</span>
+    </div>
+
+    <create-reply [tweetToReply]="tweetBody"></create-reply>
+
+    <div class="like" (click)="clickLike()">
+      <i class="bi" [ngClass]="{'bi-heart': likeClicked== false,'bi-heart-fill':likeClicked==true}"></i>
+      <span>{{tweetBody.likes}}</span>
+    </div>
+
+
+  </div>
+
+  <i class="bi bi-three-dots-vertical"></i>
+</div>
+
+
+

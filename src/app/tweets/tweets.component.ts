@@ -1,6 +1,8 @@
-import { TweetsService } from './../tweets.service';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+
+import { Tweet } from '../tweet.model';
+import { TweetsService } from './../tweets.service';
 
 @Component({
   selector: 'tweets',
@@ -9,36 +11,18 @@ import { Subscription } from 'rxjs';
 })
 export class TweetsComponent implements OnInit, OnDestroy {
 
-  // @Input() tweets = [
-  //   {tweet: "Hello world"}
-  // ];
-
-  tweets = []
+  tweets: Tweet[] = []
   tweetsSubscription : Subscription
-  tweetLike = 399;
-  likeClicked = false;
 
   constructor(private tweetsService:TweetsService) {
 
    }
 
-
-  clickLike(){
-    if(this.likeClicked == false){
-      this.likeClicked = true
-      this.tweetLike += 1;
-    }else{
-      this.likeClicked = false
-      this.tweetLike -= 1;
-    }
-  }
-
-
   ngOnInit(): void {
     this.tweets = this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
     .subscribe({
-      next: (tweets: any[])=>{
+      next: (tweets: Tweet[])=>{
          this.tweets = tweets
         }
     })

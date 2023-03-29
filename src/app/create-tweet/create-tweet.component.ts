@@ -15,23 +15,19 @@ export class CreateTweetComponent implements OnInit {
   maxTweetLength = 150;
   tweetLength = 0;
 
-  constructor(private tweetsService:TweetsService) {
+  constructor(private tweetsService: TweetsService) {
 
-   }
+  }
 
   ngOnInit(): void {
   }
 
-  countCharacters(tweet){
+  countCharacters(tweet) {
     this.tweetLength = tweet.length;
   }
 
-  createTweet(tweetform: NgForm){
-    if(tweetform.invalid) return
-    // const tweet = {
-    //   tweet: tweetform.value.tweet
-    // }
-
+  createTweet(tweetform: NgForm) {
+    if (tweetform.invalid) return
     this.tweetsService.addTweet(tweetform.value.tweet)
     this.tweetLength = 0;
     tweetform.resetForm();
