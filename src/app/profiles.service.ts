@@ -13,7 +13,8 @@ export class ProfilesService {
        password: "123",
        authorFname: "Kareem",
        authorLname: "Yassr",
-       tweets: []
+       tweets: [],
+       notifications: []
       }
   ]
 
@@ -25,7 +26,8 @@ export class ProfilesService {
       password: profile.password,
       authorFname: profile.fname,
       authorLname: profile.lname,
-      tweets: []
+      tweets: [],
+      notifications: []
     }
 
     this.profiles.push(account)

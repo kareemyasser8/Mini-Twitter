@@ -6,4 +6,5 @@ export interface Profile{
   authorFname: string,
   authorLname: string,
   tweets: Tweet[]
+  notifications: string[]
 }

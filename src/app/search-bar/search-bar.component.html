@@ -1,11 +1,21 @@
 <div class="search-panel">
   <div class="search-section">
     <div class="form-group has-search">
-      <input maxlength="30" type="text" class="form-control" placeholder="Search..">
+      <input
+        maxlength="30"
+        (blur)="searching=false"
+        (focus)="searching = true"
+        autocomplete="off"
+        #query
+        (keyup)="filter(query.value)"
+        type="text"
+        class="form-control"
+        placeholder="Search..">
+
       <i class="bi bi-search"></i>
-      <div class="resultBox">
-        <!-- <li class="result-text">Hello</li>
-        <li class="result-text">Hello</li> -->
+      <div class="resultBox" *ngIf="searching" >
+        <li class="result-text" *ngFor="let t of filteredTweets">{{t.author}}</li>
+        <!-- <li class="result-text">Hello</li> -->
       </div>
     </div>
   </div>
