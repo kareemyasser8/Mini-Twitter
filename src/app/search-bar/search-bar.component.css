@@ -79,6 +79,8 @@ li {
 
 .logout {
   font-size: 1.4rem;
+  text-decoration: none;
+  color: black;
   /* margin-right: 30px */
   /* width: 30%; */
   /* border: 1px solid red; */

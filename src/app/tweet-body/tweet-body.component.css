@@ -26,6 +26,12 @@
   font-weight: bold;
 }
 
+.user-name:hover{
+ text-decoration: underline;
+ cursor: pointer;
+}
+
+
 .tweet-time{
   width: max-content;
   /* border: 1px solid red; */

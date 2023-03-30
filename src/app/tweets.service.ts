@@ -1,3 +1,4 @@
+import { ProfilesService } from './profiles.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -29,23 +30,13 @@ export class TweetsService {
     }
   ];
 
-  private modal: boolean = false;
-
   private tweetsUpdated = new Subject()
-  private modalUpdate = new Subject()
 
-  constructor() { }
+
+  constructor(private profileService: ProfilesService) { }
 
   //-----------------------------------------------------------------
 
-  toggleModal(input: boolean) {
-    this.modal = input;
-    this.modalUpdate.next(this.modal)
-  }
-
-  getModal() {
-    return this.modalUpdate.asObservable();
-  }
 
   getTweets() {
     return [...this.tweets]

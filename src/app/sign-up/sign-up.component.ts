@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { ProfilesService } from './../profiles.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor() { }
+  constructor(private profileService: ProfilesService) { }
 
   ngOnInit(): void {
+  }
+
+  register(profileData: NgForm){
+    this.profileService.createNewAccount(profileData.value)
   }
 
 }

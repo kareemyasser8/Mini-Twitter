@@ -1,5 +1,5 @@
 <h2>Create your Account on Mini Twitter</h2>
-<form #f="ngForm">
+<form #f="ngForm" (ngSubmit)="register(f)">
 
   <div class="row mb-3">
     <div class="col">
@@ -7,7 +7,7 @@
         <input
           type="text"
           class="form-control"
-          id="floatingInputGrid"
+          id="FirstName"
           ngModel
           name="fname"
           #fname="ngModel"
@@ -17,7 +17,7 @@
           pattern="[a-zA-Z]*"
           placeholder="First name">
 
-        <label for="floatingInputGrid">First Name</label>
+        <label for="FirstName">First Name</label>
         <div class="invalid-feedback" *ngIf="fname.touched && fname.invalid">
           <div *ngIf="fname.errors?.['required']">First name is required</div>
           <div *ngIf="fname.errors?.['minlength']">Minimum charcters per name are 3</div>
@@ -32,7 +32,7 @@
         <input
          type="text"
          class="form-control"
-         id="floatingInputGrid"
+         id="LastName"
          ngModel
          name="lname"
          #lname="ngModel"
@@ -42,7 +42,7 @@
          pattern="[a-zA-Z]*"
          placeholder="First name">
 
-        <label for="floatingInputGrid">Last Name</label>
+        <label for="LastName">Last Name</label>
         <div class="invalid-feedback" *ngIf="lname.touched && lname.invalid">
           <div *ngIf="lname.errors?.['required']">Last name is required</div>
           <div *ngIf="lname.errors?.['minlength']">Minimum charcters per name are 3</div>
@@ -58,21 +58,24 @@
 
     <input
       required
-      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+      pattern="^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"
       ngModel
-      name="email"
-      #email="ngModel"
-      type="email"
+      name="username"
+      #username="ngModel"
+      type="text"
       class="form-control"
-      id="floatingInput"
-      placeholder="name@example.com"
-      [ngClass]="{'is-invalid': email.touched && !email.valid}">
+      id="Username"
+      minlength="3"
+      maxlength="10"
+      placeholder="@username123"
+      [ngClass]="{'is-invalid': username.touched && !username.valid}">
 
-    <label for="floatingInput">Email Address</label>
+    <label for="Username">Username</label>
 
-    <div class="invalid-feedback" *ngIf="email.touched && !email.valid">
-      <div *ngIf="email.errors?.['required']">Email is required</div>
-      <div *ngIf="email.errors?.['pattern']">Email is invalid</div>
+    <div class="invalid-feedback" *ngIf="username.touched && !username.valid">
+      <div *ngIf="username.errors?.['required']">Username is required</div>
+      <div *ngIf="username.errors?.['pattern']">Username is invalid</div>
+      <div *ngIf="username.errors?.['minlength']">Username can't be less than 3 characters</div>
     </div>
 
   </div>
@@ -86,11 +89,11 @@
      type="password"
      class="form-control"
      minlength="3"
-     id="floatingPassword"
+     id="Password"
      placeholder="Password"
      [ngClass]="{'is-invalid': password.touched && !password.valid}">
 
-    <label for="floatingPassword">Password</label>
+    <label for="Password">Password</label>
      <div class="invalid-feedback" *ngIf="password.touched && password.invalid">
       <div *ngIf="password.errors?.['required']">Password is required</div>
       <div *ngIf="password.errors?.['minlength']">Password can't be less than 3 characters</div>
