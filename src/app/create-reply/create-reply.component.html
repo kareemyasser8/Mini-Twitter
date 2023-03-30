@@ -2,9 +2,11 @@
     <div class="reply-container">
         <div class="X-container" (click)="closeModel()">
           <i class="bi bi-x"></i>
+          <i class="bi bi-arrow-left"></i>
         </div>
         <tweet-body [tweetBody]=tweetToReply></tweet-body>
-        <create-tweet></create-tweet>
+        <p>replying to {{tweetToReply.author}}</p>
+        <create-tweet (formSubmitted)="closeModel()" [replyTo]=tweetToReply></create-tweet>
     </div>
 </div>
 

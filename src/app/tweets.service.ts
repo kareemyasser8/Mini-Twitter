@@ -38,12 +38,12 @@ export class TweetsService {
 
   //-----------------------------------------------------------------
 
-  toggleModal(input: boolean){
+  toggleModal(input: boolean) {
     this.modal = input;
     this.modalUpdate.next(this.modal)
   }
 
-  getModal(){
+  getModal() {
     return this.modalUpdate.asObservable();
   }
 
@@ -55,16 +55,29 @@ export class TweetsService {
     return this.tweetsUpdated.asObservable();
   }
 
+  getTodayDate() {
+    return new Date();
+  }
+
+  getLastId(tweetsArray: Tweet[]) {
+
+    if (tweetsArray.length == 0) {
+      return 0;
+    } else {
+      return tweetsArray[length].id
+    }
+
+  }
+
   addTweet(content: string) {
 
-    var d = new Date();
-    let lastId = this.tweets[length].id + 1;
+    let lastId = this.getLastId(this.tweets) + 1;
 
     const tweet: Tweet = {
       id: lastId,
       author: 'Kareem Yasser',
       text: content,
-      date: d,
+      date: this.getTodayDate(),
       likes: 0,
       comments: 0,
       replies: []
@@ -72,6 +85,24 @@ export class TweetsService {
 
     this.tweets.push(tweet);
     this.tweetsUpdated.next([...this.tweets])
+  }
+
+  addReply(tweet: Tweet, content) {
+
+    let lastId = this.getLastId(tweet.replies) + 1;
+    const reply: Tweet = {
+      id: lastId,
+      author: 'Kareem Yasser',
+      text: content,
+      date: this.getTodayDate(),
+      likes: 0,
+      comments: 0,
+      replies: []
+    }
+
+    tweet.replies.push(reply);
+    tweet.comments += 1;
+    console.log("The comments replies: ", tweet.replies)
   }
 
 }

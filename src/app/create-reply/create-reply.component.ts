@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Tweet } from '../tweet.model';
 
@@ -7,7 +7,7 @@ import { Tweet } from '../tweet.model';
   templateUrl: './create-reply.component.html',
   styleUrls: ['./create-reply.component.css']
 })
-export class CreateReplyComponent implements OnInit, OnDestroy {
+export class CreateReplyComponent {
 
   @Input() tweetToReply: Tweet = {
     id: null,
@@ -25,17 +25,8 @@ export class CreateReplyComponent implements OnInit, OnDestroy {
 
   }
 
-  closeModel(){
+  closeModel() {
     this.close.emit(null);
-  }
-
-
-  ngOnInit(): void {
-
-  }
-
-  ngOnDestroy(): void {
-
   }
 
 }

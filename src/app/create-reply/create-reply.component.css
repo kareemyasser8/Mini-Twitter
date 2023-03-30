@@ -21,6 +21,28 @@
   height: auto;
 }
 
+.bi-arrow-left{
+  display: none;
+}
+
+@media (max-width: 990px) {
+  .reply-container{
+    width: 100%;
+    margin-top: 0;
+    border-radius: 0px;
+    height: 100%;
+  }
+
+  .bi-arrow-left{
+    display: block;
+  }
+
+  .bi-x{
+    display: none;
+  }
+
+}
+
 .X-container{
   margin-left: 15px;
   margin-top: 15px;
@@ -31,6 +53,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+p{
+  margin-left: 75px;
+  color:rgb(42, 96, 117)
 }
 
 .X-container i{

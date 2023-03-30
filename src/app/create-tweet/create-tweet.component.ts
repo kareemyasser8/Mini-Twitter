@@ -1,5 +1,6 @@
+import { Tweet } from './../tweet.model';
 import { TweetsService } from './../tweets.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -14,12 +15,19 @@ export class CreateTweetComponent implements OnInit {
 
   maxTweetLength = 150;
   tweetLength = 0;
+  tweetplaceHolder = "What is happening ?"
+
+  @Input() replyTo: Tweet;
+
+  @Output() formSubmitted = new EventEmitter<void>();
 
   constructor(private tweetsService: TweetsService) {
 
   }
 
   ngOnInit(): void {
+    if (this.replyTo == null) return
+    this.tweetplaceHolder = "Tweet your reply"
   }
 
   countCharacters(tweet) {
@@ -27,11 +35,22 @@ export class CreateTweetComponent implements OnInit {
   }
 
   createTweet(tweetform: NgForm) {
+
     if (tweetform.invalid) return
-    this.tweetsService.addTweet(tweetform.value.tweet)
+
+    if(this.replyTo == null) {
+      this.tweetsService.addTweet(tweetform.value.tweet)
+    }else{
+      this.tweetsService.addReply(this.replyTo,tweetform.value.tweet)
+      this.formSubmitted.emit();
+    }
+
+    this.clearTweetForm(tweetform)
+  }
+
+  clearTweetForm(tweetform) {
     this.tweetLength = 0;
     tweetform.resetForm();
-    console.log(tweetform.value.tweet);
   }
 
 }
