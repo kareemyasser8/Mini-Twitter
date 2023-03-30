@@ -13,8 +13,8 @@
         placeholder="Search..">
 
       <i class="bi bi-search"></i>
-      <div class="resultBox" *ngIf="searching" >
-        <li class="result-text" *ngFor="let t of filteredTweets">{{t.author}}</li>
+      <div class="resultBox" *ngIf="searching || focusOnList" (mouseleave)="focusOnList=false" (mouseover)="focusOnList=true" (focus)="focusOnList=true" >
+        <li class="result-text" *ngFor="let t of filteredTweets" (click)="showAuthor(t.author)">{{t.author}}</li>
         <!-- <li class="result-text">Hello</li> -->
       </div>
     </div>

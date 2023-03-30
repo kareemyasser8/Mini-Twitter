@@ -18,6 +18,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   tweetsSubsciption: Subscription
 
   searching = false;
+  focusOnList = true;
 
   constructor(private tweetsService: TweetsService) {
 
@@ -40,6 +41,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.tweetsSubsciption.unsubscribe();
   }
 
+  showAuthor(a){
+    console.log(a);
+  }
 
 
   ngOnInit(): void {
