@@ -10,14 +10,26 @@ export class TweetsService {
 
   private tweets: Tweet[] = [
     {
+      id: 1,
       author: 'Kareem Yasser',
       text: 'Hello world maaan',
       date: new Date("2023-03-20"),
       likes: 10,
       comments: 5,
       replies: []
+    },
+    {
+      id: 2,
+      author: 'Mohamed Hassan',
+      text: 'This code is available on github (Branch Name:) feature/rxjsSubject',
+      date: new Date("2023-03-28"),
+      likes: 3,
+      comments: 25,
+      replies: []
     }
   ];
+
+  private modal: boolean = false;
 
   private tweetsUpdated = new Subject()
   private modalUpdate = new Subject()
@@ -27,7 +39,8 @@ export class TweetsService {
   //-----------------------------------------------------------------
 
   toggleModal(input: boolean){
-    this.modalUpdate.next(input)
+    this.modal = input;
+    this.modalUpdate.next(this.modal)
   }
 
   getModal(){
@@ -45,8 +58,10 @@ export class TweetsService {
   addTweet(content: string) {
 
     var d = new Date();
+    let lastId = this.tweets[length].id + 1;
 
     const tweet: Tweet = {
+      id: lastId,
       author: 'Kareem Yasser',
       text: content,
       date: d,

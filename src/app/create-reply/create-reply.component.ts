@@ -1,6 +1,5 @@
-import { Subscription } from 'rxjs';
-import { TweetsService } from './../tweets.service';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+
 import { Tweet } from '../tweet.model';
 
 @Component({
@@ -11,6 +10,7 @@ import { Tweet } from '../tweet.model';
 export class CreateReplyComponent implements OnInit, OnDestroy {
 
   @Input() tweetToReply: Tweet = {
+    id: null,
     author: '',
     text: '',
     date: undefined,
@@ -19,25 +19,23 @@ export class CreateReplyComponent implements OnInit, OnDestroy {
     replies: []
   }
 
-  showModal: boolean
-  modalSubscription : Subscription
+  @Output() close = new EventEmitter();
 
-  constructor(private tweetsService: TweetsService) {
+  constructor() {
 
-  }
-
-  ngOnInit(): void {
-    this.modalSubscription = this.tweetsService.getModal().subscribe((result:boolean)=>{
-        this.showModal = result;
-    })
   }
 
   closeModel(){
-    this.tweetsService.toggleModal(false)
+    this.close.emit(null);
+  }
+
+
+  ngOnInit(): void {
+
   }
 
   ngOnDestroy(): void {
-    this.modalSubscription.unsubscribe();
+
   }
 
 }

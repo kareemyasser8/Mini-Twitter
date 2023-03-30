@@ -12,20 +12,24 @@ import { TweetsService } from './../tweets.service';
 export class TweetsComponent implements OnInit, OnDestroy {
 
   tweets: Tweet[] = []
-  tweetsSubscription : Subscription
+  tweetsSubscription: Subscription
 
-  constructor(private tweetsService:TweetsService) {
+  constructor(private tweetsService: TweetsService) {
 
-   }
+  }
+
+  trackById(index: number, tweet: Tweet): number {
+    return tweet.id
+  }
 
   ngOnInit(): void {
     this.tweets = this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
-    .subscribe({
-      next: (tweets: Tweet[])=>{
-         this.tweets = tweets
+      .subscribe({
+        next: (tweets: Tweet[]) => {
+          this.tweets = tweets
         }
-    })
+      })
   }
 
   ngOnDestroy(): void {

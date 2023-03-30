@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Tweet } from '../tweet.model';
 
 @Component({
@@ -9,6 +9,7 @@ import { Tweet } from '../tweet.model';
 export class TweetBodyComponent implements OnInit {
 
   @Input() tweetBody: Tweet = {
+    id: null,
     author: '',
     text: '',
     date: undefined,
@@ -16,6 +17,10 @@ export class TweetBodyComponent implements OnInit {
     comments: 0,
     replies: []
   }
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   console.log('Input changed:', changes['tweetBody']);
+  // }
 
   constructor() { }
 

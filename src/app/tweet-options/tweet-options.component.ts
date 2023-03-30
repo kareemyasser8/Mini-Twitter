@@ -10,6 +10,7 @@ import { Tweet } from '../tweet.model';
 export class TweetOptionsComponent implements OnInit {
 
   @Input() tweetBody: Tweet = {
+    id: null,
     author: '',
     text: '',
     date: undefined,
@@ -18,13 +19,12 @@ export class TweetOptionsComponent implements OnInit {
     replies: []
   }
 
-  likeClicked = false;
-  commentClicked: boolean= false;
+  likeClicked: boolean = false;
+  commentClicked: boolean = false;
 
   constructor(private tweetService : TweetsService) {
 
   }
-
 
   clickLike() {
     if (this.likeClicked == false) {
@@ -37,10 +37,11 @@ export class TweetOptionsComponent implements OnInit {
   }
 
   clickComment() {
-    this.tweetService.toggleModal(true)
+    this.commentClicked = true;
   }
 
   ngOnInit(): void {
+
   }
 
 }
