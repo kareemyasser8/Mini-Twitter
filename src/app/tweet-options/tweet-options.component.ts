@@ -1,5 +1,5 @@
 import { TweetsService } from './../tweets.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Tweet } from '../tweet.model';
 
 @Component({
@@ -21,9 +21,31 @@ export class TweetOptionsComponent implements OnInit {
 
   likeClicked: boolean = false;
   commentClicked: boolean = false;
+  threedotsClicked: boolean = false;
 
   constructor(private tweetService : TweetsService) {
 
+  }
+
+  get menu() {
+    return document.querySelector('.menu');
+  }
+
+  private isClickInside(target: any): boolean {
+    return this.menu && this.menu.contains(target);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    console.log("hio")
+    if (!this.isClickInside(event.target)) {
+      this.threedotsClicked = false;
+    }
+  }
+
+  clickThreeDots(){
+    event.stopPropagation();
+    this.threedotsClicked = !this.threedotsClicked;
   }
 
   clickLike() {

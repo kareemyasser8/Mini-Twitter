@@ -57,3 +57,43 @@
   color: rgb(221, 22, 55);
 }
 
+.edit-delete-options-container{
+  /* position: relative; */
+  /* border: 1px solid red; */
+  display: flex;
+  width: 40%;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.bi-three-dots-vertical{
+  cursor: pointer;
+}
+
+.edit-delete-options-container .menu{
+  /* position: absolute; */
+  flex: 1;
+  right: 0;
+  top: 0;
+  height: fit-content;
+  margin-right: 10px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 7px 1px rgba(6,30,56,0.3);
+  list-style: none;
+  z-index: 1;
+}
+
+.edit-delete-options-container .menu li{
+  padding: 8px;
+  font-weight: 500;
+}
+
+.edit-delete-options-container .menu li:hover{
+  cursor: pointer;
+  background-color: rgb(235, 240, 247);
+}
+
+.menu .delete{
+  color: rgb(226, 37, 37);
+}

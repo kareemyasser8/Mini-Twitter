@@ -14,7 +14,15 @@
 
   </div>
 
-  <i class="bi bi-three-dots-vertical"></i>
+  <div class="edit-delete-options-container">
+
+    <div class ="menu" *ngIf="threedotsClicked" #menu>
+        <li> <i class="bi bi-pencil-square"></i>  edit Tweet</li>
+        <li class="delete"><i class="bi bi-trash"></i> delete Tweet</li>
+    </div>
+    <i class="bi bi-three-dots-vertical" (click)="clickThreeDots()"></i>
+  </div>
+
 </div>
 
 <create-reply
