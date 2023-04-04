@@ -22,7 +22,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   constructor(private tweetsService: TweetsService) {
 
-    this.fetchedtweets = this.tweetsService.getTweets();
+    this.tweetsService.getTweets();
     this.tweetsSubsciption = this.tweetsService.getTweetsUpdateListener().subscribe({
       next: (tweets: Tweet[]) => {
         this.filteredTweets = this.fetchedtweets = tweets;

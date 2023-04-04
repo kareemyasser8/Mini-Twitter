@@ -18,6 +18,8 @@ import { CreateReplyComponent } from './create-reply/create-reply.component';
 import { TweetBodyComponent } from './tweet-body/tweet-body.component';
 import { TweetOptionsComponent } from './tweet-options/tweet-options.component';
 import { NgPipesModule } from 'ngx-pipes';
+import { TweetWrapperComponent } from './tweet-wrapper/tweet-wrapper.component';
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -34,12 +36,14 @@ import { NgPipesModule } from 'ngx-pipes';
     CreateReplyComponent,
     TweetBodyComponent,
     TweetOptionsComponent,
+    TweetWrapperComponent,
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     NgPipesModule,
 

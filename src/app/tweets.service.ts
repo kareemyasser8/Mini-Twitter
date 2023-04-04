@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Tweet } from './tweet.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,35 +11,27 @@ import { Tweet } from './tweet.model';
 export class TweetsService {
 
   private tweets: Tweet[] = [
-    {
-      id: 1,
-      author: 'Kareem Yasser',
-      text: 'Hello world maaan',
-      date: new Date("2023-03-20"),
-      likes: 10,
-      comments: 5,
-      replies: []
-    },
-    {
-      id: 2,
-      author: 'Mohamed Hassan',
-      text: 'This code is available on github (Branch Name:) feature/rxjsSubject',
-      date: new Date("2023-03-28"),
-      likes: 3,
-      comments: 25,
-      replies: []
-    }
+
   ];
 
   private tweetsUpdated = new Subject()
 
 
-  constructor(private profileService: ProfilesService) { }
+  constructor(private http:HttpClient) { }
 
   //-----------------------------------------------------------------
 
 
   getTweets() {
+    this.http.get<{message:string, tweets: Tweet[]}>('http://localhost:3000/api/tweets').subscribe({
+      next: (tweet)=>{
+        this.tweets = tweet.tweets
+        this.tweets.forEach(t => {
+          t.date = new Date(t.date)
+        })
+        this.tweetsUpdated.next([...this.tweets])
+      }
+    })
     return [...this.tweets]
   }
 
@@ -74,8 +67,15 @@ export class TweetsService {
       replies: []
     }
 
-    this.tweets.push(tweet);
-    this.tweetsUpdated.next([...this.tweets])
+    this.http.post<{message: string}>('http://localhost:3000/api/tweets', tweet).
+      subscribe({
+        next: (responseData)=>{
+          // console.log(responseData.message);
+          this.tweets.push(tweet);
+          this.tweetsUpdated.next([...this.tweets])
+        }
+      })
+
   }
 
   addReply(tweet: Tweet, content) {

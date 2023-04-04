@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { Tweet } from '../tweet.model';
 import { TweetsService } from './../tweets.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tweets',
@@ -13,8 +14,10 @@ export class TweetsComponent implements OnInit, OnDestroy {
 
   tweets: Tweet[] = []
   tweetsSubscription: Subscription
+  desiredUser: string;
 
-  constructor(private tweetsService: TweetsService) {
+
+  constructor(private tweetsService: TweetsService, private route: ActivatedRoute) {
 
   }
 
@@ -23,7 +26,7 @@ export class TweetsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.tweets = this.tweetsService.getTweets();
+    this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
       .subscribe({
         next: (tweets: Tweet[]) => {

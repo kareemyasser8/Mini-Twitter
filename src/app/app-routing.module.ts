@@ -1,3 +1,5 @@
+import { TweetWrapperComponent } from './tweet-wrapper/tweet-wrapper.component';
+import { HomeWrapperComponent } from './home-wrapper/home-wrapper.component';
 import { CreateReplyComponent } from './create-reply/create-reply.component';
 import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
@@ -16,7 +18,12 @@ const routes: Routes = [
       { path: 'signUp', component: SignUpComponent },
     ]
   },
-  { path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent,
+    children:[
+      {path: 'feed', component: HomeWrapperComponent},
+      {path: ':author/:id', component: TweetWrapperComponent},
+    ]
+  }
 
 ];
 
