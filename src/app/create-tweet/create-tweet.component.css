@@ -1,11 +1,21 @@
-.create-tweet-container{
+.create-tweet-container-full{
   width: 100%;
   background-color: white;
   display: flex;
+  flex-direction: column;
   border-radius: 3px;
   gap: 0.5rem;
   padding: 20px;
   margin-bottom: 0.5rem;
+}
+
+h5{
+  margin-top: -10px;
+}
+
+.create-tweet-container{
+  display: flex;
+  gap: 0.5rem;
 }
 
 .user-picture-section{

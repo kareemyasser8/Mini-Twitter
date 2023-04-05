@@ -22,6 +22,7 @@ export class TweetOptionsComponent implements OnInit {
   likeClicked: boolean = false;
   commentClicked: boolean = false;
   threedotsClicked: boolean = false;
+  editTweetClicked: boolean = false;
 
   constructor(private tweetService : TweetsService) {
 
@@ -50,6 +51,10 @@ export class TweetOptionsComponent implements OnInit {
   deleteTweet(tweetId){
     console.log("The id of the desired Tweet: " + tweetId)
     this.tweetService.deleteTweet(tweetId);
+  }
+
+  clickEditTweet(){
+    this.editTweetClicked = !this.editTweetClicked;
   }
 
   clickLike() {

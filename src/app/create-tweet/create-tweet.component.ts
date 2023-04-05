@@ -16,8 +16,10 @@ export class CreateTweetComponent implements OnInit {
   maxTweetLength = 150;
   tweetLength = 0;
   tweetplaceHolder = "What is happening ?"
+  tweetInputEditingText = ""
 
   @Input() replyTo: Tweet;
+  @Input() tweetToEdit: Tweet
 
   @Output() formSubmitted = new EventEmitter<void>();
 
@@ -26,7 +28,11 @@ export class CreateTweetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.replyTo == null) return
+    if (this.replyTo == null && this.tweetToEdit == null) return
+    if (this.tweetToEdit != null) {
+      console.log(this.tweetToEdit.text);
+      this.tweetInputEditingText = this.tweetToEdit.text;
+    }
     this.tweetplaceHolder = "Tweet your reply"
   }
 
@@ -38,10 +44,10 @@ export class CreateTweetComponent implements OnInit {
 
     if (tweetform.invalid) return
 
-    if(this.replyTo == null) {
+    if (this.replyTo == null) {
       this.tweetsService.addTweet(tweetform.value.tweet)
-    }else{
-      this.tweetsService.addReply(this.replyTo,tweetform.value.tweet)
+    } else {
+      this.tweetsService.addReply(this.replyTo, tweetform.value.tweet)
       this.formSubmitted.emit();
     }
 

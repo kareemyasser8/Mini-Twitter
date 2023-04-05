@@ -16,20 +16,16 @@
 
   <div class="edit-delete-options-container">
 
-    <div class ="menu" *ngIf="threedotsClicked" #menu>
-        <li> <i class="bi bi-pencil-square"></i>  edit Tweet</li>
-        <li class="delete" (click)="deleteTweet(tweetBody.id)"><i class="bi bi-trash"></i> delete Tweet</li>
+    <div class="menu" *ngIf="threedotsClicked" #menu>
+      <li (click)="clickEditTweet()"> <i class="bi bi-pencil-square"></i> edit Tweet</li>
+      <li class="delete" (click)="deleteTweet(tweetBody.id)"><i class="bi bi-trash"></i> delete Tweet</li>
     </div>
     <i class="bi bi-three-dots-vertical" (click)="clickThreeDots()"></i>
   </div>
 
 </div>
 
-<create-reply
-*ngIf="commentClicked"
-[tweetToReply]=tweetBody
-(close)="commentClicked = false">
+<edit-tweet *ngIf="editTweetClicked" [tweetToBeEdited]=tweetBody (close)="editTweetClicked = false"></edit-tweet>
+
+<create-reply *ngIf="commentClicked" [tweetToReply]=tweetBody (close)="commentClicked = false">
 </create-reply>
-
-
-

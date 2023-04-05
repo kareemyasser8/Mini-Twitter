@@ -19,7 +19,8 @@ import { TweetBodyComponent } from './tweet-body/tweet-body.component';
 import { TweetOptionsComponent } from './tweet-options/tweet-options.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { TweetWrapperComponent } from './tweet-wrapper/tweet-wrapper.component';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { EditTweetComponent } from './edit-tweet/edit-tweet.component'
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http'
     TweetBodyComponent,
     TweetOptionsComponent,
     TweetWrapperComponent,
+    EditTweetComponent,
 
   ],
   imports: [

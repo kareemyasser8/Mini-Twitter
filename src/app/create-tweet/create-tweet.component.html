@@ -1,29 +1,34 @@
-<div class="create-tweet-container">
-  <div class="user-picture-section">
-    <div class="user-picture">
-      <img src="../../assets/defaultProfilePicture.png" alt="">
+<div class="create-tweet-container-full">
+  <h5 *ngIf="tweetToEdit">Edit your tweet</h5>
+
+  <div class="create-tweet-container">
+    <div class="user-picture-section">
+      <div class="user-picture">
+        <img src="../../assets/defaultProfilePicture.png" alt="">
+      </div>
     </div>
+    <form class="new-tweet" (submit)="createTweet(tweetForm)" #tweetForm="ngForm">
+      <div class="form-group">
+        <textarea
+          ngModel
+          required
+          (keyup)="countCharacters(tweet.value)"
+          maxlength="{{maxTweetLength}}"
+          name="tweet"
+          #tweet="ngModel"
+          class="form-control"
+          placeholder={{tweetplaceHolder}}
+          [(ngModel)]="tweetInputEditingText"
+          style="resize: none;"
+          rows="3"></textarea>
+      </div>
+      <div class="tweetBtn-andLimit">
+        <label>{{tweetLength}}/{{maxTweetLength}}</label>
+        <span></span>
+
+        <button class="btn btn-primary" [disabled]="tweetForm.invalid" type="submit">Tweet</button>
+      </div>
+
+    </form>
   </div>
-  <form class="new-tweet" (submit)="createTweet(tweetForm)" #tweetForm="ngForm">
-    <div class="form-group">
-      <textarea
-        ngModel
-        required
-        (keyup)="countCharacters(tweet.value)"
-        maxlength="{{maxTweetLength}}"
-        name="tweet"
-        #tweet="ngModel"
-        class="form-control"
-        placeholder={{tweetplaceHolder}}
-        style="resize: none;"
-        rows="3"></textarea>
-    </div>
-    <div class="tweetBtn-andLimit">
-      <label>{{tweetLength}}/{{maxTweetLength}}</label>
-      <span></span>
-
-      <button class="btn btn-primary" [disabled]="tweetForm.invalid" type="submit">Tweet</button>
-    </div>
-
-  </form>
 </div>
