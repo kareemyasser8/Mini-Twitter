@@ -1,15 +1,21 @@
-.search-panel {
-  width: 100%;
+.search-panel-container-full{
+  display: flex;
+  flex-direction: row;
+  width: fill-available;
   height: 61px;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+
+.search-panel-container{
+  height: 100%;
+  width: 100%;
   background-color: #F5F8FA;
   display: flex;
-  /* flex: 1 1 auto; */
   justify-content: space-between;
-  /* gap: 5%; */
   align-items: center;
   border-bottom: 1px solid #b4c2ce;
-  /* border: 1px solid red; */
-
 }
 
 .search-section{

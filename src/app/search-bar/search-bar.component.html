@@ -1,31 +1,25 @@
-<div class="search-panel">
-  <div class="search-section">
-    <div class="form-group has-search">
-      <input
-        maxlength="30"
-        (blur)="searching=false"
-        (focus)="searching = true"
-        autocomplete="off"
-        value= ""
-        #query
-        (keyup)="filter(query.value)"
-        type="text"
-        class="form-control"
-        placeholder="Search..">
+<div class="search-panel-container-full">
+  <div class="search-panel-container">
+    <div class="search-section">
+      <div class="form-group has-search">
+        <input maxlength="30" (blur)="searching=false" (focus)="searching = true" autocomplete="off" value="" #query
+          (keyup)="filter(query.value)" type="text" class="form-control" placeholder="Search..">
 
-      <i class="bi bi-search"></i>
-      <div class="resultBox" *ngIf="searching || focusOnList" (mouseleave)="focusOnList=false" (mouseover)="focusOnList=true" (focus)="focusOnList=true" >
-        <li class="result-text" *ngFor="let t of filteredTweets" (click)="showAuthor(t.author)">{{t.author}}</li>
-        <!-- <li class="result-text">Hello</li> -->
+        <i class="bi bi-search"></i>
+        <div class="resultBox" *ngIf="searching || focusOnList" (mouseleave)="focusOnList=false"
+          (mouseover)="focusOnList=true" (focus)="focusOnList=true">
+          <li class="result-text" *ngFor="let t of filteredTweets" (click)="showAuthor(t.author)">{{t.author}}</li>
+          <!-- <li class="result-text">Hello</li> -->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="username-logout-section">
-    <div class="user-section">
-      Kareem
+    <div class="username-logout-section">
+      <div class="user-section">
+        Kareem
+      </div>
+      <a class="logout" routerLink="">
+        <i class="bi bi-power"></i>
+      </a>
     </div>
-    <a class="logout" routerLink="">
-      <i class="bi bi-power"></i>
-    </a>
   </div>
 </div>
