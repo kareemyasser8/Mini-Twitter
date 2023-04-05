@@ -18,7 +18,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   tweetsSubsciption: Subscription
 
   searching = false;
-  focusOnList = true;
+  focusOnList = false;
 
   constructor(private tweetsService: TweetsService) {
 

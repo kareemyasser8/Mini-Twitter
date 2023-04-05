@@ -37,7 +37,6 @@ export class TweetOptionsComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onClick(event: MouseEvent) {
-    console.log("hio")
     if (!this.isClickInside(event.target)) {
       this.threedotsClicked = false;
     }

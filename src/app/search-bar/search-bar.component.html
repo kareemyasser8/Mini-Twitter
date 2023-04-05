@@ -6,6 +6,7 @@
         (blur)="searching=false"
         (focus)="searching = true"
         autocomplete="off"
+        value= ""
         #query
         (keyup)="filter(query.value)"
         type="text"
