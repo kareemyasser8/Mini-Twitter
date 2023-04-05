@@ -24,6 +24,8 @@
 
 .user-name{
   font-weight: bold;
+  width:max-content;
+  /* border: 1px solid red; */
 }
 
 .user-name:hover{

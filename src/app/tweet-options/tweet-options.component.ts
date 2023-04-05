@@ -48,6 +48,11 @@ export class TweetOptionsComponent implements OnInit {
     this.threedotsClicked = !this.threedotsClicked;
   }
 
+  deleteTweet(tweetId){
+    console.log("The id of the desired Tweet: " + tweetId)
+    this.tweetService.deleteTweet(tweetId);
+  }
+
   clickLike() {
     if (this.likeClicked == false) {
       this.likeClicked = true

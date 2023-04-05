@@ -1,4 +1,4 @@
-<div class="tweet-container" *ngFor="let tweet of tweets; trackBy: trackById" >
+<div class="tweet-container" *ngFor="let tweet of tweets;" >
   <tweet-body [tweetBody]="tweet"></tweet-body>
   <tweet-options [tweetBody]="tweet"></tweet-options>
 </div>

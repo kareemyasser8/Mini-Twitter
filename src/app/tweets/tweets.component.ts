@@ -21,16 +21,16 @@ export class TweetsComponent implements OnInit, OnDestroy {
 
   }
 
-  trackById(index: number, tweet: Tweet): number {
-    return tweet.id
-  }
+  // trackById(index: number, tweet: Tweet): number {
+  //   return tweet.id
+  // }
 
   ngOnInit(): void {
     this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
       .subscribe({
         next: (tweets: Tweet[]) => {
-          this.tweets = tweets
+          this.tweets = tweets.reverse()
         }
       })
   }

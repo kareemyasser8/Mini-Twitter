@@ -36,8 +36,24 @@ app.post("/api/tweets", (req, res, next) => {
   })
 
   console.log(tweet);
-  tweet.save();
-  res.status(201).json({ message: 'Tweet added successfully!!' })
+  tweet.save().then(
+    created =>{
+      res.status(201).json({
+        message: 'Tweet added successfully!!',
+        tweetId: created._id
+       })
+    }
+  )
+
+})
+
+app.delete('/api/tweets/:id', (req,res,next)=>{
+  Tweet.deleteOne({_id: req.params.id}).then(
+    (result) => {
+      res.status(200).json({message: 'tweet deleted'})
+    }
+  )
+
 })
 
 app.get('/api/tweets', (req, res, next) => {

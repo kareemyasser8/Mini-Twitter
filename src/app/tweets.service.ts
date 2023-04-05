@@ -41,13 +41,19 @@ export class TweetsService {
       .subscribe({
         next: (tweet) => {
           this.tweets = tweet
-          // this.tweets.forEach(t => {
-          //   t.date = new Date(t.date)
-          // })
           this.tweetsUpdated.next([...this.tweets])
         }
       })
     return [...this.tweets]
+  }
+
+  deleteTweet(tweetId){
+    this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
+    .subscribe((response)=>{
+      const tweetsUpdated = this.tweets.filter(t => t.id !== tweetId)
+      this.tweets = tweetsUpdated;
+      this.tweetsUpdated.next([...this.tweets])
+    })
   }
 
   getTweetsUpdateListener() {
@@ -58,22 +64,19 @@ export class TweetsService {
     return new Date();
   }
 
-  getLastId(tweetsArray: Tweet[]) {
+  // getLastId(tweetsArray: Tweet[]) {
 
-    if (tweetsArray.length == 0) {
-      return 0;
-    } else {
-      return tweetsArray[length].id
-    }
+  //   if (tweetsArray.length == 0) {
+  //     return 0;
+  //   } else {
+  //     return tweetsArray[length].id
+  //   }
 
-  }
+  // }
 
   addTweet(content: string) {
-
-    let lastId = this.getLastId(this.tweets) + 1;
-
     const tweet: Tweet = {
-      id: lastId,
+      id: "",
       author: 'Kareem Yasser',
       text: content,
       date: this.getTodayDate(),
@@ -82,10 +85,10 @@ export class TweetsService {
       replies: []
     }
 
-    this.http.post<{ message: string }>('http://localhost:3000/api/tweets', tweet).
+    this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet).
       subscribe({
         next: (responseData) => {
-          // console.log(responseData.message);
+          tweet.id = responseData.tweetId
           this.tweets.push(tweet);
           this.tweetsUpdated.next([...this.tweets])
         }
@@ -95,9 +98,9 @@ export class TweetsService {
 
   addReply(tweet: Tweet, content) {
 
-    let lastId = this.getLastId(tweet.replies) + 1;
+    // let lastId = this.getLastId(tweet.replies) + 1;
     const reply: Tweet = {
-      id: lastId,
+      id: null,
       author: 'Kareem Yasser',
       text: content,
       date: this.getTodayDate(),
