@@ -37,20 +37,34 @@ app.post("/api/tweets", (req, res, next) => {
 
   console.log(tweet);
   tweet.save().then(
-    created =>{
+    created => {
       res.status(201).json({
         message: 'Tweet added successfully!!',
         tweetId: created._id
-       })
+      })
     }
   )
 
 })
 
-app.delete('/api/tweets/:id', (req,res,next)=>{
-  Tweet.deleteOne({_id: req.params.id}).then(
+app.patch('/api/tweets/:id', (req, res, next) => {
+  const update = {
+    _id: req.body.id,
+    text: req.body.text
+  }
+  Tweet.updateOne({ _id: req.params.id }, { $set: update }).then(
     (result) => {
-      res.status(200).json({message: 'tweet deleted'})
+      console.log()
+      console.log(result)
+      res.status(200).json({ message: 'tweet edited successfully' })
+    }
+  ).catch((err) => { console.log(err); res.status(500).json({ error: err }) })
+})
+
+app.delete('/api/tweets/:id', (req, res, next) => {
+  Tweet.deleteOne({ _id: req.params.id }).then(
+    (result) => {
+      res.status(200).json({ message: 'tweet deleted' })
     }
   )
 
@@ -66,6 +80,8 @@ app.get('/api/tweets', (req, res, next) => {
     }
   )
 })
+
+
 
 
 module.exports = app;

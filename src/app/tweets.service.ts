@@ -1,6 +1,6 @@
 import { ProfilesService } from './profiles.service';
 import { Injectable } from '@angular/core';
-import { Subject, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 
 import { Tweet } from './tweet.model';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +14,7 @@ export class TweetsService {
 
   ];
 
-  private tweetsUpdated = new Subject()
+  private tweetsUpdated = new Subject<Tweet[]>()
 
 
   constructor(private http: HttpClient) { }
@@ -22,7 +22,7 @@ export class TweetsService {
   //-----------------------------------------------------------------
 
 
-  getTweets() {
+  getTweets() : Tweet[] {
     this.http.get<{ message: string, tweets: any }>
       ('http://localhost:3000/api/tweets')
       .pipe(map((tweetData)=>{
@@ -47,7 +47,28 @@ export class TweetsService {
     return [...this.tweets]
   }
 
-  deleteTweet(tweetId){
+  updateTweet(tweetToEdit: Tweet, newTweetText: string): void{
+    const id = tweetToEdit.id;
+
+    const update={
+      id: id,
+      text: newTweetText
+    }
+    this.http.patch<{message: string}>('http://localhost:3000/api/tweets/'+ id, update)
+    .subscribe({
+      next: (result: {message: string})=>{
+        console.log(result.message)
+        this.tweets.map(t =>{
+          if(t.id === id) t.text = newTweetText;
+        })
+        this.tweetsUpdated.next([...this.tweets])
+
+      }
+    })
+
+  }
+
+  deleteTweet(tweetId: string): void{
     this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
     .subscribe((response)=>{
       const tweetsUpdated = this.tweets.filter(t => t.id !== tweetId)
@@ -56,11 +77,11 @@ export class TweetsService {
     })
   }
 
-  getTweetsUpdateListener() {
+  getTweetsUpdateListener() : Observable<Tweet[]>{
     return this.tweetsUpdated.asObservable();
   }
 
-  getTodayDate() {
+  getTodayDate(): Date {
     return new Date();
   }
 
