@@ -50,12 +50,12 @@ h5{
 }
 
 .btn{
-  width: 100px;
+  min-width: 100px;
   background-color: #1DA1F2;
   border: 0;
 }
 
-.tweetBtn-andLimit span{
+.separator-vertical-line{
   width: 1px;
   background-color: #AAB8C2;
   height: 100%;

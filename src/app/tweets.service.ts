@@ -1,6 +1,6 @@
 import { ProfilesService } from './profiles.service';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, Subject, map, of } from 'rxjs';
 
 import { Tweet } from './tweet.model';
 import { HttpClient } from '@angular/common/http';
@@ -49,7 +49,6 @@ export class TweetsService {
 
   updateTweet(tweetToEdit: Tweet, newTweetText: string): void{
     const id = tweetToEdit.id;
-
     const update={
       id: id,
       text: newTweetText
@@ -62,7 +61,9 @@ export class TweetsService {
           if(t.id === id) t.text = newTweetText;
         })
         this.tweetsUpdated.next([...this.tweets])
-
+      },
+      error: (err)=>{
+        console.log(err);
       }
     })
 
@@ -112,7 +113,8 @@ export class TweetsService {
           tweet.id = responseData.tweetId
           this.tweets.push(tweet);
           this.tweetsUpdated.next([...this.tweets])
-        }
+        },
+        error: (err)=>{console.log(err)}
       })
 
   }

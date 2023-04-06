@@ -15,6 +15,7 @@ export class TweetsComponent implements OnInit, OnDestroy {
   tweets: Tweet[] = []
   tweetsSubscription: Subscription
   desiredUser: string;
+  isLoading: boolean = true;
 
 
   constructor(private tweetsService: TweetsService, private route: ActivatedRoute) {
@@ -26,10 +27,12 @@ export class TweetsComponent implements OnInit, OnDestroy {
   // }
 
   ngOnInit(): void {
+
     this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
       .subscribe({
         next: (tweets: Tweet[]) => {
+          this.isLoading = false;
           this.tweets = tweets.reverse()
         }
       })

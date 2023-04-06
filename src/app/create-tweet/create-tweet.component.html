@@ -24,10 +24,20 @@
       </div>
       <div class="tweetBtn-andLimit">
         <label>{{tweetLength}}/{{maxTweetLength}}</label>
-        <span></span>
+        <span class="separator-vertical-line"></span>
 
-        <button class="btn btn-primary" [disabled]="tweetForm.invalid" type="submit">Tweet</button>
+        <button *ngIf="isloading == false" class="btn btn-primary" [disabled]="tweetForm.invalid" type="submit">
+          Tweet
+        </button>
+
+        <button *ngIf="isloading == true" class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+
       </div>
+
+
 
     </form>
   </div>

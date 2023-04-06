@@ -25,6 +25,7 @@
   display: none;
 }
 
+
 @media (max-width: 990px) {
   .reply-container{
     width: 100%;
@@ -68,3 +69,5 @@ p{
   transition: 0.2s ease-in-out;
   background-color: rgba(0,0,0,0.2);
 }
+
+

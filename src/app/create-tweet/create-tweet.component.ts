@@ -17,6 +17,7 @@ export class CreateTweetComponent implements OnInit {
   tweetLength = 0;
   tweetplaceHolder = "What is happening ?"
   tweetInputEditingText = ""
+  isloading: boolean = false;
 
   @Input() replyTo: Tweet;
   @Input() tweetToEdit: Tweet
@@ -32,6 +33,7 @@ export class CreateTweetComponent implements OnInit {
     if (this.tweetToEdit != null) {
       console.log(this.tweetToEdit.text);
       this.tweetInputEditingText = this.tweetToEdit.text;
+      this.tweetLength = this.tweetToEdit.text.length;
     }
     this.tweetplaceHolder = "Tweet your reply"
   }
@@ -50,22 +52,25 @@ export class CreateTweetComponent implements OnInit {
     //   this.tweetsService.addReply(this.replyTo, tweetform.value.tweet)
     //   this.formSubmitted.emit();
     // }
+    this.isloading = true;
 
     if(!this.replyTo && !this.tweetToEdit){
       this.tweetsService.addTweet(tweetform.value.tweet)
       this.formSubmitted.emit();
+      this.isloading = false;
     }
 
     if (this.tweetToEdit){
       this.editTweet(tweetform.value.tweet)
       this.formSubmitted.emit()
+      this.isloading = false;
     }
 
     this.clearTweetForm(tweetform)
   }
 
   editTweet(text: string){
-    this.tweetsService.updateTweet(this.tweetToEdit,text)
+    return this.tweetsService.updateTweet(this.tweetToEdit,text)
   }
 
   clearTweetForm(tweetform) {

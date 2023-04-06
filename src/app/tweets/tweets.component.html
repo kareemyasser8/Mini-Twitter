@@ -1,4 +1,10 @@
-<div class="tweet-container" *ngFor="let tweet of tweets;" >
-  <tweet-body [tweetBody]="tweet"></tweet-body>
-  <tweet-options [tweetBody]="tweet"></tweet-options>
+<div class="text-center" *ngIf="isLoading == true">
+  <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div>
+</div>
+
+<div *ngIf="isLoading == false">
+  <div class="tweet-container" *ngFor="let tweet of tweets;">
+    <tweet-body [tweetBody]="tweet"></tweet-body>
+    <tweet-options [tweetBody]="tweet"></tweet-options>
+  </div>
 </div>
