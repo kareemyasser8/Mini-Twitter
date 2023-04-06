@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  submitted: boolean = false
+
   submit(f:any){
     console.log(f.value)
   }

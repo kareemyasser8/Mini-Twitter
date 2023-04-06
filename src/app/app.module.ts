@@ -21,6 +21,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { TweetWrapperComponent } from './tweet-wrapper/tweet-wrapper.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EditTweetComponent } from './edit-tweet/edit-tweet.component'
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { EditTweetComponent } from './edit-tweet/edit-tweet.component'
     NgPipesModule,
 
   ],
-  providers: [TweetsService],
+  providers: [TweetsService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

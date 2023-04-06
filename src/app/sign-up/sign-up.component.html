@@ -1,5 +1,5 @@
 <h2>Create your Account on Mini Twitter</h2>
-<form #f="ngForm" (ngSubmit)="register(f)">
+<form #f="ngForm" (ngSubmit)="register(f); submitted=true">
 
   <div class="row mb-3">
     <div class="col">
@@ -12,14 +12,14 @@
           ngModel
           name="fname"
           #fname="ngModel"
-          [ngClass]="{'is-invalid': fname.touched && fname.invalid}"
+          [ngClass]="{'is-invalid': (fname.touched || submitted) && fname.invalid}"
           required
           minlength="3"
           pattern="[a-zA-Z]*"
           placeholder="First name">
 
         <label for="FirstName">First Name</label>
-        <div class="invalid-feedback" *ngIf="fname.touched && fname.invalid">
+        <div class="invalid-feedback" *ngIf="(fname.touched || submitted) && fname.invalid">
           <div *ngIf="fname.errors?.['required']">First name is required</div>
           <div *ngIf="fname.errors?.['minlength']">Minimum charcters per name are 3</div>
           <div *ngIf="fname.errors?.['pattern']">Name shouldn't countain numbers, space or special characters</div>
@@ -38,14 +38,14 @@
          ngModel
          name="lname"
          #lname="ngModel"
-         [ngClass]="{'is-invalid': lname.touched && lname.invalid}"
+         [ngClass]="{'is-invalid': (lname.touched || submitted) && lname.invalid}"
          required
          minlength="3"
          pattern="[a-zA-Z]*"
          placeholder="First name">
 
         <label for="LastName">Last Name</label>
-        <div class="invalid-feedback" *ngIf="lname.touched && lname.invalid">
+        <div class="invalid-feedback" *ngIf="(lname.touched || submitted) && lname.invalid">
           <div *ngIf="lname.errors?.['required']">Last name is required</div>
           <div *ngIf="lname.errors?.['minlength']">Minimum charcters per name are 3</div>
           <div *ngIf="lname.errors?.['pattern']">Name shouldn't countain numbers, space or special characters</div>
@@ -71,11 +71,11 @@
       minlength="3"
       maxlength="10"
       placeholder="@username123"
-      [ngClass]="{'is-invalid': username.touched && !username.valid}">
+      [ngClass]="{'is-invalid': (username.touched || submitted) && !username.valid}">
 
     <label for="Username">Username</label>
 
-    <div class="invalid-feedback" *ngIf="username.touched && !username.valid">
+    <div class="invalid-feedback" *ngIf="(username.touched || submitted) && !username.valid">
       <div *ngIf="username.errors?.['required']">Username is required</div>
       <div *ngIf="username.errors?.['pattern']">Username is invalid</div>
       <div *ngIf="username.errors?.['minlength']">Username can't be less than 3 characters</div>
@@ -95,16 +95,16 @@
      minlength="3"
      id="Password"
      placeholder="Password"
-     [ngClass]="{'is-invalid': password.touched && !password.valid}">
+     [ngClass]="{'is-invalid':(password.touched || submitted) && !password.valid}">
 
     <label for="Password">Password</label>
-     <div class="invalid-feedback" *ngIf="password.touched && password.invalid">
+     <div class="invalid-feedback" *ngIf="(password.touched || submitted) && password.invalid">
       <div *ngIf="password.errors?.['required']">Password is required</div>
       <div *ngIf="password.errors?.['minlength']">Password can't be less than 3 characters</div>
     </div>
   </div>
 
-  <button [disabled]="!f.valid" type="submit" class="Login-btn">Create my account</button>
+  <button type="submit" class="Login-btn">Create my account</button>
 </form>
 
 <p>Already have an account ? <a routerLink="/welcome/login">Go to the login page</a>

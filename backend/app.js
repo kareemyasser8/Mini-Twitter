@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
+const tweetsRoutes = require("./routes/tweets")
+const userRoutes = require("./routes/user")
 
 const cors = require('cors');
 const corsOptions = {
@@ -10,7 +12,7 @@ const corsOptions = {
 }
 
 
-const tweetsRoutes = require("./routes/tweets")
+
 
 const app = express()
 
@@ -33,6 +35,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/api/tweets", tweetsRoutes)
+app.use("/api/user", userRoutes)
 
 //DHVCkhocJ7C6XdWe
 

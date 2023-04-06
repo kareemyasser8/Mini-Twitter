@@ -3,8 +3,8 @@ import { Tweet } from "./tweet.model";
 export interface Profile{
   username: string,
   password: string,
-  authorFname: string,
-  authorLname: string,
+  fname: string,
+  lname: string,
   tweets: Tweet[]
   notifications: string[]
 }

@@ -1,9 +1,8 @@
-import { ProfilesService } from './profiles.service';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map, of } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 
 import { Tweet } from './tweet.model';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
