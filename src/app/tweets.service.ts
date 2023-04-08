@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject } from 'rxjs';
+import { map, merge, mergeMap, Observable, of, Subject } from 'rxjs';
 
 import { Tweet } from './tweet.model';
 
@@ -21,11 +21,11 @@ export class TweetsService {
   //-----------------------------------------------------------------
 
 
-  getTweets() : Tweet[] {
+  getTweets(): Tweet[] {
     this.http.get<{ message: string, tweets: any }>
       ('http://localhost:3000/api/tweets')
-      .pipe(map((tweetData)=>{
-        return tweetData.tweets.map(tweet=>{
+      .pipe(map((tweetData) => {
+        return tweetData.tweets.map(tweet => {
           return {
             text: tweet.text,
             author: tweet.author,
@@ -46,38 +46,41 @@ export class TweetsService {
     return [...this.tweets]
   }
 
-  updateTweet(tweetToEdit: Tweet, newTweetText: string): void{
+  updateTweet(tweetToEdit: Tweet, newTweetText: string): void {
     const id = tweetToEdit.id;
-    const update={
+    const update = {
       id: id,
       text: newTweetText
     }
-    this.http.patch<{message: string}>('http://localhost:3000/api/tweets/'+ id, update)
-    .subscribe({
-      next: (result: {message: string})=>{
-        console.log(result.message)
-        this.tweets.map(t =>{
-          if(t.id === id) t.text = newTweetText;
-        })
-        this.tweetsUpdated.next([...this.tweets])
-      },
-      error: (err)=>{
-        console.log(err);
-      }
-    })
+    this.http.patch<{ message: string }>('http://localhost:3000/api/tweets/' + id, update)
+      .subscribe({
+        next: (result: { message: string }) => {
+          console.log(result.message)
+          this.tweets.map(t => {
+            if (t.id === id) t.text = newTweetText;
+          })
+          this.tweetsUpdated.next([...this.tweets])
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
 
   }
 
-  deleteTweet(tweetId: string): void{
-    this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
-    .subscribe((response)=>{
-      const tweetsUpdated = this.tweets.filter(t => t.id !== tweetId)
-      this.tweets = tweetsUpdated;
-      this.tweetsUpdated.next([...this.tweets])
-    })
+  deleteTweet(tweetId: string): Observable<any> {
+    return this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
+      .pipe(mergeMap(
+        (response) => {
+          const tweetsUpdated = this.tweets.filter(t => t.id !== tweetId);
+          this.tweets = tweetsUpdated;
+          this.tweetsUpdated.next([...this.tweets]);
+          return of(response);
+        }
+      ));
   }
 
-  getTweetsUpdateListener() : Observable<Tweet[]>{
+  getTweetsUpdateListener(): Observable<Tweet[]> {
     return this.tweetsUpdated.asObservable();
   }
 
@@ -95,7 +98,7 @@ export class TweetsService {
 
   // }
 
-  addTweet(content: string) {
+  addTweet(content: string): Observable<any> {
     const tweet: Tweet = {
       id: "",
       author: 'Kareem Yasser',
@@ -106,17 +109,17 @@ export class TweetsService {
       replies: []
     }
 
-    this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet).
-      subscribe({
-        next: (responseData) => {
+    return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
+      .pipe(
+        mergeMap((responseData) => {
           tweet.id = responseData.tweetId
           this.tweets.push(tweet);
           this.tweetsUpdated.next([...this.tweets])
-        },
-        error: (err)=>{console.log(err)}
-      })
-
+          return of(responseData);
+        })
+      );
   }
+
 
   addReply(tweet: Tweet, content) {
 

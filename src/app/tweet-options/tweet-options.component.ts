@@ -23,6 +23,9 @@ export class TweetOptionsComponent implements OnInit {
   commentClicked: boolean = false;
   threedotsClicked: boolean = false;
   editTweetClicked: boolean = false;
+  isDeleteLoading: boolean = false;
+
+  @Output() deleteTweetClicked = new EventEmitter<boolean>();
 
   constructor(private tweetService : TweetsService) {
 
@@ -49,8 +52,16 @@ export class TweetOptionsComponent implements OnInit {
   }
 
   deleteTweet(tweetId){
-    console.log("The id of the desired Tweet: " + tweetId)
-    this.tweetService.deleteTweet(tweetId);
+    this.deleteTweetClicked.emit(true)
+    this.tweetService.deleteTweet(tweetId).subscribe({
+      next: (response)=>{
+        this.deleteTweetClicked.emit(false)
+      },
+      error: (err)=>{
+        console.log(err);
+        this.deleteTweetClicked.emit(false)
+      }
+    })
   }
 
   clickEditTweet(){

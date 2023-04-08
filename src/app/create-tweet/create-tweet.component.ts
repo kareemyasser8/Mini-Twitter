@@ -55,9 +55,20 @@ export class CreateTweetComponent implements OnInit {
     this.isloading = true;
 
     if(!this.replyTo && !this.tweetToEdit){
-      this.tweetsService.addTweet(tweetform.value.tweet)
-      this.formSubmitted.emit();
-      this.isloading = false;
+      this.tweetsService.addTweet(tweetform.value.tweet).subscribe({
+        next: (response)=>{
+          console.log(response)
+          this.isloading = false;
+          this.clearTweetForm(tweetform)
+          this.formSubmitted.emit();
+        },
+        error: (err)=>{
+          console.log(err)
+          this.isloading = false;
+        }
+      })
+      // this.formSubmitted.emit();
+      // this.isloading = false;
     }
 
     if (this.tweetToEdit){
@@ -66,7 +77,7 @@ export class CreateTweetComponent implements OnInit {
       this.isloading = false;
     }
 
-    this.clearTweetForm(tweetform)
+    // this.clearTweetForm(tweetform)
   }
 
   editTweet(text: string){

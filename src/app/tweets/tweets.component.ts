@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Tweet } from '../tweet.model';
@@ -16,6 +16,7 @@ export class TweetsComponent implements OnInit, OnDestroy {
   tweetsSubscription: Subscription
   desiredUser: string;
   isLoading: boolean = true;
+  @Input() isDeleteLoading: boolean = false;
 
 
   constructor(private tweetsService: TweetsService, private route: ActivatedRoute) {
@@ -40,6 +41,10 @@ export class TweetsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tweetsSubscription.unsubscribe();
+  }
+
+  onDeleteTweetClicked(isLoading: boolean) {
+    this.isDeleteLoading = isLoading;
   }
 
 }

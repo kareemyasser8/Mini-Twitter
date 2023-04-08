@@ -3,8 +3,8 @@
 </div>
 
 <div *ngIf="isLoading == false">
-  <div class="tweet-container" *ngFor="let tweet of tweets;">
+  <div class="tweet-container" [ngClass]="{'onDeleteLoading': isDeleteLoading}" *ngFor="let tweet of tweets;">
     <tweet-body [tweetBody]="tweet"></tweet-body>
-    <tweet-options [tweetBody]="tweet"></tweet-options>
+    <tweet-options (deleteTweetClicked)="onDeleteTweetClicked($event)" [tweetBody]="tweet"></tweet-options>
   </div>
 </div>
