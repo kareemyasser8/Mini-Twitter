@@ -46,26 +46,23 @@ export class TweetsService {
     return [...this.tweets]
   }
 
-  updateTweet(tweetToEdit: Tweet, newTweetText: string): void {
+  updateTweet(tweetToEdit: Tweet, newTweetText: string): Observable<any> {
     const id = tweetToEdit.id;
     const update = {
       id: id,
       text: newTweetText
     }
-    this.http.patch<{ message: string }>('http://localhost:3000/api/tweets/' + id, update)
-      .subscribe({
-        next: (result: { message: string }) => {
-          console.log(result.message)
+
+    return this.http.patch('http://localhost:3000/api/tweets/' + id, update)
+      .pipe(mergeMap(
+        (response) => {
+          // console.log(result.message)
           this.tweets.map(t => {
             if (t.id === id) t.text = newTweetText;
           })
           this.tweetsUpdated.next([...this.tweets])
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      })
-
+          return of(response)
+        }))
   }
 
   deleteTweet(tweetId: string): Observable<any> {
