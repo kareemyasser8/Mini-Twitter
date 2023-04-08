@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'login',
@@ -8,12 +10,27 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
 
   submitted: boolean = false
+  isloading: boolean = false;
+  failedResponse: boolean = false;
 
-  submit(f:any){
-    console.log(f.value)
+  constructor(private authService: AuthService) { }
+
+  login(form: NgForm) {
+    this.failedResponse = false;
+    if (form.invalid) return
+    this.isloading = true
+    this.authService.login(form.value.username, form.value.password).subscribe({
+      next: (token) => {
+        this.isloading = false;
+        console.log(token)
+      },
+      error: (err) => {
+        console.log(err);
+        this.isloading = false;
+        this.failedResponse = true
+      }
+    })
   }
-
-  constructor() { }
 
   ngOnInit(): void {
   }

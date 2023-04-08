@@ -23,4 +23,12 @@ export class AuthService {
     })
   }
 
+  login(username: string, password: string){
+    let userdata= {
+      username: username,
+      password: password
+    }
+    return this.http.post("http://localhost:3000/api/user/login",userdata)
+  }
+
 }
