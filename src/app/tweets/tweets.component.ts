@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Tweet } from '../tweet.model';
 import { TweetsService } from './../tweets.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'tweets',
@@ -17,9 +18,11 @@ export class TweetsComponent implements OnInit, OnDestroy {
   desiredUser: string;
   isLoading: boolean = true;
   @Input() isDeleteLoading: boolean = false;
+  @Input() userIsAuthenticated;
 
-
-  constructor(private tweetsService: TweetsService, private route: ActivatedRoute) {
+  constructor(
+    private tweetsService: TweetsService,
+    private route: ActivatedRoute) {
 
   }
 
@@ -27,7 +30,11 @@ export class TweetsComponent implements OnInit, OnDestroy {
   //   return tweet.id
   // }
 
+
+
   ngOnInit(): void {
+
+
 
     this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
@@ -40,6 +47,7 @@ export class TweetsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+
     this.tweetsSubscription.unsubscribe();
   }
 

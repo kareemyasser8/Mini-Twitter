@@ -8,11 +8,11 @@
         <i class="bi bi-house"></i>
          <span class="page-link">Home</span>
       </li>
-      <li>
+      <li *ngIf="userIsAuthenticated">
         <i class="bi bi-person"></i>
         <span class="page-link">Profile</span>
       </li>
-      <li>
+      <li *ngIf="userIsAuthenticated">
         <i class="bi bi-bell"></i>
         <span class="page-link">Notifications</span>
       </li>

@@ -77,12 +77,13 @@ li {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  min-width: 100px;
+  /* min-width: 100px; */
+  width: max-content;
   gap: 10px;
 }
 
 .user-section {
-  /* width: 70%; */
+  width: max-content;
   font-weight: bold;
 }
 

@@ -19,9 +19,10 @@ import { TweetBodyComponent } from './tweet-body/tweet-body.component';
 import { TweetOptionsComponent } from './tweet-options/tweet-options.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { TweetWrapperComponent } from './tweet-wrapper/tweet-wrapper.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EditTweetComponent } from './edit-tweet/edit-tweet.component'
 import { AuthService } from './auth.service';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,9 @@ import { AuthService } from './auth.service';
     NgPipesModule,
 
   ],
-  providers: [TweetsService, AuthService],
+  providers: [TweetsService, AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

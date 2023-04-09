@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { TweetsService } from './../tweets.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Tweet } from '../tweet.model';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'search-bar',
@@ -12,23 +13,32 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   fetchedtweets: any[] = [];
   filteredTweets: any[]
-  tweetsSubscription: Subscription
-
-
   tweetsSubsciption: Subscription
 
   searching = false;
   focusOnList = false;
 
-  constructor(private tweetsService: TweetsService) {
+  userIsAuthenticated: boolean
+  authSubscription : Subscription;
+
+  constructor(private tweetsService: TweetsService, private authService: AuthService) {
 
     this.tweetsService.getTweets();
     this.tweetsSubsciption = this.tweetsService.getTweetsUpdateListener().subscribe({
       next: (tweets: Tweet[]) => {
         this.filteredTweets = this.fetchedtweets = tweets;
       }
-    }
-    )
+    })
+
+    this.authSubscription = this.authService.getAuthStatusListener().subscribe({
+      next: (value)=>{
+        this.userIsAuthenticated = value;
+      },
+      error: (err)=>{
+        console.log(err);
+      }
+    })
+
   }
 
 
@@ -39,9 +49,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tweetsSubsciption.unsubscribe();
+    this.authSubscription.unsubscribe();
   }
 
-  showAuthor(a){
+  showAuthor(a) {
     console.log(a);
   }
 

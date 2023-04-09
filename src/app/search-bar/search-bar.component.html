@@ -14,8 +14,11 @@
       </div>
     </div>
     <div class="username-logout-section">
-      <div class="user-section">
+      <div class="user-section" *ngIf="userIsAuthenticated">
         Kareem
+      </div>
+      <div class="user-section" *ngIf="!userIsAuthenticated">
+        guest User
       </div>
       <a class="logout" routerLink="">
         <i class="bi bi-power"></i>
