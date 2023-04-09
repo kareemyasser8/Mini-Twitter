@@ -3,6 +3,7 @@ import { TweetsService } from './../tweets.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Tweet } from '../tweet.model';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'search-bar',
@@ -21,7 +22,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   userIsAuthenticated: boolean
   authSubscription : Subscription;
 
-  constructor(private tweetsService: TweetsService, private authService: AuthService) {
+  constructor(private tweetsService: TweetsService, private authService: AuthService, private router: Router) {
 
     this.tweetsService.getTweets();
     this.tweetsSubsciption = this.tweetsService.getTweetsUpdateListener().subscribe({
@@ -29,7 +30,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         this.filteredTweets = this.fetchedtweets = tweets;
       }
     })
-
+    this.userIsAuthenticated = this.authService.getIsAuth();
     this.authSubscription = this.authService.getAuthStatusListener().subscribe({
       next: (value)=>{
         this.userIsAuthenticated = value;
@@ -41,6 +42,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   }
 
+  onLogOut(){
+    this.authService.logout();
+
+  }
 
   filter(query: string) {
     this.filteredTweets = (query) ?

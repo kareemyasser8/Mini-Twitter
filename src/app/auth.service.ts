@@ -10,8 +10,9 @@ import { Profile } from './profile.modal';
 })
 export class AuthService {
 
+  private isAuthenticated = false;
   private token: string
-  private authStatusListener = new Observable<any>();
+  private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {
 
@@ -19,6 +20,10 @@ export class AuthService {
 
   getToken() {
     return this.token;
+  }
+
+  getIsAuth(){
+    return this.isAuthenticated;
   }
 
   getAuthStatusListener(): Observable<boolean> {
@@ -46,12 +51,25 @@ export class AuthService {
         (response) => {
           const token = response.token
           this.token = token;
-          this.authStatusListener = of(true);
-          this.router.navigate(['home/feed']);
+          if (token) {
+            this.authStatusListener.next(true)
+            this.isAuthenticated = true;
+            this.router.navigate(['home/feed']);
+          }
           return of(response)
 
         }
       ))
+  }
+
+
+
+  logout() {
+    this.token = null;
+    this.isAuthenticated = false;
+    this.authStatusListener.next(false)
+    this.router.navigate(['welcome/login']);
+
   }
 
 }

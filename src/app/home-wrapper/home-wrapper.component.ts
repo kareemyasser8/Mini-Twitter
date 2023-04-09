@@ -22,13 +22,11 @@ export class HomeWrapperComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    this.userIsAuthenticated = this.authService.getIsAuth();
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(
       {
         next: (isAuthenticated) => {
           this.userIsAuthenticated = isAuthenticated;
-          // console.log(isAuthenticated);
-          // console.log("hey from home wrapper")
         },
         error: (err)=>{
           console.log(err);

@@ -20,9 +20,9 @@
       <div class="user-section" *ngIf="!userIsAuthenticated">
         Guest User
       </div>
-      <a class="logout" routerLink="">
+      <div class="logout" (click)="onLogOut()" >
         <i class="bi bi-power"></i>
-      </a>
+      </div>
     </div>
   </div>
 </div>
