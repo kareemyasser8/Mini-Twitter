@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome/login', pathMatch: 'full' },
@@ -22,6 +23,7 @@ const routes: Routes = [
     children:[
       {path: 'feed', component: HomeWrapperComponent},
       {path: ':author/:id', component: TweetWrapperComponent},
+      {path: 'profile', component: ProfilePageComponent},
     ]
   }
 

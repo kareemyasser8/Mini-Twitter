@@ -4,20 +4,20 @@
   </div>
   <div class="navbar-items-section">
     <ul class="navbar-items">
-      <li class ="active">
+      <li routerLinkActive="active" routerLink="/home/feed">
         <i class="bi bi-house"></i>
          <span class="page-link">Home</span>
       </li>
-      <li *ngIf="userIsAuthenticated">
+      <li routerLinkActive="active" *ngIf="userIsAuthenticated" routerLink="/home/profile">
         <i class="bi bi-person"></i>
         <span class="page-link">Profile</span>
       </li>
-      <li *ngIf="userIsAuthenticated">
+      <li routerLinkActive="active" *ngIf="userIsAuthenticated">
         <i class="bi bi-bell"></i>
         <span class="page-link">Notifications</span>
       </li>
-      <li>
-        <i class="bi bi-search"></i>
+      <li routerLinkActive="active">
+        <i  class="bi bi-search"></i>
         <span class="page-link">Search</span>
       </li>
     </ul>

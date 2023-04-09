@@ -56,11 +56,12 @@
 .navbar-items .active {
   color: #f1f4f7;
   font-weight: bold;
+  transition: none;
 }
 
 .navbar-items li:hover {
   color: #f1f4f7;
-  transition: 0.3s ease;
+  /* transition: 0.3s ease; */
   cursor: pointer;
 }
 

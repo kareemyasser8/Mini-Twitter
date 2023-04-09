@@ -1,0 +1,80 @@
+
+.tweet-container{
+  width: 100%;
+  background-image: url('../../assets/defaultProfileCover.jpg');
+  background-position: center;
+  background-blend-mode: multiply;
+  background-color: rgba(0,0,0,0.4);
+  background-size: cover;
+  height: 300px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tweets-count-section{
+  height: 60px;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tweets-count-section .tweets-count{
+  /* border: 1px solid red; */
+  width: max-content;
+  font-size: 1.3rem;
+  /* margin-left: 15px; */
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tweets-count span{
+  font-weight: bold;
+}
+
+.user-info{
+  /* background-color: rgba(0,0,0,0.2); */
+  width:70%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-info{
+  color: white;
+}
+
+.user-info .profile-picture{
+  width: 100px;
+  border: 6px solid white;
+  border-radius: 3px;
+  height: max-content;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.profile-picture img{
+  width: 100%;
+}
+
+.author-name{
+  font-size: 1.7rem;
+  font-weight: bold;
+}
+
+.user-name{
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .user-info .profile-picture{
+    width: 80px;
+  }
+}
