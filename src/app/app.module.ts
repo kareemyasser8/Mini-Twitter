@@ -25,6 +25,8 @@ import { TweetsService } from './tweets.service';
 import { TweetsComponent } from './tweets/tweets.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { ProfileCardComponent } from './profile-card/profile-card.component';
+import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
+import { NotificationCardComponent } from './notification-card/notification-card.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { ProfileCardComponent } from './profile-card/profile-card.component';
     EditTweetComponent,
     ProfilePageComponent,
     ProfileCardComponent,
+    NotificationsPageComponent,
+    NotificationCardComponent,
 
   ],
   imports: [

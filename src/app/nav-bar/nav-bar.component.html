@@ -1,5 +1,5 @@
 <div class="navbar">
-  <div class="miniTwitterLogoBar">
+  <div class="miniTwitterLogoBar" routerLink="/home/feed">
     <i class="bi bi-twitter"></i>
   </div>
   <div class="navbar-items-section">
@@ -12,11 +12,11 @@
         <i class="bi bi-person"></i>
         <span class="page-link">Profile</span>
       </li>
-      <li routerLinkActive="active" *ngIf="userIsAuthenticated">
+      <li routerLinkActive="active" *ngIf="userIsAuthenticated" routerLink="/home/notifications">
         <i class="bi bi-bell"></i>
         <span class="page-link">Notifications</span>
       </li>
-      <li routerLinkActive="active">
+      <li routerLinkActive="active" >
         <i  class="bi bi-search"></i>
         <span class="page-link">Search</span>
       </li>

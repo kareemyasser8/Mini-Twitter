@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome/login', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
       {path: 'feed', component: HomeWrapperComponent},
       {path: ':author/:id', component: TweetWrapperComponent},
       {path: 'profile', component: ProfilePageComponent},
+      {path: 'notifications', component: NotificationsPageComponent},
     ]
   }
 

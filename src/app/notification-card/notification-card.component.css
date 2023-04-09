@@ -1,0 +1,81 @@
+.notification{
+  width: 100%;
+  height: max-content;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(223, 222, 222);
+}
+
+.notification-body{
+  width:95%;
+  padding-top: 25px;
+  margin: auto;
+  display: flex;
+  cursor: pointer;
+  /* border: 1px solid red; */
+}
+
+.notification-type-icon{
+  /* border: 1px solid red; */
+  width: 60px;
+  height: 100%;
+  display: flex;
+  padding-top: 2px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.notification-type-icon i{
+  /* border: 1px solid red; */
+  /* margin-top: 13px; */
+  line-height: 1px;
+  font-size: 2.1rem;
+}
+
+.bi-heart-fill{
+  color: #E1306C;
+}
+
+.bi-reply-fill{
+  color: #7FBA00
+}
+
+.notification-details{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  /* background-color: red; */
+}
+
+.action-section span{
+    font-weight: bold;
+}
+
+.your-tweet{
+  color: rgb(161, 161, 161);
+}
+
+.small-profile-picture-section{
+  height: 40px;
+  display: flex;
+  width: 100%;
+  /* margin-top: 21px; */
+  /* border: 1px solid; */
+  gap: 0.6rem;
+}
+
+.small-profile-pic{
+  width: 35px;
+}
+
+.small-profile-pic img{
+  width: 100%;
+  border-radius: 50%;
+}
+
+.notification-time{
+  color: gray
+}
