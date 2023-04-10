@@ -9,6 +9,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome/login', pathMatch: 'full' },
@@ -24,8 +25,8 @@ const routes: Routes = [
     children:[
       {path: 'feed', component: HomeWrapperComponent},
       {path: ':author/:id', component: TweetWrapperComponent},
-      {path: 'profile', component: ProfilePageComponent},
-      {path: 'notifications', component: NotificationsPageComponent},
+      {path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard]},
+      {path: 'notifications', component: NotificationsPageComponent, canActivate: [AuthGuard]},
     ]
   }
 
@@ -33,6 +34,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }
