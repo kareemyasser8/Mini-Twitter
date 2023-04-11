@@ -15,7 +15,7 @@
     </div>
     <div class="username-logout-section">
       <div class="user-section" *ngIf="userIsAuthenticated">
-        Kareem
+        {{displayedUserName}}
       </div>
       <div class="user-section" *ngIf="!userIsAuthenticated">
         Guest User

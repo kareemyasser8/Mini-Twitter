@@ -13,9 +13,9 @@ import { AuthService } from '../auth.service';
 })
 export class TweetsComponent implements OnInit, OnDestroy {
 
-  tweets: Tweet[] = []
+  tweets: any[] = []
   tweetsSubscription: Subscription
-  desiredUser: string;
+
   isLoading: boolean = true;
   @Input() isDeleteLoading: boolean = false;
   @Input() userIsAuthenticated;
@@ -30,12 +30,7 @@ export class TweetsComponent implements OnInit, OnDestroy {
   //   return tweet.id
   // }
 
-
-
   ngOnInit(): void {
-
-
-
     this.tweetsService.getTweets();
     this.tweetsSubscription = this.tweetsService.getTweetsUpdateListener()
       .subscribe({

@@ -27,6 +27,8 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { ProfileCardComponent } from './profile-card/profile-card.component';
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 import { NotificationCardComponent } from './notification-card/notification-card.component';
+import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
+
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { NotificationCardComponent } from './notification-card/notification-card
     ProfileCardComponent,
     NotificationsPageComponent,
     NotificationCardComponent,
+    EmptyTweetsComponent,
 
   ],
   imports: [

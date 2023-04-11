@@ -2,6 +2,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Profile } from '../profile.modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,13 +12,15 @@ import { Profile } from '../profile.modal';
 export class SignUpComponent implements OnInit {
 
   submitted: boolean = false
+  isloading: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   register(profileData: NgForm) {
+    this.isloading = true;
     if (profileData.invalid) {
       return
     }
@@ -29,7 +32,11 @@ export class SignUpComponent implements OnInit {
       tweets: [],
       notifications: []
     }
-    this.authService.createUser(newUser)
+    this.authService.createUser(newUser).subscribe({
+      next: () => { this.isloading = false; this.router.navigate(['/welcome/login']) },
+      error: (err) => { console.log(err); this.isloading = false }
+    })
+
   }
 
 }

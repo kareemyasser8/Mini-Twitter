@@ -14,6 +14,8 @@ export class AuthService {
   private token: string
   private authStatusListener = new Subject<boolean>();
   private tokenTimer: NodeJS.Timer;
+  private userFullName: string
+  private userFullNameListener = new Subject<string>();
 
   constructor(private http: HttpClient, private router: Router) {
 
@@ -32,15 +34,9 @@ export class AuthService {
   }
 
   createUser(user: Profile) {
-    this.http.post("http://localhost:3000/api/user/signup", user).subscribe({
-      next: (response: any) => {
-        console.log(response.message)
-      },
-      error: (err: any) => {
-        console.log(err)
-      }
-    })
+    return this.http.post("http://localhost:3000/api/user/signup", user)
   }
+
 
   login(username: string, password: string) {
     let userdata = {
@@ -57,9 +53,12 @@ export class AuthService {
             this.setAuthTimer(expiresInDuration)
             this.authStatusListener.next(true)
             this.isAuthenticated = true;
+
+            this.decodeNameFromToken(token)
+
             const now = new Date();
             const expirationDate = new Date(now.getTime() + expiresInDuration * 1000)
-            console.log(expirationDate);
+            // console.log(expirationDate);
             this.saveAuthData(token, expirationDate)
             this.router.navigate(['home/feed']);
           }
@@ -69,8 +68,9 @@ export class AuthService {
       ))
   }
 
+
+
   private setAuthTimer(duration: number) {
-    console.log("Setting timer: "+ duration)
     this.tokenTimer = setTimeout(() => {
       this.logout();
     }, duration * 1000)
@@ -80,6 +80,8 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false)
+    this.userFullName = "";
+    this.userFullNameListener.next("");
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['welcome/login']);
@@ -104,18 +106,37 @@ export class AuthService {
     }
   }
 
+  decodeNameFromToken(token: string){
+    const payload = token.split('.')[1];
+    const decodedPayload = JSON.parse(atob(payload));
+    const author = decodedPayload.userFullName;
+    this.userFullName = author;
+    this.userFullNameListener.next(author);
+  }
+
+  getUserFullName(){
+    return this.userFullName;
+  }
+
+  getUserFullNameListener(): Observable<string>{
+    return this.userFullNameListener;
+  }
+
   private getAuthData(): void | { token: string, expirationDate: Date } {
     const token = localStorage.getItem("token")
     const expirationDate = localStorage.getItem("expiration")
     if (!token && !expirationDate) {
       return
-    } else {
+    }
+    else {
+      this.decodeNameFromToken(token)
       return {
         token: token,
         expirationDate: new Date(expirationDate)
       }
     }
   }
+
 
   private saveAuthData(token: string, expirationDate: Date) {
     localStorage.setItem('token', token)
@@ -126,5 +147,6 @@ export class AuthService {
     localStorage.removeItem("token")
     localStorage.removeItem("expiration")
   }
+
 
 }

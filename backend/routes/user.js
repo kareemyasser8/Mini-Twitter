@@ -48,7 +48,8 @@ router.post("/login", (req, res, next) => {
             return res.status(401).json({ message: "Auth Failed" })
           }
           const token = jwt.sign({
-            userame: fetchedUser.username,
+            username: fetchedUser.username,
+            userFullName: fetchedUser.fname + ' '+ fetchedUser.lname,
             userId: fetchedUser._id
           },
             'MySecretKey1234',

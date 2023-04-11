@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, merge, mergeMap, Observable, of, Subject } from 'rxjs';
 
 import { Tweet } from './tweet.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class TweetsService {
   private tweetsUpdated = new Subject<Tweet[]>()
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   //-----------------------------------------------------------------
 
@@ -39,6 +40,7 @@ export class TweetsService {
       }))
       .subscribe({
         next: (tweet) => {
+          // console.log(tweet);
           this.tweets = tweet
           this.tweetsUpdated.next([...this.tweets])
         }
@@ -98,7 +100,7 @@ export class TweetsService {
   addTweet(content: string): Observable<any> {
     const tweet: Tweet = {
       id: "",
-      author: 'Kareem Yasser',
+      author: this.authService.getUserFullName(),
       text: content,
       date: this.getTodayDate(),
       likes: 0,

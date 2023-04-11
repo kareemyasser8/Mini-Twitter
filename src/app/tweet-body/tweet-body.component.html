@@ -4,7 +4,7 @@
   </div>
   <div class="tweet-name-and-text">
     <div class="user-name">{{tweetBody.author}}</div>
-    <div class="tweet-text">{{tweetBody.text}}</div>
+    <div class="tweet-text" [innerHTML]="highlightedText">{{tweetBody.text}}</div>
   </div>
   <div class="tweet-time">
     <span> {{tweetBody.date | timeAgo}}</span>

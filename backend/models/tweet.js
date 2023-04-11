@@ -5,7 +5,12 @@ const tweetSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  author: {
+  creatorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+  author:{
     type: String,
     required: true
   },

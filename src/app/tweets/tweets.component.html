@@ -7,4 +7,6 @@
     <tweet-body [tweetBody]="tweet"></tweet-body>
     <tweet-options *ngIf="userIsAuthenticated" (deleteTweetClicked)="onDeleteTweetClicked($event)" [tweetBody]="tweet"></tweet-options>
   </div>
+
+  <empty-tweets *ngIf="tweets.length==0"></empty-tweets>
 </div>

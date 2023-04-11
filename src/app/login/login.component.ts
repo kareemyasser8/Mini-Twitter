@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(form.value.username, form.value.password).subscribe({
       next: (token) => {
         this.isloading = false;
-        console.log(token)
+        // console.log(token)
       },
       error: (err) => {
         console.log(err);

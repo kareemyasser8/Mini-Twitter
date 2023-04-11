@@ -104,7 +104,13 @@
     </div>
   </div>
 
-  <button type="submit" class="Login-btn">Create my account</button>
+  <button *ngIf="isloading == false" type="submit" class="Login-btn">Create my account</button>
+
+  <button *ngIf="isloading == true" class="btn btn-primary" class="Login-btn" type="button" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Loading...
+  </button>
+
 </form>
 
 <p>Already have an account ? <a routerLink="/welcome/login">Go to the login page</a>

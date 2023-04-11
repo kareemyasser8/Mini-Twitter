@@ -15,12 +15,14 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   fetchedtweets: any[] = [];
   filteredTweets: any[]
   tweetsSubsciption: Subscription
+  displayedUserName: string
 
   searching = false;
   focusOnList = false;
 
   userIsAuthenticated: boolean
-  authSubscription : Subscription;
+  authSubscription: Subscription;
+  fullNameSubscription: Subscription;
 
   constructor(private tweetsService: TweetsService, private authService: AuthService, private router: Router) {
 
@@ -31,18 +33,30 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       }
     })
     this.userIsAuthenticated = this.authService.getIsAuth();
+
     this.authSubscription = this.authService.getAuthStatusListener().subscribe({
-      next: (value)=>{
+      next: (value) => {
         this.userIsAuthenticated = value;
       },
-      error: (err)=>{
+      error: (err) => {
         console.log(err);
       }
     })
 
+
+    this.displayedUserName = this.authService.getUserFullName();
+
+    this.fullNameSubscription = this.authService.getUserFullNameListener().subscribe({
+      next: (value) => {
+        // console.log("the displayed name: ", value)
+      },
+      error: (err) => { console.log(err) }
+    })
+
   }
 
-  onLogOut(){
+
+  onLogOut() {
     this.authService.logout();
 
   }
@@ -55,6 +69,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tweetsSubsciption.unsubscribe();
     this.authSubscription.unsubscribe();
+    this.fullNameSubscription.unsubscribe();
   }
 
   showAuthor(a) {
@@ -63,6 +78,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+
+
+
+
   }
 
 

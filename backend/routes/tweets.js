@@ -8,14 +8,13 @@ const checkAuth = require("../middleware/check-auth")
 router.post("", checkAuth,(req, res, next) => {
   const tweet = new Tweet({
     text: req.body.text,
-    author: req.body.author,
+    creatorId: req.userData.userId,
+    author: req.userData.userFullName,
     date: req.body.date,
     likes: req.body.likes,
     comments: req.body.comments,
     replies: req.body.replies
   })
-
-  console.log(tweet);
   tweet.save().then(
     created => {
       res.status(201).json({
