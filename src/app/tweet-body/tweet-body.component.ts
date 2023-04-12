@@ -17,7 +17,9 @@ export class TweetBodyComponent implements OnInit {
     date: undefined,
     likes: 0,
     comments: 0,
-    replies: []
+    replies: [],
+    authorId: '',
+    username: ''
   }
 
   // ngOnChanges(changes: SimpleChanges) {

@@ -16,7 +16,9 @@ export class CreateReplyComponent {
     date: undefined,
     likes: 0,
     comments: 0,
-    replies: []
+    replies: [],
+    authorId: '',
+    username: ''
   }
 
   @Output() close = new EventEmitter();

@@ -16,9 +16,15 @@ export class AuthService {
   private tokenTimer: NodeJS.Timer;
   private userFullName: string
   private userFullNameListener = new Subject<string>();
+  private username: string
+  private usernameListner = new Subject<string>();
 
   constructor(private http: HttpClient, private router: Router) {
 
+  }
+
+  fetchProfile(username: string){
+    return this.http.get("http://localhost:3000/api/user/" + username)
   }
 
   getToken() {
@@ -82,6 +88,8 @@ export class AuthService {
     this.authStatusListener.next(false)
     this.userFullName = "";
     this.userFullNameListener.next("");
+    this.username = "";
+    this.usernameListner.next("");
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['welcome/login']);
@@ -110,9 +118,23 @@ export class AuthService {
     const payload = token.split('.')[1];
     const decodedPayload = JSON.parse(atob(payload));
     const author = decodedPayload.userFullName;
+    const username = decodedPayload.username;
+
+    this.username = username;
+    this.usernameListner.next(username);
+
     this.userFullName = author;
     this.userFullNameListener.next(author);
   }
+
+  getUsername(){
+    return this.username;
+  }
+
+  getUsernameListner(): Observable<string>{
+    return this.usernameListner;
+  }
+
 
   getUserFullName(){
     return this.userFullName;

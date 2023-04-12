@@ -10,6 +10,10 @@ const tweetSchema = mongoose.Schema({
     ref: "User",
     required: true
   },
+  username: {
+    type: String,
+    required: true
+  },
   author:{
     type: String,
     required: true

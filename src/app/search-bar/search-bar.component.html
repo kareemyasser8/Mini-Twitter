@@ -13,9 +13,10 @@
         </div>
       </div>
     </div>
+    <!--  -->
     <div class="username-logout-section">
-      <div class="user-section" *ngIf="userIsAuthenticated">
-        {{displayedUserName}}
+      <div class="user-section" *ngIf="userIsAuthenticated" [routerLink]="['/home/profile/', username]" >
+        {{displayedFullUserName}}
       </div>
       <div class="user-section" *ngIf="!userIsAuthenticated">
         Guest User

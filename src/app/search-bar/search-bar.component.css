@@ -1,7 +1,7 @@
 .search-panel-container-full{
   display: flex;
   flex-direction: row;
-  width: fill-available;
+  width: stretch;
   height: 61px;
   position: fixed;
   top: 0;
@@ -85,6 +85,7 @@ li {
 .user-section {
   width: max-content;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .logout {

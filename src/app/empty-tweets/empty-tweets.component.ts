@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'empty-tweets',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./empty-tweets.component.css']
 })
 export class EmptyTweetsComponent implements OnInit {
+
+  @Input() emptyTweetsOfUser:boolean = false;
 
   constructor() { }
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, merge, mergeMap, Observable, of, Subject } from 'rxjs';
+import { map, merge, mergeMap, Observable, of, Subject, tap } from 'rxjs';
 
 import { Tweet } from './tweet.model';
 import { AuthService } from './auth.service';
@@ -10,11 +10,11 @@ import { AuthService } from './auth.service';
 })
 export class TweetsService {
 
-  private tweets: Tweet[] = [
+  private allTweets: Tweet[] = [];
+  private allTweetsUpdated = new Subject<Tweet[]>()
 
-  ];
-
-  private tweetsUpdated = new Subject<Tweet[]>()
+  private allUserTweets: Tweet[] = []
+  private allUserTweetsUpdated = new Subject<Tweet[]>()
 
 
   constructor(private http: HttpClient, private authService: AuthService) { }
@@ -30,6 +30,8 @@ export class TweetsService {
           return {
             text: tweet.text,
             author: tweet.author,
+            creatorId: tweet.creatorId,
+            username: tweet.username,
             date: new Date(tweet.date),
             likes: tweet.likes,
             comments: tweet.comments,
@@ -41,12 +43,44 @@ export class TweetsService {
       .subscribe({
         next: (tweet) => {
           // console.log(tweet);
-          this.tweets = tweet
-          this.tweetsUpdated.next([...this.tweets])
+          this.allTweets = tweet
+          this.allTweetsUpdated.next([...this.allTweets])
         }
       })
-    return [...this.tweets]
+    return [...this.allTweets]
   }
+
+  getTweetsOfProfile(username: string): Tweet[] {
+    this.http.get<{ message: string, tweets: any }>('http://localhost:3000/api/tweets/' + username)
+      .pipe(map((tweetData) => {
+        return tweetData.tweets.map(tweet => {
+          return {
+            text: tweet.text,
+            author: tweet.author,
+            creatorId: tweet.creatorId,
+            username: tweet.username,
+            date: new Date(tweet.date),
+            likes: tweet.likes,
+            comments: tweet.comments,
+            replies: tweet.replies,
+            id: tweet._id
+          }
+        })
+      }))
+      .subscribe({
+        next: (tweet) => {
+          // console.log(tweet);
+          this.allUserTweets = tweet
+          this.allUserTweetsUpdated.next([...this.allUserTweets])
+        }
+      })
+    return [...this.allUserTweets]
+  }
+
+  getAllUserTweetsUpdateListener(): Observable<Tweet[]> {
+    return this.allUserTweetsUpdated.asObservable();
+  }
+
 
   updateTweet(tweetToEdit: Tweet, newTweetText: string): Observable<any> {
     const id = tweetToEdit.id;
@@ -59,10 +93,10 @@ export class TweetsService {
       .pipe(mergeMap(
         (response) => {
           // console.log(result.message)
-          this.tweets.map(t => {
+          this.allTweets.map(t => {
             if (t.id === id) t.text = newTweetText;
           })
-          this.tweetsUpdated.next([...this.tweets])
+          this.allTweetsUpdated.next([...this.allTweets])
           return of(response)
         }))
   }
@@ -71,16 +105,16 @@ export class TweetsService {
     return this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
       .pipe(mergeMap(
         (response) => {
-          const tweetsUpdated = this.tweets.filter(t => t.id !== tweetId);
-          this.tweets = tweetsUpdated;
-          this.tweetsUpdated.next([...this.tweets]);
+          const tweetsUpdated = this.allTweets.filter(t => t.id !== tweetId);
+          this.allTweets = tweetsUpdated;
+          this.allTweetsUpdated.next([...this.allTweets]);
           return of(response);
         }
       ));
   }
 
   getTweetsUpdateListener(): Observable<Tweet[]> {
-    return this.tweetsUpdated.asObservable();
+    return this.allTweetsUpdated.asObservable();
   }
 
   getTodayDate(): Date {
@@ -105,15 +139,17 @@ export class TweetsService {
       date: this.getTodayDate(),
       likes: 0,
       comments: 0,
-      replies: []
+      replies: [],
+      authorId: "",
+      username: this.authService.getUsername()
     }
 
     return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
       .pipe(
         mergeMap((responseData) => {
           tweet.id = responseData.tweetId
-          this.tweets.push(tweet);
-          this.tweetsUpdated.next([...this.tweets])
+          this.allTweets.push(tweet);
+          this.allTweetsUpdated.next([...this.allTweets])
           return of(responseData);
         })
       );
@@ -125,12 +161,14 @@ export class TweetsService {
     // let lastId = this.getLastId(tweet.replies) + 1;
     const reply: Tweet = {
       id: null,
-      author: 'Kareem Yasser',
+      author: this.authService.getUserFullName(),
       text: content,
       date: this.getTodayDate(),
       likes: 0,
       comments: 0,
-      replies: []
+      replies: [],
+      authorId: '',
+      username: ''
     }
 
     tweet.replies.push(reply);

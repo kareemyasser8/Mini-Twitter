@@ -1,8 +1,27 @@
 <div class="profile-container">
   <h3 class="page-title">Profile</h3>
-  <profile-card></profile-card>
-  <!-- <empty-tweets></empty-tweets> -->
-  <tweets></tweets>
+  <profile-card [user$]="user$" [tweets$]="UserTweets$"></profile-card>
+  <div *ngIf="(UserTweets$ | async)?.length == 0">
+    <empty-tweets [emptyTweetsOfUser]=true></empty-tweets>
+  </div>
+
+
+  <tweets [tweetsToDisplay$]="UserTweets$"></tweets>
+
+
+  <!-- <div *ngIf="(UserTweets$ | async) as tweets; else noTweets">
+    <tweets [tweetsToDisplay$]="UserTweets$"></tweets>
+
+    <div *ngIf="tweets?.length === 0; else noTweets">
+      <empty-tweets [emptyTweetsOfUser]="true"></empty-tweets>
+    </div>
+
+  </div>
+  <ng-template #noTweets>
+    <div>No tweets found</div>
+  </ng-template> -->
+
+
+
   <div class="separator"></div>
 </div>
-

@@ -1,22 +1,26 @@
-<!-- <div class="text-center">
-  <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div>
-</div> -->
+<div *ngIf="!(user$ | async)">
+  <div class="text-center">
+    <div class="spinner-border" style="width: 3rem; height: 3rem; color: #1DA1F2;" role="status"></div>
+  </div>
+</div>
 
-<div>
+<div *ngIf="(user$ | async) as user">
   <div class="tweet-container">
     <div class="user-info">
       <div class="profile-picture">
         <img src="../../assets/defaultProfilePicture.png" alt="">
       </div>
       <div class="author-name">
-        Kareem Yasser
+        {{user?.profile.fname + ' '+ user?.profile.lname}}
       </div>
       <div class="user-name">
-        @ky8designs
+       {{'@'+ user?.profile.username}}
       </div>
     </div>
-    <div class="tweets-count-section">
-        <div class="tweets-count"> <span>200</span>Tweets</div>
-    </div>
+ <div class="tweets-count-section">
+  <div class="tweets-count">
+    <span>{{(tweets$ | async)?.length || '0'}}</span> Tweets
+  </div>
+</div>
   </div>
 </div>

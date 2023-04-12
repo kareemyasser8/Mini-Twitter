@@ -21,12 +21,15 @@ const routes: Routes = [
       { path: 'signUp', component: SignUpComponent },
     ]
   },
-  { path: 'home', component: HomeComponent,
-    children:[
-      {path: 'feed', component: HomeWrapperComponent},
-      {path: ':author/:id', component: TweetWrapperComponent},
-      {path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard]},
-      {path: 'notifications', component: NotificationsPageComponent, canActivate: [AuthGuard]},
+  {
+    path: 'home', component: HomeComponent,
+    children: [
+      { path: 'feed', component: HomeWrapperComponent },
+      { path: 'profile/:username', component: ProfilePageComponent },
+      { path: ':author/:id', component: TweetWrapperComponent },
+
+      // { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
+      { path: 'notifications', component: NotificationsPageComponent, canActivate: [AuthGuard] },
     ]
   }
 

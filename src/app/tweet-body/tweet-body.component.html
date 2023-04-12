@@ -2,8 +2,9 @@
   <div class="user-profile-picture">
     <img src="../../assets/defaultProfilePicture.png" alt="">
   </div>
+
   <div class="tweet-name-and-text">
-    <div class="user-name">{{tweetBody.author}}</div>
+    <div class="user-name" [routerLink]="['/home/profile/', tweetBody.username]">{{tweetBody.author}}</div>
     <div class="tweet-text" [innerHTML]="highlightedText">{{tweetBody.text}}</div>
   </div>
   <div class="tweet-time">

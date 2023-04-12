@@ -9,6 +9,7 @@ import { AuthService } from '../auth.service';
 export class NavBarComponent implements OnInit,OnDestroy {
 
   userIsAuthenticated: boolean;
+  username: string
 
   constructor(private authService: AuthService) { }
 
@@ -22,6 +23,8 @@ export class NavBarComponent implements OnInit,OnDestroy {
         console.log(err);
       }
     })
+
+    this.username = this.authService.getUsername();
   }
 
   ngOnDestroy(): void {

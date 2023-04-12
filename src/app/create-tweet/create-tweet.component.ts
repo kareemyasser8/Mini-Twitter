@@ -13,7 +13,7 @@ import { NgForm } from '@angular/forms';
 
 export class CreateTweetComponent implements OnInit {
 
-  maxTweetLength = 150;
+  maxTweetLength = 300;
   tweetLength = 0;
   tweetplaceHolder = "What is happening ?"
   tweetInputEditingText = ""

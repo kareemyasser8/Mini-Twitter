@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { TweetsService } from '../tweets.service';
 
 @Component({
   selector: 'home-wrapper',
@@ -12,9 +13,10 @@ export class HomeWrapperComponent implements OnInit, OnDestroy {
   storedTweets = [];
   userIsAuthenticated: boolean;
   private authListenerSubs: Subscription
+  allTweets$: Observable<any[]>
 
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private tweetsService: TweetsService) { }
 
 
   onTweetAdded(tweet) {
@@ -33,6 +35,8 @@ export class HomeWrapperComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.tweetsService.getTweets();
+    this.allTweets$ =this.tweetsService.getTweetsUpdateListener();
   }
 
   ngOnDestroy(): void {

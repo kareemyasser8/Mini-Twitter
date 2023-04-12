@@ -5,10 +5,11 @@ const Tweet = require("../models/tweet")
 const checkAuth = require("../middleware/check-auth")
 
 
-router.post("", checkAuth,(req, res, next) => {
+router.post("", checkAuth, (req, res, next) => {
   const tweet = new Tweet({
     text: req.body.text,
     creatorId: req.userData.userId,
+    username: req.userData.username,
     author: req.userData.userFullName,
     date: req.body.date,
     likes: req.body.likes,
@@ -44,7 +45,7 @@ router.delete("/:id", checkAuth, (req, res, next) => {
       res.status(200).json({ message: 'tweet deleted' })
     }
   ).catch(
-    (err)=> console.log(err)
+    (err) => console.log(err)
   )
 
 })
@@ -59,6 +60,23 @@ router.get('', (req, res, next) => {
     }
   )
 })
+
+
+router.get('/:username', (req, res, next) => {
+  Tweet.find({
+    username: req.params.username
+  }).then(
+    documents => {
+      res.status(200).json({
+        message: 'Tweets fetched successfully!',
+        tweets: documents
+      })
+    }
+  ).catch(
+    (err)=> res.status(404).json({message: err})
+  )
+})
+
 
 router.get('/:id', (req, res, next) => {
   Tweet.findById(req.params.id).then(

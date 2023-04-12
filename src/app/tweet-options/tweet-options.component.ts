@@ -16,7 +16,9 @@ export class TweetOptionsComponent implements OnInit {
     date: undefined,
     likes: 0,
     comments: 0,
-    replies: []
+    replies: [],
+    authorId: '',
+    username: ''
   }
 
   likeClicked: boolean = false;

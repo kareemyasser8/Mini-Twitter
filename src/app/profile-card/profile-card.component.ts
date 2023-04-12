@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'profile-card',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileCardComponent implements OnInit {
 
-  constructor() { }
+  @Input() user$: Observable<any>
+  @Input() tweets$: Observable<any>
+
+  constructor() {
+
+   }
+
+
 
   ngOnInit(): void {
   }

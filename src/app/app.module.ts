@@ -29,7 +29,6 @@ import { NotificationsPageComponent } from './notifications-page/notifications-p
 import { NotificationCardComponent } from './notification-card/notification-card.component';
 import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

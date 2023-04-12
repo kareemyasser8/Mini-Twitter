@@ -1,9 +1,12 @@
 export interface Tweet{
-  id: string,
-  author: string,
   text: string,
+  author: string,
+  authorId: string,
+  username: string,
   date: Date,
   likes: number,
   comments: number,
-  replies: Tweet[]
+  replies: Tweet[],
+  id: string
 }
+

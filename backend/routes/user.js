@@ -5,6 +5,22 @@ const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
 
+
+router.get("/:username",(req,res,next)=>{
+  User.findOne({username: req.params.username}).then(
+    (profile)=>{
+      res.status(200).json({
+        profile: profile
+      })
+    }
+  ).catch(
+    (err)=>{
+      res.status(404).send("User is not found");
+    }
+  )
+})
+
+
 router.post("/signup", (req, res, next) => {
 
   bcrypt.hash(req.body.password, 10).then(

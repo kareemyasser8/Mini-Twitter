@@ -15,7 +15,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   fetchedtweets: any[] = [];
   filteredTweets: any[]
   tweetsSubsciption: Subscription
-  displayedUserName: string
+  displayedFullUserName: string
+  username: string;
 
   searching = false;
   focusOnList = false;
@@ -43,8 +44,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       }
     })
 
-
-    this.displayedUserName = this.authService.getUserFullName();
+    this.username = this.authService.getUsername();
+    this.displayedFullUserName = this.authService.getUserFullName();
 
     this.fullNameSubscription = this.authService.getUserFullNameListener().subscribe({
       next: (value) => {
