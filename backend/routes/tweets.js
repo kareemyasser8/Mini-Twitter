@@ -32,9 +32,14 @@ router.patch("/:id", checkAuth, (req, res, next) => {
     _id: req.body.id,
     text: req.body.text
   }
-  Tweet.updateOne({ _id: req.params.id }, { $set: update }).then(
+  Tweet.updateOne({ _id: req.params.id, creatorId: req.userData.userId }, { $set: update }).then(
     (result) => {
-      res.status(200).json({ message: 'tweet edited successfully' })
+      if(result.modifiedCount > 0){
+        res.status(200).json({ message: 'tweet edited successfully' })
+      }else{
+        res.status(401).json({message: 'Not authorized!'})
+      }
+
     }
   ).catch((err) => { console.log(err); res.status(500).json({ error: err }) })
 })

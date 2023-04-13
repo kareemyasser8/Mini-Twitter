@@ -13,6 +13,7 @@ export class SignUpComponent implements OnInit {
 
   submitted: boolean = false
   isloading: boolean = false;
+  error: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -34,7 +35,7 @@ export class SignUpComponent implements OnInit {
     }
     this.authService.createUser(newUser).subscribe({
       next: () => { this.isloading = false; this.router.navigate(['/welcome/login']) },
-      error: (err) => { console.log(err); this.isloading = false }
+      error: (err) => { console.log(err.message); this.isloading = false }
     })
 
   }
