@@ -12,6 +12,7 @@ export class TweetsComponent {
   @Input() tweetsToDisplay$: Observable<Tweet[]>
   @Input() isDeleteLoading: boolean = false;
   @Input() userIsAuthenticated;
+  @Input() username;
 
   constructor() {
 

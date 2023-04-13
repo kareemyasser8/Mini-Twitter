@@ -12,6 +12,8 @@ export class HomeWrapperComponent implements OnInit, OnDestroy {
 
   storedTweets = [];
   userIsAuthenticated: boolean;
+  username: string;
+
   private authListenerSubs: Subscription
   allTweets$: Observable<any[]>
 
@@ -25,6 +27,7 @@ export class HomeWrapperComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
+    this.username = this.authService.getUsername();
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(
       {
         next: (isAuthenticated) => {

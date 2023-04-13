@@ -27,6 +27,10 @@ export class TweetOptionsComponent implements OnInit {
   editTweetClicked: boolean = false;
   isDeleteLoading: boolean = false;
 
+
+  @Input() username;
+  @Input() userIsAuthenticated;
+
   @Output() deleteTweetClicked = new EventEmitter<boolean>();
 
   constructor(private tweetService : TweetsService) {

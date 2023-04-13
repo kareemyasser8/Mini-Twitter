@@ -45,9 +45,15 @@ router.patch("/:id", checkAuth, (req, res, next) => {
 })
 
 router.delete("/:id", checkAuth, (req, res, next) => {
-  Tweet.deleteOne({ _id: req.params.id }).then(
+  Tweet.deleteOne({ _id: req.params.id, creatorId: req.userData.userId}).then(
     (result) => {
-      res.status(200).json({ message: 'tweet deleted' })
+      console.log(result)
+      if(result.deletedCount > 0){
+        res.status(200).json({ message: 'tweet deleted' })
+      }else{
+        res.status(401).json({message: 'Not authorized!'})
+      }
+
     }
   ).catch(
     (err) => console.log(err)

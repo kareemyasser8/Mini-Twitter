@@ -5,7 +5,11 @@
     <empty-tweets [emptyTweetsOfUser]=true></empty-tweets>
   </div>
 
-  <tweets [tweetsToDisplay$]="UserTweets$" [userIsAuthenticated]="userIsAuthenticated"></tweets>
+  <tweets
+    [tweetsToDisplay$]="UserTweets$"
+    [userIsAuthenticated]="userIsAuthenticated"
+    [username]="currentAccountUsername">
+  </tweets>
 
   <div class="separator"></div>
 </div>

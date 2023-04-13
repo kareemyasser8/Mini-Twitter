@@ -17,6 +17,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   authListenerSubscription: Subscription;
 
   username: string;
+  currentAccountUsername: string;
   user$: Observable<any>;
   UserTweets$: Observable<Tweet[]>;
   userIsAuthenticated: boolean;
@@ -41,6 +42,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           this.user$ = of(result)
           this.userIsAuthenticated = this.authService.getIsAuth();
           this.authListenerSubscription = this.authService.getAuthStatusListener().subscribe()
+          this.currentAccountUsername = this.authService.getUsername();
+          console.log(this.currentAccountUsername)
 
           this.tweetService.getTweetsOfProfile(this.username);
           this.UserTweets$ = this.tweetService.getAllUserTweetsUpdateListener()

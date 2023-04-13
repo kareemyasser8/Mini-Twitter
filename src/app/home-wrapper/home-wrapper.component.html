@@ -6,6 +6,10 @@
     <div class="spinner-border" style="width: 3rem; height: 3rem; color:#1DA1F2" role="status"></div>
   </div>
 
-  <tweets [tweetsToDisplay$]="allTweets$" [userIsAuthenticated]="userIsAuthenticated"></tweets>
+  <tweets
+      [tweetsToDisplay$]="allTweets$"
+      [userIsAuthenticated]="userIsAuthenticated"
+      [username]="username">
+  </tweets>
   <div class="separator"></div>
 </div>

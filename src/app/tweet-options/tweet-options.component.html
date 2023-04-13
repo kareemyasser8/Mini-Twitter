@@ -1,5 +1,5 @@
 <div class="tweet-options">
-  <div class="tweet-like-comment">
+  <div class="tweet-like-comment" *ngIf="userIsAuthenticated">
 
     <div class="comment" (click)="clickComment()">
       <i class="bi bi-chat"></i>
@@ -11,10 +11,24 @@
       <span>{{tweetBody.likes}}</span>
     </div>
 
+  </div>
+
+
+  <div class="tweet-like-comment" *ngIf="!userIsAuthenticated">
+
+    <div class="comment">
+      <i class="bi bi-chat"></i>
+      <span>{{tweetBody.comments}}</span>
+    </div>
+
+    <div class="like">
+      <i class="bi" [ngClass]="{'bi-heart': likeClicked== false,'bi-heart-fill':likeClicked==true}"></i>
+      <span>{{tweetBody.likes}}</span>
+    </div>
 
   </div>
 
-  <div class="edit-delete-options-container">
+  <div class="edit-delete-options-container" *ngIf="username === tweetBody.username">
 
     <div class="menu" *ngIf="threedotsClicked" #menu>
       <li (click)="clickEditTweet()"> <i class="bi bi-pencil-square"></i> edit Tweet</li>

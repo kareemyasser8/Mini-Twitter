@@ -7,7 +7,7 @@
 
   <!-- <div>{{tweet}}</div> -->
   <tweet-body [tweetBody]="tweet"></tweet-body>
-  <tweet-options *ngIf="userIsAuthenticated" (deleteTweetClicked)="onDeleteTweetClicked($event)"
-    [tweetBody]="tweet"></tweet-options>
+  <tweet-options [userIsAuthenticated]="userIsAuthenticated" (deleteTweetClicked)="onDeleteTweetClicked($event)"
+    [tweetBody]="tweet"  [username]="username"></tweet-options>
 
 </div>

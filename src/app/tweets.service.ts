@@ -92,10 +92,16 @@ export class TweetsService {
     return this.http.patch('http://localhost:3000/api/tweets/' + id, update)
       .pipe(mergeMap(
         (response) => {
-          // console.log(result.message)
           this.allTweets.map(t => {
             if (t.id === id) t.text = newTweetText;
           })
+
+          this.allUserTweets.map(t => {
+            if (t.id === id) t.text = newTweetText;
+          })
+
+          this.allUserTweetsUpdated.next([...this.allUserTweets])
+
           this.allTweetsUpdated.next([...this.allTweets])
           return of(response)
         }))
@@ -108,6 +114,11 @@ export class TweetsService {
           const tweetsUpdated = this.allTweets.filter(t => t.id !== tweetId);
           this.allTweets = tweetsUpdated;
           this.allTweetsUpdated.next([...this.allTweets]);
+
+          const tweetsUpdatedForUser = this.allUserTweets.filter(t => t.id !== tweetId);
+          this.allUserTweets = tweetsUpdatedForUser;
+          this.allUserTweetsUpdated.next([...this.allUserTweets]);
+
           return of(response);
         }
       ));
