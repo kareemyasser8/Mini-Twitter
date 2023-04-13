@@ -43,7 +43,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           this.userIsAuthenticated = this.authService.getIsAuth();
           this.authListenerSubscription = this.authService.getAuthStatusListener().subscribe()
           this.currentAccountUsername = this.authService.getUsername();
-          console.log(this.currentAccountUsername)
+
 
           this.tweetService.getTweetsOfProfile(this.username);
           this.UserTweets$ = this.tweetService.getAllUserTweetsUpdateListener()
