@@ -5,23 +5,7 @@
     <empty-tweets [emptyTweetsOfUser]=true></empty-tweets>
   </div>
 
-
-  <tweets [tweetsToDisplay$]="UserTweets$"></tweets>
-
-
-  <!-- <div *ngIf="(UserTweets$ | async) as tweets; else noTweets">
-    <tweets [tweetsToDisplay$]="UserTweets$"></tweets>
-
-    <div *ngIf="tweets?.length === 0; else noTweets">
-      <empty-tweets [emptyTweetsOfUser]="true"></empty-tweets>
-    </div>
-
-  </div>
-  <ng-template #noTweets>
-    <div>No tweets found</div>
-  </ng-template> -->
-
-
+  <tweets [tweetsToDisplay$]="UserTweets$" [userIsAuthenticated]="userIsAuthenticated"></tweets>
 
   <div class="separator"></div>
 </div>
