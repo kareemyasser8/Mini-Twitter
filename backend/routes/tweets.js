@@ -59,14 +59,11 @@ router.patch("/:id/like", checkAuth, (req, res, next) => {
       if (!tweet) {
         return res.status(404).json({ message: "Tweet not found" });
       }
-      if (tweet.likedBy.includes(username)) {
-        return res
-          .status(400)
-          .json({ message: "Tweet already liked by user" });
+      if (!tweet.likedBy.includes(username)) {
+        tweet.likedBy.push(username);
+        tweet.likes++;
+        return tweet.save();
       }
-      tweet.likedBy.push(username);
-      tweet.likes++;
-      return tweet.save();
     })
     .then((updatedTweet) => {
       res.status(200).json({
@@ -80,6 +77,44 @@ router.patch("/:id/like", checkAuth, (req, res, next) => {
     .catch((error) => {
       console.log(error);
       res.status(500).json({ message: "Failed to like tweet" });
+    });
+});
+
+//For unliking a Tweet ----------------------------------------------------------------------
+
+
+router.patch("/:id/unlike", checkAuth, (req, res, next) => {
+  const tweetId = req.params.id;
+  const username = req.userData.username;
+
+  Tweet.findById(tweetId)
+    .then((tweet) => {
+      if (!tweet) {
+        return res.status(404).json({ message: "Tweet not found" });
+      }
+      if (tweet.likedBy.includes(username)) {
+        const indexToRemove = tweet.likedBy.indexOf(username);
+
+        if (indexToRemove !== -1) {
+          tweet.likedBy.splice(indexToRemove, 1); // remove 1 element at the index
+        }
+        tweet.likes--;
+        return tweet.save();
+      }
+
+    })
+    .then((updatedTweet) => {
+      res.status(200).json({
+        message: "Tweet unliked successfully",
+        tweet: {
+          ...updatedTweet._doc,
+          id: updatedTweet._id,
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: "Failed to unlike tweet" });
     });
 });
 

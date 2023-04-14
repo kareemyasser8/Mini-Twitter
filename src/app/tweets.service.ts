@@ -141,6 +141,11 @@ export class TweetsService {
     return this.http.patch(url, {});
   }
 
+  unlikeTweet(tweetId: string) {
+    const url = `http://localhost:3000/api/tweets/${tweetId}/unlike`;
+    return this.http.patch(url, {});
+  }
+
 
   addTweet(content: string): Observable<any> {
     const tweet: Tweet = {

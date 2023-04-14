@@ -33,6 +33,7 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
   isDeleteLoading: boolean = false;
 
   likeTweetSubscription: Subscription;
+  unlikeTweetSubscription: Subscription;
 
   @Input() username;
   @Input() userIsAuthenticated;
@@ -45,6 +46,10 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if(this.likeTweetSubscription){
       this.likeTweetSubscription.unsubscribe();
+    }
+
+    if(this.unlikeTweetSubscription){
+      this.unlikeTweetSubscription.unsubscribe();
     }
   }
 
@@ -105,6 +110,19 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
     } else {
       this.likeClicked = false
       this.tweetBody.likes -= 1;
+
+      this.unlikeTweetSubscription = this.tweetService.unlikeTweet(this.tweetBody.id)
+      .subscribe(
+          {
+            next: (result)=>{console.log(result)},
+            error: (err)=>{
+              console.log(err);
+              this.likeClicked = true;
+              this.tweetBody.likes += 1;
+            }
+          }
+        )
+
     }
   }
 
