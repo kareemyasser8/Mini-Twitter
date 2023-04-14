@@ -50,26 +50,38 @@ router.patch("/:id", checkAuth, (req, res, next) => {
 
 
 //for Liking Tweet ---------------------------------------------------
-router.post("/:id", checkAuth, (req,res,next)=>{
+router.patch("/:id/like", checkAuth, (req, res, next) => {
   const tweetId = req.params.id;
-  Tweet.findById(tweetId).then(
-    (tweet)=>{
-      if(!tweet){
-        res.status(404).json({message: "Tweet not found"})
+  const username = req.userData.username;
+
+  Tweet.findById(tweetId)
+    .then((tweet) => {
+      if (!tweet) {
+        return res.status(404).json({ message: "Tweet not found" });
       }
+      if (tweet.likedBy.includes(username)) {
+        return res
+          .status(400)
+          .json({ message: "Tweet already liked by user" });
+      }
+      tweet.likedBy.push(username);
       tweet.likes++;
       return tweet.save();
-    }
-  ).then(
-    (updateTweet)=>{
-      res.status(200).json({message: 'Tweet liked successfully!!', tweet: updatedTweet})
-    }
-  ).catch(
-    error =>{
-      res.status(500).json({message: 'Failed to like tweet'})
-    }
-  )
-})
+    })
+    .then((updatedTweet) => {
+      res.status(200).json({
+        message: "Tweet liked successfully",
+        tweet: {
+          ...updatedTweet._doc,
+          id: updatedTweet._id,
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: "Failed to like tweet" });
+    });
+});
 
 
 //For deleting a tweet ----------------------------------------------------------------------
@@ -121,16 +133,16 @@ router.get('/:username', (req, res, next) => {
 })
 
 
-router.get('/:id', (req, res, next) => {
-  Tweet.findById(req.params.id).then(
-    document => {
-      res.status(200).json({
-        message: 'Tweets fetched successfully!',
-        tweets: document
-      })
-    }
-  )
-})
+// router.get('/:id', (req, res, next) => {
+//   Tweet.findById(req.params.id).then(
+//     document => {
+//       res.status(200).json({
+//         message: 'Tweets fetched successfully!',
+//         tweets: document
+//       })
+//     }
+//   )
+// })
 
 
 module.exports = router;

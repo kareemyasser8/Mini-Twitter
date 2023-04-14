@@ -18,6 +18,10 @@ export class TweetsComponent {
 
   }
 
+  trackById(index: number, tweet: Tweet) {
+    return tweet.id;
+  }
+
   onDeleteTweetClicked(isLoading: boolean) {
     this.isDeleteLoading = isLoading;
   }

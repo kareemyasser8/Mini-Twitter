@@ -17,7 +17,9 @@ export class EditTweetComponent implements OnInit {
     comments: 0,
     replies: [],
     authorId: '',
-    username: ''
+    username: '',
+    likedBy: [],
+    commentedBy: []
   }
 
   @Output() close = new EventEmitter();

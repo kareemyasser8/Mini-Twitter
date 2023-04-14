@@ -18,6 +18,7 @@ export class AuthService {
   private userFullNameListener = new Subject<string>();
   private username: string
   private usernameListner = new Subject<string>();
+  private userId: string;
 
   constructor(private http: HttpClient, private router: Router) {
 
@@ -90,6 +91,7 @@ export class AuthService {
     this.userFullNameListener.next("");
     this.username = "";
     this.usernameListner.next("");
+    this.userId = "";
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['welcome/login']);
@@ -119,13 +121,17 @@ export class AuthService {
     const decodedPayload = JSON.parse(atob(payload));
     const author = decodedPayload.userFullName;
     const username = decodedPayload.username;
+    const userId = decodedPayload.userId;
+
+    this.userId = userId;
 
     this.username = username;
-    this.usernameListner.next(username);
+    // this.usernameListner.next(username);
 
     this.userFullName = author;
-    this.userFullNameListener.next(author);
+    // this.userFullNameListener.next(author);
   }
+
 
   getUsername(){
     return this.username;

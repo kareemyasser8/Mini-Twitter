@@ -22,8 +22,16 @@ const tweetSchema = mongoose.Schema({
     type: Date,
     required: true
   },
+  likedBy: [{
+   type: String
+  }],
+
+  commentedBy:[{
+    type: String
+  }],
+
   likes: {
-    type: Number,
+    type:  Number,
     default: 0
   },
   comments: {

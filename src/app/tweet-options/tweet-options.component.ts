@@ -1,13 +1,16 @@
-import { TweetsService } from './../tweets.service';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { Tweet } from '../tweet.model';
+import { TweetsService } from './../tweets.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'tweet-options',
   templateUrl: './tweet-options.component.html',
   styleUrls: ['./tweet-options.component.css']
 })
-export class TweetOptionsComponent implements OnInit {
+export class TweetOptionsComponent implements OnInit, OnDestroy {
 
   @Input() tweetBody: Tweet = {
     id: null,
@@ -18,7 +21,9 @@ export class TweetOptionsComponent implements OnInit {
     comments: 0,
     replies: [],
     authorId: '',
-    username: ''
+    username: '',
+    likedBy: [],
+    commentedBy: []
   }
 
   likeClicked: boolean = false;
@@ -27,14 +32,20 @@ export class TweetOptionsComponent implements OnInit {
   editTweetClicked: boolean = false;
   isDeleteLoading: boolean = false;
 
+  likeTweetSubscription: Subscription;
 
   @Input() username;
   @Input() userIsAuthenticated;
 
   @Output() deleteTweetClicked = new EventEmitter<boolean>();
 
-  constructor(private tweetService : TweetsService) {
+  constructor(private tweetService : TweetsService, private authService: AuthService) {
 
+  }
+  ngOnDestroy(): void {
+    if(this.likeTweetSubscription){
+      this.likeTweetSubscription.unsubscribe();
+    }
   }
 
   get menu() {
@@ -76,8 +87,21 @@ export class TweetOptionsComponent implements OnInit {
 
   clickLike() {
     if (this.likeClicked == false) {
+      // console.log("id: ",this.tweetBody.id)
       this.likeClicked = true
       this.tweetBody.likes += 1;
+
+      this.likeTweetSubscription = this.tweetService.likeTweet(this.tweetBody.id)
+      .subscribe(
+          {
+            next: (result)=>{console.log(result)},
+            error: (err)=>{
+              console.log(err);
+              this.likeClicked = false;
+              this.tweetBody.likes -= 1;
+            }
+          }
+        )
     } else {
       this.likeClicked = false
       this.tweetBody.likes -= 1;
@@ -89,7 +113,11 @@ export class TweetOptionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    console.log(this.tweetBody.likedBy);
+    if(this.tweetBody.likedBy.includes(this.username)){
+      console.log("yes included");
+      this.likeClicked = true;
+    }
   }
 
 }

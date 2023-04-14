@@ -33,7 +33,9 @@ export class TweetsService {
             creatorId: tweet.creatorId,
             username: tweet.username,
             date: new Date(tweet.date),
+            likedBy: tweet.likedBy,
             likes: tweet.likes,
+            commentedBy: tweet.commentedBy,
             comments: tweet.comments,
             replies: tweet.replies,
             id: tweet._id
@@ -60,7 +62,9 @@ export class TweetsService {
             creatorId: tweet.creatorId,
             username: tweet.username,
             date: new Date(tweet.date),
+            likedBy: tweet.likedBy,
             likes: tweet.likes,
+            commentedBy: tweet.commentedBy,
             comments: tweet.comments,
             replies: tweet.replies,
             id: tweet._id
@@ -132,15 +136,11 @@ export class TweetsService {
     return new Date();
   }
 
-  // getLastId(tweetsArray: Tweet[]) {
+  likeTweet(tweetId: string) {
+    const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
+    return this.http.patch(url, {});
+  }
 
-  //   if (tweetsArray.length == 0) {
-  //     return 0;
-  //   } else {
-  //     return tweetsArray[length].id
-  //   }
-
-  // }
 
   addTweet(content: string): Observable<any> {
     const tweet: Tweet = {
@@ -152,7 +152,9 @@ export class TweetsService {
       comments: 0,
       replies: [],
       authorId: "",
-      username: this.authService.getUsername()
+      username: this.authService.getUsername(),
+      likedBy: [],
+      commentedBy: []
     }
 
     return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
@@ -179,7 +181,9 @@ export class TweetsService {
       comments: 0,
       replies: [],
       authorId: '',
-      username: ''
+      username: '',
+      likedBy: [],
+      commentedBy: []
     }
 
     tweet.replies.push(reply);

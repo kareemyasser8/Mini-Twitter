@@ -19,7 +19,9 @@ export class TweetBodyComponent implements OnInit {
     comments: 0,
     replies: [],
     authorId: '',
-    username: ''
+    username: '',
+    likedBy: [],
+    commentedBy: []
   }
 
   // ngOnChanges(changes: SimpleChanges) {
@@ -39,6 +41,7 @@ export class TweetBodyComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
 }

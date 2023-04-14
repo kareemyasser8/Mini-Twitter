@@ -18,7 +18,9 @@ export class CreateReplyComponent {
     comments: 0,
     replies: [],
     authorId: '',
-    username: ''
+    username: '',
+    likedBy: [],
+    commentedBy: []
   }
 
   @Output() close = new EventEmitter();
