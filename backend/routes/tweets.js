@@ -5,10 +5,9 @@ const Tweet = require("../models/tweet")
 const checkAuth = require("../middleware/check-auth")
 
 
-//for posting a new Tweet ---------------------------------------------------
 
-router.post("", checkAuth, (req, res, next) => {
-  const tweet = new Tweet({
+function tweetInit(req) {
+  return new Tweet({
     text: req.body.text,
     creatorId: req.userData.userId,
     username: req.userData.username,
@@ -18,6 +17,13 @@ router.post("", checkAuth, (req, res, next) => {
     comments: req.body.comments,
     replies: req.body.replies
   })
+}
+
+
+//for posting a new Tweet ---------------------------------------------------
+
+router.post("", checkAuth, (req, res, next) => {
+  const tweet = tweetInit(req);
   tweet.save().then(
     created => {
       res.status(201).json({
@@ -38,10 +44,10 @@ router.patch("/:id", checkAuth, (req, res, next) => {
   }
   Tweet.updateOne({ _id: req.params.id, creatorId: req.userData.userId }, { $set: update }).then(
     (result) => {
-      if(result.modifiedCount > 0){
+      if (result.modifiedCount > 0) {
         res.status(200).json({ message: 'tweet edited successfully' })
-      }else{
-        res.status(401).json({message: 'Not authorized!'})
+      } else {
+        res.status(401).json({ message: 'Not authorized!' })
       }
 
     }
@@ -118,16 +124,46 @@ router.patch("/:id/unlike", checkAuth, (req, res, next) => {
     });
 });
 
+//For adding a reply -----------------------------------------------------------------------
+
+router.patch("/:id/reply", checkAuth, (req, res, next) => {
+  const tweetId = req.params.id;
+  const username = req.userData.username;
+  const reply = tweetInit(req);
+
+  Tweet.findById(tweetId).then(
+    (tweet) => {
+      if (!tweet) { res.status(404).json({ message: "Tweet not found" }) }
+      tweet.comments += 1;
+
+      if (!tweet.commentedBy.includes(username)) {
+        tweet.commentedBy.push(username);
+      }
+
+      tweet.replies.push(reply);
+      return tweet.save()
+    }).then(
+      (updatedTweet) => {
+        res.status(201).json({
+          message: "Reply added successfully",
+          tweet: updatedTweet
+        })
+      })
+    .catch((error) => {
+      res.status(500).json({ message: "Server error", error: error });
+    })
+})
+
 
 //For deleting a tweet ----------------------------------------------------------------------
 router.delete("/:id", checkAuth, (req, res, next) => {
-  Tweet.deleteOne({ _id: req.params.id, creatorId: req.userData.userId}).then(
+  Tweet.deleteOne({ _id: req.params.id, creatorId: req.userData.userId }).then(
     (result) => {
       console.log(result)
-      if(result.deletedCount > 0){
+      if (result.deletedCount > 0) {
         res.status(200).json({ message: 'tweet deleted' })
-      }else{
-        res.status(401).json({message: 'Not authorized!'})
+      } else {
+        res.status(401).json({ message: 'Not authorized!' })
       }
 
     }
@@ -163,9 +199,11 @@ router.get('/:username', (req, res, next) => {
       })
     }
   ).catch(
-    (err)=> res.status(404).json({message: err})
+    (err) => res.status(404).json({ message: err })
   )
 })
+
+
 
 
 // router.get('/:id', (req, res, next) => {

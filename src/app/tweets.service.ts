@@ -19,7 +19,28 @@ export class TweetsService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
+  updateAllTweets(){
+    this.getTweets();
+    // this.getTweetsOfProfile()
+  }
+
   //-----------------------------------------------------------------
+
+  tweetInit(content): Tweet {
+    return {
+      id: "",
+      author: this.authService.getUserFullName(),
+      text: content,
+      date: this.getTodayDate(),
+      likes: 0,
+      comments: 0,
+      replies: [],
+      authorId: "",
+      username: this.authService.getUsername(),
+      likedBy: [],
+      commentedBy: []
+    }
+  }
 
 
   getTweets(): Tweet[] {
@@ -148,52 +169,33 @@ export class TweetsService {
 
 
   addTweet(content: string): Observable<any> {
-    const tweet: Tweet = {
-      id: "",
-      author: this.authService.getUserFullName(),
-      text: content,
-      date: this.getTodayDate(),
-      likes: 0,
-      comments: 0,
-      replies: [],
-      authorId: "",
-      username: this.authService.getUsername(),
-      likedBy: [],
-      commentedBy: []
-    }
+    const tweet = this.tweetInit(content);
 
-    return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
-      .pipe(
-        mergeMap((responseData) => {
-          tweet.id = responseData.tweetId
-          this.allTweets.push(tweet);
-          this.allTweetsUpdated.next([...this.allTweets])
-          return of(responseData);
-        })
-      );
+      return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
+        .pipe(
+          mergeMap((responseData) => {
+            tweet.id = responseData.tweetId
+            this.allTweets.push(tweet);
+            this.allTweetsUpdated.next([...this.allTweets])
+            return of(responseData);
+          })
+        );
   }
 
 
   addReply(tweet: Tweet, content) {
 
     // let lastId = this.getLastId(tweet.replies) + 1;
-    const reply: Tweet = {
-      id: null,
-      author: this.authService.getUserFullName(),
-      text: content,
-      date: this.getTodayDate(),
-      likes: 0,
-      comments: 0,
-      replies: [],
-      authorId: '',
-      username: '',
-      likedBy: [],
-      commentedBy: []
-    }
+    const reply = this.tweetInit(content)
 
-    tweet.replies.push(reply);
-    tweet.comments += 1;
-    console.log("The comments replies: ", tweet.replies)
+    const tweetId = tweet.id;
+    const url = `http://localhost:3000/api/tweets/${tweetId}/reply`;
+
+    return this.http.patch<{message: string, updatedTweet: Tweet}>(url,reply)
+
+    // tweet.replies.push(reply);
+    // tweet.comments += 1;
+    // console.log("The comments replies: ", tweet.replies)
   }
 
 }

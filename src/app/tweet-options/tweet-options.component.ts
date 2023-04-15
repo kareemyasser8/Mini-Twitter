@@ -92,14 +92,13 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
 
   clickLike() {
     if (this.likeClicked == false) {
-      // console.log("id: ",this.tweetBody.id)
       this.likeClicked = true
       this.tweetBody.likes += 1;
 
       this.likeTweetSubscription = this.tweetService.likeTweet(this.tweetBody.id)
       .subscribe(
           {
-            next: (result)=>{console.log(result)},
+            next: (result)=>{},
             error: (err)=>{
               console.log(err);
               this.likeClicked = false;
@@ -114,7 +113,7 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
       this.unlikeTweetSubscription = this.tweetService.unlikeTweet(this.tweetBody.id)
       .subscribe(
           {
-            next: (result)=>{console.log(result)},
+            next: (result)=>{},
             error: (err)=>{
               console.log(err);
               this.likeClicked = true;
@@ -131,11 +130,10 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.tweetBody.likedBy);
     if(this.tweetBody.likedBy.includes(this.username)){
-      console.log("yes included");
       this.likeClicked = true;
     }
+
   }
 
 }

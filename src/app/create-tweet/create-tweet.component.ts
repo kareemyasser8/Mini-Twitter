@@ -46,18 +46,27 @@ export class CreateTweetComponent implements OnInit {
 
     if (tweetform.invalid) return
 
-    // if (this.replyTo) {
-    //   this.tweetsService.addTweet(tweetform.value.tweet)
-    // } else {
-    //   this.tweetsService.addReply(this.replyTo, tweetform.value.tweet)
-    //   this.formSubmitted.emit();
-    // }
     this.isloading = true;
+
+    if (this.replyTo) {
+      this.tweetsService.addReply(this.replyTo, tweetform.value.tweet).subscribe({
+        next: (response)=>{
+          console.log(response.message);
+          this.tweetsService.updateAllTweets();
+          this.isloading = false;
+          this.clearTweetForm(tweetform)
+          this.formSubmitted.emit();
+        },
+        error: (err)=>{
+          console.log(err);
+          this.isloading = false;
+        }
+      })
+    }
 
     if (!this.replyTo && !this.tweetToEdit) {
       this.tweetsService.addTweet(tweetform.value.tweet).subscribe({
         next: (response) => {
-          console.log(response)
           this.isloading = false;
           this.clearTweetForm(tweetform)
           this.formSubmitted.emit();
