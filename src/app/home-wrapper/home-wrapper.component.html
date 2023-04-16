@@ -11,5 +11,10 @@
       [userIsAuthenticated]="userIsAuthenticated"
       [username]="username">
   </tweets>
+
+    <div *ngIf="(allTweets$| async)?.length == 0">
+      <empty-tweets [emptyTweetsOfUser]="false"></empty-tweets>
+    </div>
+
   <div class="separator"></div>
 </div>

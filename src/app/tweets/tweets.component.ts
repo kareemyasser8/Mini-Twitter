@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tweet } from '../tweet.model';
 
@@ -25,5 +25,9 @@ export class TweetsComponent {
   onDeleteTweetClicked(isLoading: boolean) {
     this.isDeleteLoading = isLoading;
   }
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   console.log('Input changed:', changes['username'].currentValue);
+  // }
 
 }

@@ -22,6 +22,13 @@
   /* border: 1px solid red; */
 }
 
+.tweet-name-and-text .tweet-text:hover{
+  background-color: rgb(241, 241, 241);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+
 .user-name{
   font-weight: bold;
   width:max-content;
@@ -47,3 +54,4 @@
 .highlighted {
   color: #1DA1F2;
 }
+

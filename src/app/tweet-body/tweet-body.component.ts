@@ -24,10 +24,6 @@ export class TweetBodyComponent implements OnInit {
     commentedBy: []
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   console.log('Input changed:', changes['tweetBody']);
-  // }
-
   constructor(private sanitizer: DomSanitizer) { }
 
   get highlightedText(): SafeHtml {

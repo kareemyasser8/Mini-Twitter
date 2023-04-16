@@ -24,6 +24,31 @@ export class TweetsService {
     // this.getTweetsOfProfile()
   }
 
+  fetchTweet(tweetId: string): any{
+    const url = "http://localhost:3000/api/tweets/" + tweetId + "/details"
+    console.log(tweetId);
+    return this.http.get(url).pipe(
+      map((tweetData: any) => {
+        return tweetData.tweet.map(tweet => {
+          return {
+            text: tweet.text,
+            author: tweet.author,
+            creatorId: tweet.creatorId,
+            username: tweet.username,
+            date: new Date(tweet.date),
+            likedBy: tweet.likedBy,
+            likes: tweet.likes,
+            commentedBy: tweet.commentedBy,
+            comments: tweet.comments,
+            replies: tweet.replies,
+            id: tweet._id
+          }
+        })
+      })
+    )
+  }
+
+
   //-----------------------------------------------------------------
 
   tweetInit(content): Tweet {
