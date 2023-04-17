@@ -14,7 +14,7 @@ const tweetSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  author:{
+  author: {
     type: String,
     required: true
   },
@@ -23,26 +23,34 @@ const tweetSchema = mongoose.Schema({
     required: true
   },
   likedBy: [{
-   type: String
+    type: String
   }],
 
-  commentedBy:[{
+  commentedBy: [{
     type: String
   }],
 
   likes: {
-    type:  Number,
+    type: Number,
     default: 0
   },
   comments: {
     type: Number,
     default: 0
   },
-  replies: {
-    type: [this],
-    default: []
+  // replies: {
+  //   type: [this],
+  //   default: []
+  // },
+  replies: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tweet"
+  }],
+
+  parentId: {
+    type: mongoose.Schema.Types.ObjectId, ref: "Tweet"
   }
 
 })
 
-module.exports = mongoose.model('Tweet',tweetSchema);
+module.exports = mongoose.model('Tweet', tweetSchema);

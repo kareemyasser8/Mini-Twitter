@@ -15,7 +15,8 @@ function tweetInit(req) {
     date: req.body.date,
     likes: req.body.likes,
     comments: req.body.comments,
-    replies: req.body.replies
+    replies: [],
+    parentId: req.params.id
   })
 }
 
@@ -131,27 +132,42 @@ router.patch("/:id/reply", checkAuth, (req, res, next) => {
   const username = req.userData.username;
   const reply = tweetInit(req);
 
-  Tweet.findById(tweetId).then(
-    (tweet) => {
-      if (!tweet) { res.status(404).json({ message: "Tweet not found" }) }
-      tweet.comments += 1;
+  reply.save().then((newReply)=>{
+      Tweet.findById(tweetId).then((tweet)=>{
+        if(!tweet){
+          res.status(404).json({message: 'Tweet not found'})
+        }
 
-      if (!tweet.commentedBy.includes(username)) {
-        tweet.commentedBy.push(username);
-      }
+        if (!tweet.commentedBy.includes(username)) {
+          tweet.commentedBy.push(username);
+        }
 
-      tweet.replies.push(reply);
-      return tweet.save()
-    }).then(
-      (updatedTweet) => {
-        res.status(201).json({
-          message: "Reply added successfully",
-          tweet: updatedTweet
+        tweet.replies.push(newReply.id);
+        return tweet.save()
+      }).then(
+        (updatedTweet) => {
+          res.status(201).json({
+            message: "Reply added successfully",
+            tweet: updatedTweet
+          })
         })
+      .catch((error) => {
+        res.status(500).json({ message: "Server error", error: error });
       })
-    .catch((error) => {
-      res.status(500).json({ message: "Server error", error: error });
-    })
+  })
+
+  // Tweet.findById(tweetId).then(
+  //   (tweet) => {
+  //     if (!tweet) { res.status(404).json({ message: "Tweet not found" }) }
+  //     tweet.comments += 1;
+
+  //     if (!tweet.commentedBy.includes(username)) {
+  //       tweet.commentedBy.push(username);
+  //     }
+
+  //     tweet.replies.push(reply);
+  //     return tweet.save()
+  //   })
 })
 
 
@@ -176,7 +192,7 @@ router.delete("/:id", checkAuth, (req, res, next) => {
 
 //For getting all Tweets ----------------------------------------------------------------------
 router.get('', (req, res, next) => {
-  Tweet.find().then(
+  Tweet.find({ parentId: null }).then(
     documents => {
       res.status(200).json({
         message: 'Tweets fetched successfully!',
@@ -208,7 +224,7 @@ router.get('/:id/details', (req, res, next) => {
   Tweet.find({_id: req.params.id}).then(
     document => {
       res.status(200).json({
-        message: 'Tweet isfetched successfully!',
+        message: 'Tweet is fetched successfully!',
         tweet: document
       })
     }
@@ -216,6 +232,23 @@ router.get('/:id/details', (req, res, next) => {
     (err)=> res.status(500).json({message: 'Error'})
   )
 })
+
+//------------------------------------------------------------------------------------------------
+
+router.get('/:id/replies', (req,res,next)=>{
+  Tweet.find({parentId: req.params.id}).then(
+    documents=>{
+      res.status(200).json({
+        message: 'Replies are fetched successfully!',
+        replies: documents
+      })
+    }
+  ).catch(
+    (err)=> res.status(500).json({message: 'Error'})
+  )
+})
+
+//------------------------------------------------------------------------------------------------
 
 
 module.exports = router;

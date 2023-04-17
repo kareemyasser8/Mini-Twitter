@@ -28,6 +28,7 @@ import { ProfileCardComponent } from './profile-card/profile-card.component';
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 import { NotificationCardComponent } from './notification-card/notification-card.component';
 import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
+import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
     NotificationsPageComponent,
     NotificationCardComponent,
     EmptyTweetsComponent,
+    TweetDetailsComponent,
 
   ],
   imports: [

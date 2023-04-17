@@ -24,7 +24,12 @@ export class TweetBodyComponent implements OnInit {
     commentedBy: []
   }
 
-  constructor(private sanitizer: DomSanitizer) { }
+  username: string
+
+  constructor(private sanitizer: DomSanitizer) {
+
+
+  }
 
   get highlightedText(): SafeHtml {
     let text = this.tweetBody.text;
@@ -37,7 +42,17 @@ export class TweetBodyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    if (this.tweetBody) {
+      const words = this.tweetBody.text.split(' ');
+      if (words[0].startsWith('@')) {
+        this.username = words[0]; // Set the username to the first word without the "@"
+        words.shift(); // Remove the first word from the array
+        this.tweetBody.text = words.join(' '); // Join the remaining words into a string
+      } else {
+        this.username = ''; // No username found
+      }
+      // console.log(this.username);
+    }
   }
 
 }

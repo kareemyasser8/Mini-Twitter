@@ -1,16 +1,18 @@
 <div class="tweet-feed-container">
   <h3 class="page-title">Tweet</h3>
 
-
-  <div *ngIf="fetchedTweet$ | async as fetchedTweets">
-    <div *ngFor="let tweet of fetchedTweets ">
-      <!-- <div>{{new Date(tweet.date)| timeAgo}}</div> -->
-      <tweets [tweetsToDisplay$]="fetchedTweet$" [userIsAuthenticated]="isAuthenticated"
-      [username]="username"></tweets>
-
-      <h4 style="margin-top: 10px;">Replies</h4>
-      <tweets [tweetsToDisplay$]="makeObservable(tweet.replies)" [userIsAuthenticated]="isAuthenticated"
-        [username]="username"></tweets>
-    </div>
-    <div class="separator"></div>
+  <div class="text-center" *ngIf="!(fetchedTweet$ | async)">
+    <div class="spinner-border" style="width: 3rem; height: 3rem; color:#1DA1F2" role="status"></div>
   </div>
+
+  <div *ngIf="(fetchedTweet$ | async)">
+    <tweet-details [tweetBody]="fetchedTweet$ | async"></tweet-details>
+    <div *ngIf="fetchedReplies$ | async as fetchedReplies">
+
+      <tweets [tweetsToDisplay$]="fetchedReplies$" [userIsAuthenticated]="isAuthenticated" [username]="username">
+      </tweets>
+
+      <div class="separator"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="tweet-body">
+
+  <div class="img-username-section">
+    <div class="user-profile-picture">
+      <img src="../../assets/defaultProfilePicture.png" alt="">
+    </div>
+
+    <div class="name-username">
+      <div class="name" [routerLink]="['/home/profile/', tweetBody?.username]">{{tweetBody?.author}}</div>
+      <div class="username">@{{tweetBody?.username}}</div>
+    </div>
+
+  </div>
+
+  <div class="username-text">
+    <div class="tweet-text">
+      <span class="mention" [routerLink]="['/home/profile/', username?.slice(1)]">{{username}}</span>
+      {{tweetBody?.text}}
+    </div>
+  </div>
+
+  <div class="tweet-time">
+    <span>{{convertDateFormat(tweetBody?.date)}}</span>
+  </div>
+
+
+  <div class="tweet-likes-comments-count">
+    <div class="comments"><span>{{tweetBody?.comments}}</span>Comments</div>
+    <div class="likes"><span>{{tweetBody?.likes}}</span>Likes</div>
+  </div>
+
+  <div class="options">
+    <div class="options-icons">
+      <div class="comment">
+        <i class="bi bi-chat"></i>
+      </div>
+
+      <div class="like">
+        <i class="bi" [ngClass]="{'bi-heart': likeClicked== false,'bi-heart-fill':likeClicked==true}"></i>
+      </div>
+
+    </div>
+  </div>
+</div>

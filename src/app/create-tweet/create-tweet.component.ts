@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Tweet } from './../tweet.model';
 import { TweetsService } from './../tweets.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
@@ -24,18 +25,27 @@ export class CreateTweetComponent implements OnInit {
 
   @Output() formSubmitted = new EventEmitter<void>();
 
-  constructor(private tweetsService: TweetsService) {
+  constructor(private tweetsService: TweetsService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
+
     if (this.replyTo == null && this.tweetToEdit == null) return
     if (this.tweetToEdit != null) {
       console.log(this.tweetToEdit.text);
       this.tweetInputEditingText = this.tweetToEdit.text;
       this.tweetLength = this.tweetToEdit.text.length;
     }
+
+    if(this.replyTo != null){
+      // console.log(this.replyTo.username)
+
+    }
+
     this.tweetplaceHolder = "Tweet your reply"
+
+
   }
 
   countCharacters(tweet) {
@@ -49,10 +59,14 @@ export class CreateTweetComponent implements OnInit {
     this.isloading = true;
 
     if (this.replyTo) {
-      this.tweetsService.addReply(this.replyTo, tweetform.value.tweet).subscribe({
+
+      let mention = "@".concat(this.replyTo.username);
+      let replyText = mention.concat(" ",tweetform.value.tweet)
+
+      this.tweetsService.addReply(this.replyTo, replyText).subscribe({
         next: (response)=>{
           console.log(response.message);
-          this.tweetsService.updateAllTweets();
+          this.tweetsService.updateAllTweets(this.replyTo.id);
           this.isloading = false;
           this.clearTweetForm(tweetform)
           this.formSubmitted.emit();

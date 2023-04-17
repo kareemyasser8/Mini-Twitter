@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, merge, mergeMap, Observable, of, Subject, tap } from 'rxjs';
+import { forkJoin, map, merge, mergeMap, Observable, of, Subject, tap } from 'rxjs';
 
 import { Tweet } from './tweet.model';
 import { AuthService } from './auth.service';
@@ -19,33 +19,59 @@ export class TweetsService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  updateAllTweets(){
+  updateAllTweets(tweetId?) {
     this.getTweets();
-    // this.getTweetsOfProfile()
+    if (tweetId) {
+      console.log(true);
+      this.fetchTweet(tweetId)
+    }
   }
 
-  fetchTweet(tweetId: string): any{
-    const url = "http://localhost:3000/api/tweets/" + tweetId + "/details"
-    console.log(tweetId);
-    return this.http.get(url).pipe(
+
+
+  fetchTweet(tweetId: string): any {
+    const tweetUrl = "http://localhost:3000/api/tweets/" + tweetId + "/details"
+
+    const repliesUrl = "http://localhost:3000/api/tweets/" + tweetId + "/replies";
+
+    // console.log(tweetId);
+    const tweet$ = this.http.get<Tweet>(tweetUrl).pipe(
       map((tweetData: any) => {
-        return tweetData.tweet.map(tweet => {
+        const tweet =  tweetData.tweet
+        return tweet;
+      })
+    )
+
+    const replies$ = this.http.get<Tweet[]>(repliesUrl).pipe(
+      map((repliesData: any)=>{
+        return repliesData.replies.map((reply)=>{
           return {
-            text: tweet.text,
-            author: tweet.author,
-            creatorId: tweet.creatorId,
-            username: tweet.username,
-            date: new Date(tweet.date),
-            likedBy: tweet.likedBy,
-            likes: tweet.likes,
-            commentedBy: tweet.commentedBy,
-            comments: tweet.comments,
-            replies: tweet.replies,
-            id: tweet._id
+            text: reply.text,
+            author: reply.author,
+            creatorId: reply.creatorId,
+            username: reply.username,
+            date: new Date(reply.date),
+            likedBy: reply.likedBy,
+            likes: reply.likes,
+            commentedBy: reply.commentedBy,
+            comments: reply.comments,
+            id: reply._id
           }
         })
       })
     )
+
+    return forkJoin([tweet$, replies$]).pipe(
+      map(([tweet, replies]) => {
+        tweet.replies = replies;
+        return tweet;
+      })
+    );
+
+
+
+
+
   }
 
 
@@ -196,15 +222,15 @@ export class TweetsService {
   addTweet(content: string): Observable<any> {
     const tweet = this.tweetInit(content);
 
-      return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
-        .pipe(
-          mergeMap((responseData) => {
-            tweet.id = responseData.tweetId
-            this.allTweets.push(tweet);
-            this.allTweetsUpdated.next([...this.allTweets])
-            return of(responseData);
-          })
-        );
+    return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
+      .pipe(
+        mergeMap((responseData) => {
+          tweet.id = responseData.tweetId
+          this.allTweets.push(tweet);
+          this.allTweetsUpdated.next([...this.allTweets])
+          return of(responseData);
+        })
+      );
   }
 
 
@@ -216,7 +242,7 @@ export class TweetsService {
     const tweetId = tweet.id;
     const url = `http://localhost:3000/api/tweets/${tweetId}/reply`;
 
-    return this.http.patch<{message: string, updatedTweet: Tweet}>(url,reply)
+    return this.http.patch<{ message: string, updatedTweet: Tweet }>(url, reply)
 
     // tweet.replies.push(reply);
     // tweet.comments += 1;

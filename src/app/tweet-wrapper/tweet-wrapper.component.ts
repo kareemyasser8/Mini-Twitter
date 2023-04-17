@@ -18,7 +18,8 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
   authSubscription: Subscription;
 
   tweetId: string;
-  fetchedTweet$: Observable<Tweet[]>;
+  fetchedTweet$: Observable<Tweet>;
+  fetchedReplies$: Observable<Tweet[]>;
   isAuthenticated: boolean
   username: string
 
@@ -34,8 +35,9 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
       this.tweetId = params.get('id');
       this.tweetSubscription = this.tweetService.fetchTweet(this.tweetId).subscribe({
         next: (result) => {
-          // console.log(result)
-          this.fetchedTweet$ = of(result)
+          console.log(result[0])
+          this.fetchedTweet$ = of(result[0])
+          this.fetchedReplies$ = of(result.replies)
           this.isAuthenticated = this.authService.getIsAuth()
           this.username = this.authService.getUsername();
         },
@@ -44,27 +46,9 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
     });
   }
 
-  makeObservable(object: any[]): Observable<any> {
 
-    const newObject = object.map(tweet => {
-      return {
-        text: tweet.text,
-        author: tweet.author,
-        creatorId: tweet.creatorId,
-        username: tweet.username,
-        date: new Date(tweet.date),
-        likedBy: tweet.likedBy,
-        likes: tweet.likes,
-        commentedBy: tweet.commentedBy,
-        comments: tweet.comments,
-        replies: tweet.replies,
-        id: tweet._id
-      }
-    })
-
-    console.log(newObject)
-
-    return of(newObject);
+  trackByFn(index: number, tweet: Tweet) {
+    return tweet.id; // return the unique identifier for the tweet object
   }
 
   ngOnDestroy(): void {

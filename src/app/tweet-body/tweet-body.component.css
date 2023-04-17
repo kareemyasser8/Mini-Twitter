@@ -22,7 +22,7 @@
   /* border: 1px solid red; */
 }
 
-.tweet-name-and-text .tweet-text:hover{
+.text:hover{
   background-color: rgb(241, 241, 241);
   border-radius: 2px;
   cursor: pointer;
@@ -47,9 +47,23 @@
   text-align: end;
 }
 
+.username-text{
+  display: flex;
+  gap: 5px;
+}
+
+.mention{
+  color: #1DA1F2;
+  cursor: pointer;
+  margin-right: 5px;
+  /* border: 1px solid red; */
+}
+
+
 .tweet-time span{
   color: #AAB8C2;
 }
+
 
 .highlighted {
   color: #1DA1F2;

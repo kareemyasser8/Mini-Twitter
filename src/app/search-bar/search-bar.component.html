@@ -16,7 +16,7 @@
     <!--  -->
     <div class="username-logout-section">
       <div class="user-section" *ngIf="userIsAuthenticated" [routerLink]="['/home/profile/', username]" >
-        {{displayedFullUserName}}
+        {{firstName}}
       </div>
       <div class="user-section" *ngIf="!userIsAuthenticated">
         Guest User
