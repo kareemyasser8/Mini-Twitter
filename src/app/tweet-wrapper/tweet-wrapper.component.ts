@@ -35,7 +35,6 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
       this.tweetId = params.get('id');
       this.tweetSubscription = this.tweetService.fetchTweet(this.tweetId).subscribe({
         next: (result) => {
-          console.log(result[0])
           this.fetchedTweet$ = of(result[0])
           this.fetchedReplies$ = of(result.replies)
           this.isAuthenticated = this.authService.getIsAuth()

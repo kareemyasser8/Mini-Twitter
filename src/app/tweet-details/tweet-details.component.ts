@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { Tweet } from '../tweet.model';
 import { DatePipe } from '@angular/common';
+import { TweetsService } from '../tweets.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'tweet-details',
@@ -9,29 +12,27 @@ import { DatePipe } from '@angular/common';
 })
 export class TweetDetailsComponent implements OnInit {
 
-  @Input() tweetBody: Tweet = {
-    id: null,
-    author: '',
-    text: '',
-    date: undefined,
-    likes: 0,
-    comments: 0,
-    replies: [],
-    authorId: '',
-    username: '',
-    likedBy: [],
-    commentedBy: []
-  }
+  @Input() tweetBody: any;
 
   likeClicked: boolean = false;
-
+  likeTweetSubscription: Subscription;
+  unlikeTweetSubscription: Subscription;
+  userIsAuthenticated: boolean;
 
   username: string
+  currentUsername: string
 
-  constructor() { }
+  constructor(private tweetService: TweetsService, private authService: AuthService) { }
 
   ngOnInit() {
     this.updateUsername();
+    // console.log(this.tweetBody.likedBy);
+    this.currentUsername = this.authService.getUsername();
+    this.userIsAuthenticated = this.authService.getIsAuth();
+
+    if(this.tweetBody.likedBy.includes(this.currentUsername)){
+      this.likeClicked = true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,4 +56,43 @@ export class TweetDetailsComponent implements OnInit {
     return formattedDate;
   }
 
+  clickLike() {
+    if (this.likeClicked == false) {
+      this.likeClicked = true
+      this.tweetBody.likes += 1;
+
+      this.likeTweetSubscription = this.tweetService.likeTweet(this.tweetBody._id)
+      .subscribe(
+          {
+            next: (result)=>{},
+            error: (err)=>{
+              console.log(err);
+              this.likeClicked = false;
+              this.tweetBody.likes -= 1;
+            }
+          }
+        )
+    } else {
+      this.likeClicked = false
+      this.tweetBody.likes -= 1;
+
+      this.unlikeTweetSubscription = this.tweetService.unlikeTweet(this.tweetBody._id)
+      .subscribe(
+          {
+            next: (result)=>{},
+            error: (err)=>{
+              console.log(err);
+              this.likeClicked = true;
+              this.tweetBody.likes += 1;
+            }
+          }
+        )
+
+    }
+  }
+
+
+  clickComment(){
+
+  }
 }

@@ -59,6 +59,10 @@
   /* border: 1px solid red; */
 }
 
+.mention:hover{
+  text-decoration: underline;
+}
+
 
 .tweet-time span{
   color: #AAB8C2;

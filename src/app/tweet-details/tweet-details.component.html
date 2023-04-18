@@ -29,16 +29,15 @@
     <div class="likes"><span>{{tweetBody?.likes}}</span>Likes</div>
   </div>
 
-  <div class="options">
-    <div class="options-icons">
-      <div class="comment">
-        <i class="bi bi-chat"></i>
-      </div>
+  <div class="tweet-like-comment" *ngIf="userIsAuthenticated">
 
-      <div class="like">
-        <i class="bi" [ngClass]="{'bi-heart': likeClicked== false,'bi-heart-fill':likeClicked==true}"></i>
-      </div>
-
+    <div class="comment" (click)="clickComment()">
+      <i class="bi bi-chat"></i>
     </div>
+
+    <div class="like" (click)="clickLike()">
+      <i class="bi" [ngClass]="{'bi-heart': likeClicked== false,'bi-heart-fill':likeClicked==true}"></i>
+    </div>
+
   </div>
 </div>
