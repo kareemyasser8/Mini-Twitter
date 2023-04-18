@@ -127,6 +127,9 @@ export class TweetOptionsComponent implements OnInit, OnDestroy {
 
   clickComment() {
     this.commentClicked = true;
+    this.tweetBody.comments += 1;
+
+
   }
 
   ngOnInit(): void {

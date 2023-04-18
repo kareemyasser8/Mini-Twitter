@@ -219,13 +219,14 @@ function deleteTweet(id, res) {
         return;
       }
       res.status(200).send({
-        message: 'Tweet deleted successfully'
+        message: 'Tweet deleted successfully',
+        tweet: tweet
       })
     }
   ).catch((error) => {
     console.log('Error deleting tweet:', error);
     res.status(500).send({
-      message: 'Problem happened'
+      message: 'Problem happened',
     })
   });
 }

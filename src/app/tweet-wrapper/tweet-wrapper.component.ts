@@ -16,6 +16,7 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
   RouteSubscription: Subscription;
   tweetSubscription: Subscription;
   authSubscription: Subscription;
+  repliesSubscription: Subscription;
 
   tweetId: string;
   fetchedTweet$: Observable<Tweet>;
@@ -29,22 +30,34 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
     private authService: AuthService
   ) { }
 
-
   ngOnInit(): void {
     this.RouteSubscription = this.route.paramMap.subscribe((params: ParamMap) => {
       this.tweetId = params.get('id');
-      this.tweetSubscription = this.tweetService.fetchTweet(this.tweetId).subscribe({
-        next: (result) => {
-          this.fetchedTweet$ = of(result[0])
-          this.fetchedReplies$ = of(result.replies)
-          this.isAuthenticated = this.authService.getIsAuth()
-          this.username = this.authService.getUsername();
+
+      this.tweetService.fetchTweet(this.tweetId)
+      this.tweetService.fetchReplies(this.tweetId)
+
+      this.tweetSubscription = this.tweetService.getTweetDetailsListener().subscribe({
+        next: (res)=>{
+          console.log(res);
+          this.fetchedTweet$ = of(res[0])
         },
-        error: (err) => { console.log(err) }
+        error: (err)=>{console.log(err)}
       });
+
+      this.repliesSubscription = this.tweetService.getTweetRepliesListener().subscribe({
+        next: (res)=>{
+          console.log(res);
+          this.fetchedReplies$ = of(res);
+        },
+        error: (err)=>{console.log(err)}
+      })
+
+      this.isAuthenticated = this.authService.getIsAuth()
+      this.username = this.authService.getUsername();
+
     });
   }
-
 
   trackByFn(index: number, tweet: Tweet) {
     return tweet.id; // return the unique identifier for the tweet object
@@ -53,6 +66,7 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.RouteSubscription.unsubscribe()
     this.tweetSubscription.unsubscribe()
+    this.repliesSubscription.unsubscribe()
   }
 
 }

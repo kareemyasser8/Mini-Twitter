@@ -16,6 +16,12 @@ export class TweetsService {
   private allUserTweets: Tweet[] = []
   private allUserTweetsUpdated = new Subject<Tweet[]>()
 
+  private tweetDetail: Tweet;
+  private tweetDetailUpdated = new Subject<Tweet>()
+
+  private tweetReplies: Tweet[];
+  private tweetRepliesUpdated = new Subject<Tweet[]>()
+
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -27,24 +33,33 @@ export class TweetsService {
     }
   }
 
-
-
-  fetchTweet(tweetId: string): any {
+  fetchTweet(tweetId: string): void{
     const tweetUrl = "http://localhost:3000/api/tweets/" + tweetId + "/details"
 
-    const repliesUrl = "http://localhost:3000/api/tweets/" + tweetId + "/replies";
-
-    // console.log(tweetId);
-    const tweet$ = this.http.get<Tweet>(tweetUrl).pipe(
+    let tweet$ = this.http.get<Tweet>(tweetUrl).pipe(
       map((tweetData: any) => {
-        const tweet =  tweetData.tweet
+        const tweet = tweetData.tweet
         return tweet;
       })
     )
+    tweet$.subscribe({
+      next: (tweet) => {
+        this.tweetDetail = tweet;
+        this.tweetDetailUpdated.next(this.tweetDetail);
+      },
+      error: (err)=>{
+        console.log(err)
+      }
+    })
 
-    const replies$ = this.http.get<Tweet[]>(repliesUrl).pipe(
-      map((repliesData: any)=>{
-        return repliesData.replies.map((reply)=>{
+  }
+
+  fetchReplies(tweetId: string): void{
+    const repliesUrl = "http://localhost:3000/api/tweets/" + tweetId + "/replies";
+
+    let replies$ = this.http.get<Tweet[]>(repliesUrl).pipe(
+      map((repliesData: any) => {
+        return repliesData.replies.map((reply) => {
           return {
             text: reply.text,
             author: reply.author,
@@ -61,17 +76,27 @@ export class TweetsService {
       })
     )
 
-    return forkJoin([tweet$, replies$]).pipe(
-      map(([tweet, replies]) => {
-        tweet.replies = replies;
-        return tweet;
-      })
-    );
+    replies$.subscribe((replies) => {
+      this.tweetReplies = replies;
+      this.tweetRepliesUpdated.next([...this.tweetReplies])
+    })
 
+  }
 
+  getTweetDetailsListener(): Observable<any>{
+    return this.tweetDetailUpdated.asObservable();
+  }
 
+  getTweetRepliesListener(): Observable<any>{
+    return this.tweetRepliesUpdated.asObservable();
+  }
 
+  getTweetDetail(){
+    return this.tweetDetail;
+  }
 
+  getTweetReplies(){
+    return this.tweetReplies;
   }
 
 
@@ -186,19 +211,56 @@ export class TweetsService {
   deleteTweet(tweetId: string): Observable<any> {
     return this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
       .pipe(mergeMap(
-        (response) => {
+        (response: any) => {
+          // console.log(response.tweet.parentId);
+
+          if (response.tweet._id) {
+
+            console.log("hello world")
+            // console.log(response.tweet)
+
+            let index = this.tweetReplies.findIndex(r => r.id === response.tweet._id)
+            if (index !== -1) {
+              this.tweetReplies.splice(index, 1);
+            }
+            console.log(this.tweetReplies)
+            this.tweetRepliesUpdated.next([...this.tweetReplies])
+
+
+            // this.allTweets.forEach(t => {
+            //   if (t.id === response.tweet.parentId) {
+            //     console.log(tweetId)
+            //     const index = t.replies.findIndex(r => r === tweetId);
+            //     console.log(index);
+            //     if (index !== -1) {
+            //       t.replies.splice(index, 1);
+            //     }
+            //     console.log(t.replies)
+            //   }
+            // })
+
+          }
+
           const tweetsUpdated = this.allTweets.filter(t => t.id !== tweetId);
+
           this.allTweets = tweetsUpdated;
+          // console.log(this.allTweets)
           this.allTweetsUpdated.next([...this.allTweets]);
 
           const tweetsUpdatedForUser = this.allUserTweets.filter(t => t.id !== tweetId);
           this.allUserTweets = tweetsUpdatedForUser;
           this.allUserTweetsUpdated.next([...this.allUserTweets]);
 
+          console.log("response",response);
+
+
+
           return of(response);
         }
       ));
   }
+
+
 
   getTweetsUpdateListener(): Observable<Tweet[]> {
     return this.allTweetsUpdated.asObservable();
@@ -236,17 +298,23 @@ export class TweetsService {
 
   addReply(tweet: Tweet, content) {
 
-    // let lastId = this.getLastId(tweet.replies) + 1;
     const reply = this.tweetInit(content)
 
     const tweetId = tweet.id;
     const url = `http://localhost:3000/api/tweets/${tweetId}/reply`;
 
     return this.http.patch<{ message: string, updatedTweet: Tweet }>(url, reply)
-
-    // tweet.replies.push(reply);
-    // tweet.comments += 1;
-    // console.log("The comments replies: ", tweet.replies)
+      .pipe(
+        mergeMap((responseData: any) => {
+          this.allTweets.forEach((t) => {
+            if (t.id === responseData.tweet._id) {
+              t.replies.push(responseData.tweet);
+            }
+          })
+          this.allTweetsUpdated.next([...this.allTweets])
+          return of(responseData);
+        })
+      );
   }
 
 }
