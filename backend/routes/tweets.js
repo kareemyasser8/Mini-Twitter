@@ -132,63 +132,120 @@ router.patch("/:id/reply", checkAuth, (req, res, next) => {
   const username = req.userData.username;
   const reply = tweetInit(req);
 
-  reply.save().then((newReply)=>{
-      Tweet.findById(tweetId).then((tweet)=>{
-        if(!tweet){
-          res.status(404).json({message: 'Tweet not found'})
-        }
+  reply.save().then((newReply) => {
+    Tweet.findById(tweetId).then((tweet) => {
+      if (!tweet) {
+        res.status(404).json({ message: 'Tweet not found' })
+      }
 
-        if (!tweet.commentedBy.includes(username)) {
-          tweet.commentedBy.push(username);
-        }
+      if (!tweet.commentedBy.includes(username)) {
+        tweet.commentedBy.push(username);
+      }
 
-        tweet.replies.push(newReply.id);
-        return tweet.save()
-      }).then(
-        (updatedTweet) => {
-          res.status(201).json({
-            message: "Reply added successfully",
-            tweet: updatedTweet
-          })
+      tweet.replies.push(newReply.id);
+
+      return tweet.save()
+    }).then(
+      (updatedTweet) => {
+        updatedTweet.comments = updatedTweet.replies.length;
+        return updatedTweet.save();
+      }).then((updatedTweet) => {
+        res.status(201).json({
+          message: "Reply added successfully",
+          tweet: updatedTweet
         })
+      })
       .catch((error) => {
         res.status(500).json({ message: "Server error", error: error });
       })
   })
 
-  // Tweet.findById(tweetId).then(
-  //   (tweet) => {
-  //     if (!tweet) { res.status(404).json({ message: "Tweet not found" }) }
-  //     tweet.comments += 1;
-
-  //     if (!tweet.commentedBy.includes(username)) {
-  //       tweet.commentedBy.push(username);
-  //     }
-
-  //     tweet.replies.push(reply);
-  //     return tweet.save()
-  //   })
 })
 
 
 //For deleting a tweet ----------------------------------------------------------------------
 router.delete("/:id", checkAuth, (req, res, next) => {
-  Tweet.deleteOne({ _id: req.params.id, creatorId: req.userData.userId }).then(
-    (result) => {
-      console.log(result)
-      if (result.deletedCount > 0) {
-        res.status(200).json({ message: 'tweet deleted' })
-      } else {
-        res.status(401).json({ message: 'Not authorized!' })
+
+  Tweet.findById({ _id: req.params.id }).then(
+    tweet => {
+
+      if (!tweet) res.status(404).send({ message: 'tweet not found' })
+      if (!tweet.parentId && tweet.replies) {
+        deleteTweetReplies(tweet.replies);
+        return deleteTweet(tweet.id, res)
+      }
+      if (tweet.parentId && tweet.replies) {
+        removeReplyTweet(tweet)
+        deleteTweetReplies(tweet.replies);
+        return deleteTweet(tweet.id, res)
+      }
+      if (tweet.parentId && !tweet.replies) {
+        removeReplyTweet(tweet)
+        return deleteTweet(tweet.id, res)
       }
 
+      else {
+        res.status(401).json({ message: 'Not authorized!' })
+      }
     }
-  ).catch(
-    (err) => console.log(err)
   )
-
 })
 
+//-------------------helper functions for delete Tweet----------------------------------
+
+function removeReplyTweet(tweet) {
+  Tweet.findById(tweet.parentId).then(
+    (parent) => {
+      if (!parent) {
+        console.log('Tweet not found');
+        return;
+      }
+
+      const index = parent.replies.indexOf(tweet.id);
+      if (index !== -1) {
+        parent.replies.splice(index, 1);
+      }
+      parent.comments -= 1;
+      return parent.save()
+    }
+  ).catch((error) => console.log('Error deleting tweet:', error))
+}
+
+function deleteTweet(id, res) {
+  Tweet.findByIdAndDelete(id).then(
+    (tweet) => {
+      if (!tweet) {
+        console.log('Tweet not found');
+        return;
+      }
+      res.status(200).send({
+        message: 'Tweet deleted successfully'
+      })
+    }
+  ).catch((error) => {
+    console.log('Error deleting tweet:', error);
+    res.status(500).send({
+      message: 'Problem happened'
+    })
+  });
+}
+
+function deleteTweetReplies(replies) {
+  replies.forEach(replyTweetId => {
+    console.log(replyTweetId);
+    Tweet.findByIdAndDelete(replyTweetId).then(
+      (tweet) => {
+        if (!tweet) {
+          console.log('Tweet not found');
+          return;
+        }
+        console.log('Tweet deleted successfully');
+      }
+    ).catch((error) => {
+      console.log('Error deleting tweet:', error);
+    });
+  });
+}
 
 //For getting all Tweets ----------------------------------------------------------------------
 router.get('', (req, res, next) => {
@@ -221,7 +278,7 @@ router.get('/:username', (req, res, next) => {
 
 //------------------------------------------------------------------------------------------------
 router.get('/:id/details', (req, res, next) => {
-  Tweet.find({_id: req.params.id}).then(
+  Tweet.find({ _id: req.params.id }).then(
     document => {
       res.status(200).json({
         message: 'Tweet is fetched successfully!',
@@ -229,22 +286,22 @@ router.get('/:id/details', (req, res, next) => {
       })
     }
   ).catch(
-    (err)=> res.status(500).json({message: 'Error'})
+    (err) => res.status(500).json({ message: 'Error' })
   )
 })
 
 //------------------------------------------------------------------------------------------------
 
-router.get('/:id/replies', (req,res,next)=>{
-  Tweet.find({parentId: req.params.id}).then(
-    documents=>{
+router.get('/:id/replies', (req, res, next) => {
+  Tweet.find({ parentId: req.params.id }).then(
+    documents => {
       res.status(200).json({
         message: 'Replies are fetched successfully!',
         replies: documents
       })
     }
   ).catch(
-    (err)=> res.status(500).json({message: 'Error'})
+    (err) => res.status(500).json({ message: 'Error' })
   )
 })
 
