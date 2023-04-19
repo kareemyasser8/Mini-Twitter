@@ -16,7 +16,7 @@ export class TweetsService {
   private allUserTweets: Tweet[] = []
   private allUserTweetsUpdated = new Subject<Tweet[]>()
 
-  private tweetDetail: Tweet;
+  private tweetDetail: any;
   private tweetDetailUpdated = new Subject<Tweet>()
 
   private tweetReplies: Tweet[];
@@ -44,8 +44,9 @@ export class TweetsService {
     )
     tweet$.subscribe({
       next: (tweet) => {
+        // this.tweetDetail = tweet;
         this.tweetDetail = tweet;
-        this.tweetDetailUpdated.next(this.tweetDetail);
+        this.tweetDetailUpdated.next({...this.tweetDetail});
       },
       error: (err)=>{
         console.log(err)
@@ -201,59 +202,51 @@ export class TweetsService {
             if (t.id === id) t.text = newTweetText;
           })
 
+          this.tweetReplies.map(t=>{
+            if (t.id === id) t.text = newTweetText;
+          })
+
+          // this.tweetDetail[0].text = newTweetText
+          // console.log( this.tweetDetail[0].text)
+          // console.log( this.tweetDetail)
+
+
+
           this.allUserTweetsUpdated.next([...this.allUserTweets])
 
           this.allTweetsUpdated.next([...this.allTweets])
+
+          this.tweetRepliesUpdated.next([...this.tweetReplies])
+
           return of(response)
         }))
+
   }
+
+
 
   deleteTweet(tweetId: string): Observable<any> {
     return this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
       .pipe(mergeMap(
         (response: any) => {
-          // console.log(response.tweet.parentId);
 
           if (response.tweet._id) {
-
-            console.log("hello world")
-            // console.log(response.tweet)
-
             let index = this.tweetReplies.findIndex(r => r.id === response.tweet._id)
             if (index !== -1) {
               this.tweetReplies.splice(index, 1);
             }
             console.log(this.tweetReplies)
             this.tweetRepliesUpdated.next([...this.tweetReplies])
-
-
-            // this.allTweets.forEach(t => {
-            //   if (t.id === response.tweet.parentId) {
-            //     console.log(tweetId)
-            //     const index = t.replies.findIndex(r => r === tweetId);
-            //     console.log(index);
-            //     if (index !== -1) {
-            //       t.replies.splice(index, 1);
-            //     }
-            //     console.log(t.replies)
-            //   }
-            // })
-
           }
 
           const tweetsUpdated = this.allTweets.filter(t => t.id !== tweetId);
 
           this.allTweets = tweetsUpdated;
-          // console.log(this.allTweets)
           this.allTweetsUpdated.next([...this.allTweets]);
 
           const tweetsUpdatedForUser = this.allUserTweets.filter(t => t.id !== tweetId);
           this.allUserTweets = tweetsUpdatedForUser;
           this.allUserTweetsUpdated.next([...this.allUserTweets]);
-
-          console.log("response",response);
-
-
 
           return of(response);
         }

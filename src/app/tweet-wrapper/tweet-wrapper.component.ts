@@ -39,7 +39,6 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
 
       this.tweetSubscription = this.tweetService.getTweetDetailsListener().subscribe({
         next: (res)=>{
-          console.log(res);
           this.fetchedTweet$ = of(res[0])
         },
         error: (err)=>{console.log(err)}
@@ -47,7 +46,6 @@ export class TweetWrapperComponent implements OnInit, OnDestroy {
 
       this.repliesSubscription = this.tweetService.getTweetRepliesListener().subscribe({
         next: (res)=>{
-          console.log(res);
           this.fetchedReplies$ = of(res);
         },
         error: (err)=>{console.log(err)}
