@@ -4,6 +4,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Tweet } from '../tweet.model';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { Profile } from '../profile.modal';
 
 @Component({
   selector: 'search-bar',
@@ -12,9 +13,10 @@ import { Router } from '@angular/router';
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
 
-  fetchedtweets: any[] = [];
-  filteredTweets: any[]
-  tweetsSubsciption: Subscription
+  fetchedProfiles: Profile[] = [];
+  filteredProfiles: Profile[]
+
+  profilesSubsciption: Subscription
   displayedFullUserName: string
   firstName: string
   username: string;
@@ -26,14 +28,50 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   authSubscription: Subscription;
   fullNameSubscription: Subscription;
 
-  constructor(private tweetsService: TweetsService, private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
 
-    this.tweetsService.getTweets();
-    this.tweetsSubsciption = this.tweetsService.getTweetsUpdateListener().subscribe({
-      next: (tweets: Tweet[]) => {
-        this.filteredTweets = this.fetchedtweets = tweets;
+  }
+
+
+  onLogOut() {
+    this.authService.logout();
+
+  }
+
+  filter(query: string) {
+    this.filteredProfiles = (query) ?
+      this.fetchedProfiles.filter(t =>
+        t.fname.toLowerCase().includes(query.toLowerCase()) ||
+        t.lname.toLowerCase().includes(query.toLowerCase())
+      ) : [];
+  }
+
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
+    this.fullNameSubscription.unsubscribe();
+  }
+
+  goToUserProfile(a) {
+  let url = "home/profile/" + a.username;
+   this.router.navigate([url])
+  }
+
+
+  ngOnInit(): void {
+    this.authService.getProfiles();
+    this.profilesSubsciption = this.authService.getUsersUpdateListener().subscribe({
+      next: (profiles: Profile[]) =>{
+        console.log(profiles);
+        this.filteredProfiles = this.fetchedProfiles = profiles;
       }
     })
+
+    // this.tweetsService.getTweets();
+    // this.tweetsSubsciption = this.tweetsService.getTweetsUpdateListener().subscribe({
+    //   next: (tweets: Tweet[]) => {
+    //     this.filteredTweets = this.fetchedtweets = tweets;
+    //   }
+    // })
     this.userIsAuthenticated = this.authService.getIsAuth();
 
     this.authSubscription = this.authService.getAuthStatusListener().subscribe({
@@ -46,9 +84,12 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     })
 
     this.username = this.authService.getUsername();
-    this.displayedFullUserName = this.authService.getUserFullName();
-    this.firstName = this.displayedFullUserName.split(' ')[0]
 
+
+    this.displayedFullUserName = this.authService.getUserFullName();
+    if(this.displayedFullUserName){
+      this.firstName = this.displayedFullUserName.split(' ')[0]
+    }
 
     this.fullNameSubscription = this.authService.getUserFullNameListener().subscribe({
       next: (value) => {
@@ -56,36 +97,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       },
       error: (err) => { console.log(err) }
     })
-
-  }
-
-
-  onLogOut() {
-    this.authService.logout();
-
-  }
-
-  filter(query: string) {
-    this.filteredTweets = (query) ?
-      this.fetchedtweets.filter(t => t.author.toLowerCase().includes(query.toLowerCase())) : [];
-  }
-
-  ngOnDestroy(): void {
-    this.tweetsSubsciption.unsubscribe();
-    this.authSubscription.unsubscribe();
-    this.fullNameSubscription.unsubscribe();
-  }
-
-  showAuthor(a) {
-    console.log(a);
-  }
-
-
-  ngOnInit(): void {
-
-
-
-
   }
 
 

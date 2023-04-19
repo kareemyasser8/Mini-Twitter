@@ -15,6 +15,7 @@ export class TweetDetailsComponent implements OnInit {
   @Input() tweetBody: any;
 
   likeClicked: boolean = false;
+  commentClicked: boolean = false;
   likeTweetSubscription: Subscription;
   unlikeTweetSubscription: Subscription;
   userIsAuthenticated: boolean;
@@ -44,7 +45,9 @@ export class TweetDetailsComponent implements OnInit {
       const words = this.tweetBody.text?.match(/\S+/g);
       if (words && words[0].startsWith('@')) {
         this.username = words[0] // Set the username to the first word without the "@"
+
         words.shift(); // Remove the first word from the array
+
         this.tweetBody.text = words.join(' '); // Join the remaining words into a string
       }
     }
@@ -93,6 +96,6 @@ export class TweetDetailsComponent implements OnInit {
 
 
   clickComment(){
-
+    this.commentClicked = !this.commentClicked;
   }
 }

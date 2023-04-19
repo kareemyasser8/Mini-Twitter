@@ -50,6 +50,23 @@ router.post("/signup", (req, res, next) => {
 
 })
 
+router.get('',(req,res,next)=>{
+  User.find().then(
+    users =>{
+      res.status(200).json({
+        message: 'Users are fetched successfully',
+        users: users,
+      })
+    }
+  ).catch(
+    (err)=>{
+      res.status(404).json({
+        message: "Couldn't fetch the users"
+      })
+    }
+  )
+})
+
 router.post("/login", (req, res, next) => {
   let fetchedUser;
   User.findOne({ username: req.body.username })

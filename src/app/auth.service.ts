@@ -20,12 +20,32 @@ export class AuthService {
   private usernameListner = new Subject<string>();
   private userId: string;
 
+  private users: Profile[] = [];
+  private usersUpdateListener = new Subject<Profile[]>();
+
   constructor(private http: HttpClient, private router: Router) {
 
   }
 
   fetchProfile(username: string){
     return this.http.get("http://localhost:3000/api/user/" + username)
+  }
+
+  getProfiles(){
+     this.http.get<{message: string, users: Profile[]}>("http://localhost:3000/api/user/").subscribe({
+      next: (response)=>{
+          if(!response) return
+          this.users = response.users;
+          this.usersUpdateListener.next(this.users)
+      },
+      error: (err)=>{
+        console.log(err);
+      }
+     })
+  }
+
+  getUsersUpdateListener(): Observable<Profile[]>{
+    return this.usersUpdateListener.asObservable();
   }
 
   getToken() {

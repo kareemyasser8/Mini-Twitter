@@ -186,6 +186,9 @@ export class TweetsService {
 
   updateTweet(tweetToEdit: Tweet, newTweetText: string): Observable<any> {
     const id = tweetToEdit.id;
+
+    console.log(tweetToEdit.text)
+
     const update = {
       id: id,
       text: newTweetText
