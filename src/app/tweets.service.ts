@@ -206,12 +206,6 @@ export class TweetsService {
             if (t.id === id) t.text = newTweetText;
           })
 
-          // this.tweetDetail[0].text = newTweetText
-          // console.log( this.tweetDetail[0].text)
-          // console.log( this.tweetDetail)
-
-
-
           this.allUserTweetsUpdated.next([...this.allUserTweets])
 
           this.allTweetsUpdated.next([...this.allTweets])
@@ -230,12 +224,14 @@ export class TweetsService {
       .pipe(mergeMap(
         (response: any) => {
 
-          if (response.tweet._id) {
+          if (response.tweet._id && response.tweet.parentId) {
             let index = this.tweetReplies.findIndex(r => r.id === response.tweet._id)
             if (index !== -1) {
               this.tweetReplies.splice(index, 1);
             }
-            console.log(this.tweetReplies)
+
+            this.tweetDetail[0].comments -= 1;
+            this.tweetDetailUpdated.next(this.tweetDetail);
             this.tweetRepliesUpdated.next([...this.tweetReplies])
           }
 
