@@ -32,6 +32,7 @@ export class EditTweetComponent implements OnInit {
   }
 
   closeModel() {
+
     this.close.emit(null);
   }
 

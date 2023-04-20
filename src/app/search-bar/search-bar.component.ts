@@ -28,14 +28,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   authSubscription: Subscription;
   fullNameSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {
-
-  }
-
+  constructor(private authService: AuthService, private router: Router) {}
 
   onLogOut() {
     this.authService.logout();
-
   }
 
   filter(query: string) {
@@ -61,17 +57,10 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.authService.getProfiles();
     this.profilesSubsciption = this.authService.getUsersUpdateListener().subscribe({
       next: (profiles: Profile[]) =>{
-        console.log(profiles);
         this.filteredProfiles = this.fetchedProfiles = profiles;
       }
     })
 
-    // this.tweetsService.getTweets();
-    // this.tweetsSubsciption = this.tweetsService.getTweetsUpdateListener().subscribe({
-    //   next: (tweets: Tweet[]) => {
-    //     this.filteredTweets = this.fetchedtweets = tweets;
-    //   }
-    // })
     this.userIsAuthenticated = this.authService.getIsAuth();
 
     this.authSubscription = this.authService.getAuthStatusListener().subscribe({
@@ -84,8 +73,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     })
 
     this.username = this.authService.getUsername();
-
-
     this.displayedFullUserName = this.authService.getUserFullName();
     if(this.displayedFullUserName){
       this.firstName = this.displayedFullUserName.split(' ')[0]

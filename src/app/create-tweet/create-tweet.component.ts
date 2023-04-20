@@ -33,7 +33,7 @@ export class CreateTweetComponent implements OnInit {
 
     if (this.replyTo == null && this.tweetToEdit == null) return
     if (this.tweetToEdit != null) {
-      console.log(this.tweetToEdit.text);
+      // console.log(this.tweetToEdit.text);
       this.tweetInputEditingText = this.tweetToEdit.text;
       this.tweetLength = this.tweetToEdit.text.length;
     }
@@ -59,13 +59,12 @@ export class CreateTweetComponent implements OnInit {
     this.isloading = true;
 
     if (this.replyTo) {
-
       let mention = "@".concat(this.replyTo.username);
       let replyText = mention.concat(" ",tweetform.value.tweet)
 
       this.tweetsService.addReply(this.replyTo, replyText).subscribe({
         next: (response)=>{
-          console.log(response.message);
+          // console.log(response);
           this.tweetsService.updateAllTweets(this.replyTo.id);
           this.isloading = false;
           this.clearTweetForm(tweetform)
@@ -95,7 +94,7 @@ export class CreateTweetComponent implements OnInit {
     if (this.tweetToEdit) {
       this.editTweet(tweetform.value.tweet).subscribe({
         next: (response) => {
-          console.log(response)
+          console.log("edit response: ", response)
           this.isloading = false;
           this.clearTweetForm(tweetform)
           this.formSubmitted.emit();

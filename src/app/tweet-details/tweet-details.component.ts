@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Tweet } from '../tweet.model';
 import { DatePipe } from '@angular/common';
 import { TweetsService } from '../tweets.service';
@@ -27,11 +27,10 @@ export class TweetDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.updateUsername();
-    // console.log(this.tweetBody.likedBy);
     this.currentUsername = this.authService.getUsername();
     this.userIsAuthenticated = this.authService.getIsAuth();
 
-    if(this.tweetBody.likedBy.includes(this.currentUsername)){
+    if (this.tweetBody.likedBy.includes(this.currentUsername)) {
       this.likeClicked = true;
     }
   }
@@ -42,6 +41,12 @@ export class TweetDetailsComponent implements OnInit {
 
   updateUsername() {
     if (this.tweetBody) {
+
+      if (this.tweetBody._id) {
+        this.tweetBody.id = this.tweetBody._id;
+        delete this.tweetBody._id;
+      }
+
       const words = this.tweetBody.text?.match(/\S+/g);
       if (words && words[0].startsWith('@')) {
         this.username = words[0] // Set the username to the first word without the "@"
@@ -53,7 +58,7 @@ export class TweetDetailsComponent implements OnInit {
     }
   }
 
-  convertDateFormat(data){
+  convertDateFormat(data) {
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(data, 'h:mm a - MMM d, y');
     return formattedDate;
@@ -64,11 +69,11 @@ export class TweetDetailsComponent implements OnInit {
       this.likeClicked = true
       this.tweetBody.likes += 1;
 
-      this.likeTweetSubscription = this.tweetService.likeTweet(this.tweetBody._id)
-      .subscribe(
+      this.likeTweetSubscription = this.tweetService.likeTweet(this.tweetBody.id)
+        .subscribe(
           {
-            next: (result)=>{},
-            error: (err)=>{
+            next: (result) => { },
+            error: (err) => {
               console.log(err);
               this.likeClicked = false;
               this.tweetBody.likes -= 1;
@@ -79,11 +84,11 @@ export class TweetDetailsComponent implements OnInit {
       this.likeClicked = false
       this.tweetBody.likes -= 1;
 
-      this.unlikeTweetSubscription = this.tweetService.unlikeTweet(this.tweetBody._id)
-      .subscribe(
+      this.unlikeTweetSubscription = this.tweetService.unlikeTweet(this.tweetBody.id)
+        .subscribe(
           {
-            next: (result)=>{},
-            error: (err)=>{
+            next: (result) => { },
+            error: (err) => {
               console.log(err);
               this.likeClicked = true;
               this.tweetBody.likes += 1;
@@ -95,7 +100,7 @@ export class TweetDetailsComponent implements OnInit {
   }
 
 
-  clickComment(){
+  clickComment() {
     this.commentClicked = !this.commentClicked;
   }
 }

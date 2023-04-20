@@ -28,12 +28,12 @@ export class TweetsService {
   updateAllTweets(tweetId?) {
     this.getTweets();
     if (tweetId) {
-      console.log(true);
       this.fetchTweet(tweetId)
+      this.fetchReplies(tweetId);
     }
   }
 
-  fetchTweet(tweetId: string): void{
+  fetchTweet(tweetId: string): void {
     const tweetUrl = "http://localhost:3000/api/tweets/" + tweetId + "/details"
 
     let tweet$ = this.http.get<Tweet>(tweetUrl).pipe(
@@ -46,16 +46,16 @@ export class TweetsService {
       next: (tweet) => {
         // this.tweetDetail = tweet;
         this.tweetDetail = tweet;
-        this.tweetDetailUpdated.next({...this.tweetDetail});
+        this.tweetDetailUpdated.next({ ...this.tweetDetail });
       },
-      error: (err)=>{
+      error: (err) => {
         console.log(err)
       }
     })
 
   }
 
-  fetchReplies(tweetId: string): void{
+  fetchReplies(tweetId: string): void {
     const repliesUrl = "http://localhost:3000/api/tweets/" + tweetId + "/replies";
 
     let replies$ = this.http.get<Tweet[]>(repliesUrl).pipe(
@@ -84,19 +84,19 @@ export class TweetsService {
 
   }
 
-  getTweetDetailsListener(): Observable<any>{
+  getTweetDetailsListener(): Observable<any> {
     return this.tweetDetailUpdated.asObservable();
   }
 
-  getTweetRepliesListener(): Observable<any>{
+  getTweetRepliesListener(): Observable<any> {
     return this.tweetRepliesUpdated.asObservable();
   }
 
-  getTweetDetail(){
+  getTweetDetail() {
     return this.tweetDetail;
   }
 
-  getTweetReplies(){
+  getTweetReplies() {
     return this.tweetReplies;
   }
 
@@ -197,23 +197,33 @@ export class TweetsService {
     return this.http.patch('http://localhost:3000/api/tweets/' + id, update)
       .pipe(mergeMap(
         (response) => {
-          this.allTweets.map(t => {
-            if (t.id === id) t.text = newTweetText;
-          })
 
-          this.allUserTweets.map(t => {
-            if (t.id === id) t.text = newTweetText;
-          })
+          console.log(response);
 
-          this.tweetReplies.map(t=>{
-            if (t.id === id) t.text = newTweetText;
-          })
+          if (this.allTweets) {
+            this.allTweets.map(t => {
+              if (t.id === id) t.text = newTweetText;
+            })
 
-          this.allUserTweetsUpdated.next([...this.allUserTweets])
+            this.allTweetsUpdated.next([...this.allTweets])
+          }
 
-          this.allTweetsUpdated.next([...this.allTweets])
+          if (this.allUserTweets) {
 
-          this.tweetRepliesUpdated.next([...this.tweetReplies])
+            this.allUserTweets.map(t => {
+              if (t.id === id) t.text = newTweetText;
+            })
+
+            this.allUserTweetsUpdated.next([...this.allUserTweets])
+          }
+
+          if (this.tweetReplies) {
+            this.tweetReplies.map(t => {
+              if (t.id === id) t.text = newTweetText;
+            })
+
+            this.tweetRepliesUpdated.next([...this.tweetReplies])
+          }
 
           return of(response)
         }))

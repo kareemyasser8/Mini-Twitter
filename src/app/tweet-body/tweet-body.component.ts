@@ -43,6 +43,7 @@ export class TweetBodyComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tweetBody) {
+
       const words = this.tweetBody.text.split(' ');
       if (words[0].startsWith('@')) {
         this.username = words[0]; // Set the username to the first word without the "@"

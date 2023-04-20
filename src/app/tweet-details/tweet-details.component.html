@@ -42,5 +42,5 @@
   </div>
 
   <!-- <div class="separator"></div> -->
-  <create-tweet *ngIf="commentClicked"></create-tweet>
+  <create-tweet *ngIf="commentClicked && tweetBody" [replyTo]="tweetBody"></create-tweet>
 </div>
