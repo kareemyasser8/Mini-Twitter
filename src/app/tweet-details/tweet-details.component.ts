@@ -72,7 +72,7 @@ export class TweetDetailsComponent implements OnInit {
       this.likeTweetSubscription = this.tweetService.likeTweet(this.tweetBody.id)
         .subscribe(
           {
-            next: (result) => { },
+            next: (result) => {console.log(result) },
             error: (err) => {
               console.log(err);
               this.likeClicked = false;

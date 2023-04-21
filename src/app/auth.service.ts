@@ -64,7 +64,6 @@ export class AuthService {
     return this.http.post("http://localhost:3000/api/user/signup", user)
   }
 
-
   login(username: string, password: string) {
     let userdata = {
       username: username,

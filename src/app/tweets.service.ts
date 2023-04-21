@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, map, merge, mergeMap, Observable, of, Subject, tap } from 'rxjs';
+import { catchError, forkJoin, map, merge, mergeMap, Observable, of, Subject, tap, throwError } from 'rxjs';
 
 import { Tweet } from './tweet.model';
 import { AuthService } from './auth.service';
+import { NotificationsService } from './notifications.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,10 @@ export class TweetsService {
   private tweetRepliesUpdated = new Subject<Tweet[]>()
 
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private notificationService: NotificationsService) { }
 
   updateAllTweets(tweetId?) {
     this.getTweets();
@@ -198,8 +202,6 @@ export class TweetsService {
       .pipe(mergeMap(
         (response) => {
 
-          console.log(response);
-
           if (this.allTweets) {
             this.allTweets.map(t => {
               if (t.id === id) t.text = newTweetText;
@@ -272,8 +274,49 @@ export class TweetsService {
     return new Date();
   }
 
+  // likeTweet(tweetId: string) {
+  //   const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
+  //   return this.http.patch(url, {}).pipe(
+  //     tap(() => {
+  //       this.notificationService.notifyLike(tweetId).subscribe({
+  //         next: ()=>{console.log("notification added successfully")},
+  //         error: (err)=> {console.log(err)}
+  //       })
+  //     }),
+  //     catchError(error => {
+  //       console.error(error);
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
+
+  // likeTweet(tweetId: string) {
+  //   const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
+  //   this.notificationService.notifyLike(tweetId)
+  //   return this.http.patch(url, {});
+  // }
+
   likeTweet(tweetId: string) {
     const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
+    const url1 = `http://localhost:3000/api/tweets/${tweetId}/details`
+
+    this.http.get(url1).subscribe({
+      next: (response: any) => {
+        const targetedUserId = response.tweet[0]._id;
+        console.log(targetedUserId);
+
+        this.notificationService.notifyLike(tweetId, targetedUserId).subscribe({
+          next: (response: any) => {
+            console.log(response);
+          },
+          error: (err) => console.log(err)
+        });
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
     return this.http.patch(url, {});
   }
 

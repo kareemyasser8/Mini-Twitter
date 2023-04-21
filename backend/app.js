@@ -3,6 +3,7 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const tweetsRoutes = require("./routes/tweets")
 const userRoutes = require("./routes/user")
+const notificationsRoutes = require("./routes/notification")
 
 const cors = require('cors');
 const corsOptions = {
@@ -36,6 +37,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/api/tweets", tweetsRoutes)
 app.use("/api/user", userRoutes)
+app.use("/api/notifications", notificationsRoutes)
 
 //DHVCkhocJ7C6XdWe
 

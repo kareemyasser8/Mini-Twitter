@@ -29,7 +29,8 @@ router.post("/signup", (req, res, next) => {
         fname: req.body.fname,
         lname: req.body.lname,
         username: req.body.username,
-        password: hash
+        password: hash,
+        notifications: []
       })
       user.save().then(
         (result) => {
