@@ -56,6 +56,10 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
+  getUserId(){
+    return this.userId;
+  }
+
   getAuthStatusListener(): Observable<boolean> {
     return this.authStatusListener;
   }

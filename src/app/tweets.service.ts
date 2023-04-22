@@ -274,49 +274,17 @@ export class TweetsService {
     return new Date();
   }
 
-  // likeTweet(tweetId: string) {
-  //   const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
-  //   return this.http.patch(url, {}).pipe(
-  //     tap(() => {
-  //       this.notificationService.notifyLike(tweetId).subscribe({
-  //         next: ()=>{console.log("notification added successfully")},
-  //         error: (err)=> {console.log(err)}
-  //       })
-  //     }),
-  //     catchError(error => {
-  //       console.error(error);
-  //       return throwError(error);
-  //     })
-  //   );
-  // }
-
-  // likeTweet(tweetId: string) {
-  //   const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
-  //   this.notificationService.notifyLike(tweetId)
-  //   return this.http.patch(url, {});
-  // }
 
   likeTweet(tweetId: string) {
     const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
-    const url1 = `http://localhost:3000/api/tweets/${tweetId}/details`
-
-    this.http.get(url1).subscribe({
-      next: (response: any) => {
-        const targetedUserId = response.tweet[0]._id;
-        console.log(targetedUserId);
-
-        this.notificationService.notifyLike(tweetId, targetedUserId).subscribe({
-          next: (response: any) => {
-            console.log(response);
-          },
-          error: (err) => console.log(err)
-        });
+    let result = this.notificationService.sendLikeNotification(tweetId);
+    result.subscribe({
+      next: (res) => {
+        console.log(res)
       },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-
+      error: (err) => { console.log(err) }
+    }
+    )
     return this.http.patch(url, {});
   }
 

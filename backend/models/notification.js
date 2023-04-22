@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator')
+// const uniqueValidator = require('mongoose-unique-validator')
 
 const notificationSchema = mongoose.Schema({
-
   type: {
     type: String,
     required: true
@@ -24,19 +23,13 @@ const notificationSchema = mongoose.Schema({
     ref: "User",
     required: true
   },
-  senderName: {
-    type: String,
-    required: true
-  },
   targetId: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: "Tweet",
     required: true
-  },
-  targetedUserId:{
-    type: mongoose.Schema.Types.ObjectId
   }
 });
 
-notificationSchema.plugin(uniqueValidator);
+// notificationSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('Notification', notificationSchema);

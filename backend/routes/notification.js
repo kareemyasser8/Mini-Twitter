@@ -3,14 +3,44 @@ const express = require("express")
 const router = express.Router();
 const Notification = require("../models/notification");
 const User = require("../models/user");
+const Tweet = require("../models/tweet");
 const checkAuth = require("../middleware/check-auth")
+const mongoose = require('mongoose')
 const { ObjectId } = require('mongodb');
+
+
+function initNotification(type, req) {
+  const commonProps = {
+    timestamp: new Date(),
+    read: false,
+    senderId: req.body.senderId,
+    targetId: req.body.targetId
+  }
+
+  switch (type) {
+    case 'like':
+      return new Notification({
+        type: 'like',
+        message: 'liked your tweet',
+        ...commonProps
+      });
+    case 'comment':
+      return new Notification({
+        type: 'comment',
+        message: 'commented on your tweet',
+        ...commonProps
+      });
+    default:
+      throw new Error(`Invalid notification type: ${type}`);
+  }
+
+}
 
 
 //For getting all Notifications of a certain user ----------------------------------------------------
 router.get('/:username', (req, res, next) => {
   Notification.find({
-    username: req.params.username
+    targetedUsername: req.params.username
   }).then(
     notifications => {
       res.status(200).json({
@@ -23,37 +53,37 @@ router.get('/:username', (req, res, next) => {
   )
 })
 
+
+
 //posting a notification to a certain user ---------------------------------
 
-router.post("/like", checkAuth, (req, res, next) => {
-  const notification = new Notification({
-    id: new ObjectId(),
-    type: 'like',
-    message: req.body.message,
-    timestamp: new Date(),
-    read: false,
-    senderId: req.userData.userId,
-    senderName: req.userData.userFullName,
-    targetId: req.body.tweetId,
-    targetedUserId: req.body.targetedUserId
-  });
-
-  notification.save().then(
-    (result) => {
-      console.log(result)
-      console.log("notification saved")
-      User.findById(req.body.targetedUserId).then(
-        result => {
-          console.log(result)
-        }).catch(
-          err => console.log(err)
-        )
+router.post('/:tweetId', async (req, res, next) => {
+  const tweetId = req.params.tweetId;
+  try {
+    const tweet = await Tweet.findById(tweetId).populate('creatorId');
+    if (!tweet.creatorId.username) {
+      return;
     }
-  ).catch((err) => console.log(err));
+    const notification = initNotification('like', req);
+    let savedNotification = await notification.save();
+    await User.findOneAndUpdate(
+      { username: tweet.creatorId.username },
+      { $push: { notifications: notification._id } },
+      { new: true }
+    );
 
-
-
+    res.status(200).json({
+      message: 'notification saved',
+      notification: savedNotification
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  }
 });
+
+
+
 
 
 module.exports = router;

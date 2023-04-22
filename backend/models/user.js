@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
     },
     notifications: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Notification'
+      ref: "Notification"
     }]
 })
 
