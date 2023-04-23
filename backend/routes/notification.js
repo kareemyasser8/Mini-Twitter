@@ -38,19 +38,18 @@ function initNotification(type, req) {
 
 
 //For getting all Notifications of a certain user ----------------------------------------------------
-router.get('/:username', (req, res, next) => {
-  Notification.find({
-    targetedUsername: req.params.username
-  }).then(
-    notifications => {
-      res.status(200).json({
-        message: 'notifications fetched successfully!',
-        notifications: notifications
-      })
-    }
-  ).catch(
-    (err) => res.status(404).json({ message: err })
-  )
+router.get('/:username', async (req, res, next) => {
+  const notifications = await User.findOne({ username: req.params.username })
+    .select('notifications -_id')
+    .populate({
+      path: 'notifications',
+      select: '-_id -senderId',
+      populate: {
+        path: 'targetId',
+        select: '-_id text username author'
+      }
+    })
+  res.status(200).send(notifications);
 })
 
 
