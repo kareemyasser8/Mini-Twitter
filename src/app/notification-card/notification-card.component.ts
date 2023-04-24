@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NotificationTimeAgoPipe } from '../notification-time-ago.pipe';
+import { Notification } from '../notification.modal';
 
 @Component({
   selector: 'notification-card',
@@ -7,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationCardComponent implements OnInit {
 
+  @Input() notification: Notification;
+
   constructor() { }
+
+  convertDate(string){
+    return new Date(string);
+  }
 
   ngOnInit(): void {
   }

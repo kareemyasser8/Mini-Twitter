@@ -1,9 +1,12 @@
 <div class="notifications-container">
   <h3 class="page-title">Notifications</h3>
-  <notification-card></notification-card>
-  <notification-card></notification-card>
-  <notification-card></notification-card>
-  <notification-card></notification-card>
-  <notification-card></notification-card>
+
+  <div class="text-center" *ngIf="!notifications">
+    <div class="spinner-border" style="width: 3rem; height: 3rem; color: #1DA1F2;" role="status"></div>
+  </div>
+
+  <div *ngFor="let n of notifications">
+    <notification-card [notification]="n"></notification-card>
+  </div>
   <div class="separator"></div>
 </div>

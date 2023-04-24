@@ -2,8 +2,13 @@
   <div class="notification-body">
 
     <div class="notification-type-icon">
-      <i class="bi bi-heart-fill"></i>
-      <!-- <i class="bi bi-reply-fill"></i> -->
+      <div *ngIf="notification.type =='like'">
+        <i class="bi bi-heart-fill"></i>
+      </div>
+
+      <div *ngIf="notification.type =='reply'">
+        <i class="bi bi-reply-fill"></i>
+      </div>
     </div>
 
     <div class="notification-details">
@@ -16,18 +21,17 @@
       </div>
       <div class="action-section">
         <!-- <span>Olya</span> sent a reply on your tweet. -->
-        <span>Olya</span> liked your tweet.
+        <span [routerLink]="'/home/profile/' + notification.senderId.username">{{notification.senderId.fname}}</span> {{notification.message}}
       </div>
 
-      <div class="your-tweet">
-        <p>Also note that the subscribe() method is being called inside the updateTweet() method, so you don't need to
-          subscribe to the returned observable 113</p>
+      <div class="your-tweet" [routerLink]="'/home/tweet/' + notification.targetId._id">
+        <p>{{notification.targetId.text}}</p>
       </div>
 
     </div>
 
     <div class="notification-time">
-      <p>2h ago</p>
+      <p>{{convertDate(notification.timestamp)  | timeAgo}}</p>
     </div>
 
   </div>

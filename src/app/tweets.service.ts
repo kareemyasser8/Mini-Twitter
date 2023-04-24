@@ -290,6 +290,13 @@ export class TweetsService {
 
   unlikeTweet(tweetId: string) {
     const url = `http://localhost:3000/api/tweets/${tweetId}/unlike`;
+    let result = this.notificationService.removeLikeNotification(tweetId)
+    result.subscribe({
+      next: (res) => {
+        console.log(res)
+      },
+      error: (err) => { console.log(err) }
+    })
     return this.http.patch(url, {});
   }
 
@@ -315,6 +322,17 @@ export class TweetsService {
 
     const tweetId = tweet.id;
     const url = `http://localhost:3000/api/tweets/${tweetId}/reply`;
+
+    let result = this.notificationService.sendReplyNotification(tweetId);
+
+    result.subscribe({
+      next: (res) => {
+        console.log(res)
+      },
+      error: (err) => { console.log(err) }
+    }
+    )
+
 
     return this.http.patch<{ message: string, updatedTweet: Tweet }>(url, reply)
       .pipe(

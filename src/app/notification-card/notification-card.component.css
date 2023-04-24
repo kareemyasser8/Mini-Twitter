@@ -13,7 +13,6 @@
   padding-top: 25px;
   margin: auto;
   display: flex;
-  cursor: pointer;
   /* border: 1px solid red; */
 }
 
@@ -40,7 +39,7 @@
 }
 
 .bi-reply-fill{
-  color: #7FBA00
+  color: #00B2FF
 }
 
 .notification-details{
@@ -54,8 +53,14 @@
     font-weight: bold;
 }
 
+.action-section span:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .your-tweet{
   color: rgb(161, 161, 161);
+  cursor: pointer;
 }
 
 .small-profile-picture-section{

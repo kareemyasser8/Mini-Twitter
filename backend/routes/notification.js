@@ -24,9 +24,9 @@ function initNotification(type, req) {
         message: 'liked your tweet',
         ...commonProps
       });
-    case 'comment':
+    case 'reply':
       return new Notification({
-        type: 'comment',
+        type: 'reply',
         message: 'commented on your tweet',
         ...commonProps
       });
@@ -43,11 +43,11 @@ router.get('/:username', async (req, res, next) => {
     .select('notifications -_id')
     .populate({
       path: 'notifications',
-      select: '-_id -senderId',
-      populate: {
-        path: 'targetId',
-        select: '-_id text username author'
-      }
+      select: '-_id',
+      populate: [
+        { path: 'senderId', select: '-_id' },
+        { path: 'targetId', select: '_id text username author' }
+      ]
     })
   res.status(200).send(notifications);
 })
@@ -56,7 +56,7 @@ router.get('/:username', async (req, res, next) => {
 
 //posting a notification to a certain user ---------------------------------
 
-router.post('/:tweetId', async (req, res, next) => {
+router.post('/:tweetId/like', async (req, res, next) => {
   const tweetId = req.params.tweetId;
   try {
     const tweet = await Tweet.findById(tweetId).populate('creatorId');
@@ -64,6 +64,66 @@ router.post('/:tweetId', async (req, res, next) => {
       return;
     }
     const notification = initNotification('like', req);
+    let savedNotification = await notification.save();
+    await User.findOneAndUpdate(
+      { username: tweet.creatorId.username },
+      { $push: { notifications: notification._id } },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: 'notification saved',
+      notification: savedNotification
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
+router.delete('/:tweetId/:senderId/like', async (req, res, next) => {
+  const tweetId = req.params.tweetId;
+  const senderId = req.params.senderId;
+  try {
+    const tweet = await Tweet.findById(tweetId).populate('creatorId');
+    if (!tweet.creatorId.username) {
+      return;
+    }
+
+    const notification = await Notification.findOneAndDelete({
+      tweetId,
+      senderId: senderId,
+      type: 'like'
+    });
+    if (!notification) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+
+    await User.findOneAndUpdate(
+      { username: tweet.creatorId.username },
+      { $pull: { notifications: notification._id } },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: 'Notification removed successfully',
+      notification
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  }
+});
+
+router.post('/:tweetId/reply', async (req, res, next) => {
+  const tweetId = req.params.tweetId;
+  try {
+    const tweet = await Tweet.findById(tweetId).populate('creatorId');
+    if (!tweet.creatorId.username) {
+      return;
+    }
+    const notification = initNotification('reply', req);
     let savedNotification = await notification.save();
     await User.findOneAndUpdate(
       { username: tweet.creatorId.username },

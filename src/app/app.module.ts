@@ -29,6 +29,7 @@ import { NotificationsPageComponent } from './notifications-page/notifications-p
 import { NotificationCardComponent } from './notification-card/notification-card.component';
 import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
 import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
+import { NotificationTimeAgoPipe } from './notification-time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
     NotificationCardComponent,
     EmptyTweetsComponent,
     TweetDetailsComponent,
+    NotificationTimeAgoPipe
 
   ],
   imports: [
@@ -62,6 +64,8 @@ import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
     HttpClientModule,
     ReactiveFormsModule,
     NgPipesModule,
+
+
 
   ],
   providers: [TweetsService, AuthService,
