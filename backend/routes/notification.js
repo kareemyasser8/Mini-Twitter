@@ -82,27 +82,30 @@ router.post('/:tweetId/like', async (req, res, next) => {
 });
 
 
-router.delete('/:tweetId/:senderId/like', async (req, res, next) => {
+router.delete('/:tweetId/like', async (req, res, next) => {
   const tweetId = req.params.tweetId;
-  const senderId = req.params.senderId;
   try {
-    const tweet = await Tweet.findById(tweetId).populate('creatorId');
+    const tweet = await Tweet.findById(tweetId).populate('creatorId')
+    let notificationId = "";
+    if (tweet.creatorId.notifications.length > 0) {
+      notificationId = tweet.creatorId.notifications[tweet.creatorId.notifications.length - 1];
+    }
+
     if (!tweet.creatorId.username) {
       return;
     }
 
-    const notification = await Notification.findOneAndDelete({
-      tweetId,
-      senderId: senderId,
-      type: 'like'
+    const notification = await Notification.findOne({
+      notificationId
     });
+
     if (!notification) {
       return res.status(404).json({ message: 'Notification not found' });
     }
 
-    await User.findOneAndUpdate(
+    let result = await User.findOneAndUpdate(
       { username: tweet.creatorId.username },
-      { $pull: { notifications: notification._id } },
+      { $pull: { notifications: notificationId } },
       { new: true }
     );
 

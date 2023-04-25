@@ -8,5 +8,10 @@
   <div *ngFor="let n of notifications">
     <notification-card [notification]="n"></notification-card>
   </div>
+
+  <div *ngIf="notifications?.length === 0">
+    <empty-tweets [emptyNotification]="true"></empty-tweets>
+  </div>
+
   <div class="separator"></div>
 </div>

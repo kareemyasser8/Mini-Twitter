@@ -1,4 +1,4 @@
-<div class="empty-Tweets-container" *ngIf = "emptyTweetsOfUser === false">
+<div class="empty-Tweets-container" *ngIf = "emptyTweetsOfUser === false && emptyNotification === false ">
   <h2>What? No Tweets yet?</h2>
 
   <p>It's empty now but it won't be for long. <br>
@@ -6,12 +6,17 @@
     but soon you will see tweets when people try it.</p>
 </div>
 
-<div class="empty-Tweets-container" *ngIf = "emptyTweetsOfUser === true">
+<div class="empty-Tweets-container" *ngIf = "emptyTweetsOfUser === true && emptyNotification === false">
   <h2>No tweets</h2>
 
   <p>The User hasn't posted any tweets yet</p>
 </div>
 
+<div class="empty-Tweets-container" *ngIf = "emptyNotification === true">
+  <h2>No Notification</h2>
+
+  <p>You don't have any notification yet</p>
+</div>
 
 
 

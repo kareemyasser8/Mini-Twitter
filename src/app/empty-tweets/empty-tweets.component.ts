@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class EmptyTweetsComponent implements OnInit {
 
   @Input() emptyTweetsOfUser:boolean = false;
+  @Input() emptyNotification: boolean = false;
 
   constructor() { }
 

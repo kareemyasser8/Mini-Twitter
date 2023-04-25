@@ -55,7 +55,7 @@ export class NotificationsService {
 
   removeLikeNotification(tweetId){
     const senderId = this.authService.getUserId();
-    const url = "http://localhost:3000/api/notifications/" + tweetId +'/'+ senderId +"/like"
+    const url = "http://localhost:3000/api/notifications/" + tweetId +"/like"
 
     return this.http.delete(url)
   }
