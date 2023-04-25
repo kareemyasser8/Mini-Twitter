@@ -6,18 +6,27 @@
     <ul class="navbar-items">
       <li routerLinkActive="active" routerLink="/home/feed">
         <i class="bi bi-house"></i>
-         <span class="page-link">Home</span>
+        <span class="page-link">Home</span>
       </li>
       <li routerLinkActive="active" *ngIf="userIsAuthenticated" [routerLink]="['/home/profile/', username]">
         <i class="bi bi-person"></i>
         <span class="page-link">Profile</span>
       </li>
       <li routerLinkActive="active" *ngIf="userIsAuthenticated" routerLink="/home/notifications">
-        <i class="bi bi-bell"></i>
+        <div class="bell-Icon">
+          <i class="bi bi-bell"></i>
+
+          <div *ngIf="this.notificationCount">
+            <div class="number-circle">
+              {{this.notificationCount}}
+            </div>
+          </div>
+
+        </div>
         <span class="page-link">Notifications</span>
       </li>
-      <li routerLinkActive="active" >
-        <i  class="bi bi-search"></i>
+      <li routerLinkActive="active">
+        <i class="bi bi-search"></i>
         <span class="page-link">Search</span>
       </li>
     </ul>

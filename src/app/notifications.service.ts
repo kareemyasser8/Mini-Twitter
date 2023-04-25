@@ -14,32 +14,33 @@ export class NotificationsService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  getNotificationsUpdateListener(): Observable<Notification[]>{
+  getNotificationsUpdateListener(): Observable<Notification[]> {
     return this.notificationsUpdateListener.asObservable();
   }
 
-  getNotifications(username){
+  getNotifications(username) {
     const url = "http://localhost:3000/api/notifications/" + username
     const result = this.http.get(url);
     result.subscribe({
-      next: (result:any)=> {
+      next: (result: any) => {
         this.notifications = result;
         this.notificationsUpdateListener.next(this.notifications);
         // console.log(result);
       },
-      error: (err)=> console.log(err)
+      error: (err) => console.log(err)
     })
   }
 
   sendLikeNotification(tweetId) {
-    const url = "http://localhost:3000/api/notifications/" + tweetId +"/like"
+    const url = "http://localhost:3000/api/notifications/" + tweetId + "/like"
     const senderId = this.authService.getUserId();
 
     const like = {
       senderId: senderId,
       targetId: tweetId
     }
-    return this.http.post(url, like);
+
+    return this.http.post(url, like)
   }
 
   sendReplyNotification(tweetId) {
@@ -53,9 +54,9 @@ export class NotificationsService {
     return this.http.post(url, reply);
   }
 
-  removeLikeNotification(tweetId){
+  removeLikeNotification(tweetId) {
     const senderId = this.authService.getUserId();
-    const url = "http://localhost:3000/api/notifications/" + tweetId +"/like"
+    const url = "http://localhost:3000/api/notifications/" + tweetId + "/like"
 
     return this.http.delete(url)
   }

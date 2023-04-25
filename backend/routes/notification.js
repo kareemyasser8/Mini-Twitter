@@ -48,10 +48,14 @@ router.get('/:username', async (req, res, next) => {
         { path: 'senderId', select: '-_id' },
         { path: 'targetId', select: '_id text username author' }
       ]
-    })
+    }).lean(); // add this to enable array manipulations
+
+  notifications.notifications = notifications.notifications.filter(notification => {
+    return notification.targetId !== null;
+  })
+
   res.status(200).send(notifications);
 })
-
 
 
 //posting a notification to a certain user ---------------------------------
