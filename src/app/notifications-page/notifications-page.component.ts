@@ -24,11 +24,21 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
     this.notificationSubscription = this.notificationsService.getNotificationsUpdateListener()
       .subscribe({
         next: (result: any) => {
-          this.notifications = result.notifications.reverse()
+          this.notifications = result.reverse()
+          this.notificationsService.updateNotifications()
         },
         error: (err) => console.log(err)
       })
 
+    if (this.notifications) {
+      console.log(this.notifications)
+
+    }
+
+  }
+
+  trackById(index: number, notification: any): string {
+    return notification._id; // or any other unique identifier for the notification
   }
 
   ngOnDestroy(): void {

@@ -8,10 +8,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent implements OnInit,OnDestroy {
+export class NavBarComponent implements OnInit, OnDestroy {
 
   userIsAuthenticated: boolean;
   username: string
+  userId: string
   notificationCount: number = null;
   notificationsSubscription: Subscription;
 
@@ -22,21 +23,23 @@ export class NavBarComponent implements OnInit,OnDestroy {
     this.username = this.authService.getUsername();
 
     this.authService.getAuthStatusListener().subscribe({
-      next: (value)=>{
+      next: (value) => {
         this.userIsAuthenticated = value
       },
-      error: (err)=>{
+      error: (err) => {
         console.log(err);
       }
     })
-
     this.notificationService.getNotifications(this.username);
     this.notificationsSubscription = this.notificationService.getNotificationsUpdateListener().subscribe({
-      next: (result: any)=>{
-        this.notificationCount = result.notifications.length;
-        console.log("result is ",this.notificationCount);
+      next: (result: any) => {
+        if (result) {
+          this.notificationCount = result.filter(n => (n.senderId.username != this.username && n.read == false)).length;
+        } else {
+          this.notificationCount = 0;
+        }
       }
-    })
+    });
 
   }
 

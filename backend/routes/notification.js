@@ -40,10 +40,9 @@ function initNotification(type, req) {
 //For getting all Notifications of a certain user ----------------------------------------------------
 router.get('/:username', async (req, res, next) => {
   const notifications = await User.findOne({ username: req.params.username })
-    .select('notifications -_id')
+    .select('notifications')
     .populate({
       path: 'notifications',
-      select: '-_id',
       populate: [
         { path: 'senderId', select: '-_id' },
         { path: 'targetId', select: '_id text username author' }
@@ -62,22 +61,32 @@ router.get('/:username', async (req, res, next) => {
 
 router.post('/:tweetId/like', async (req, res, next) => {
   const tweetId = req.params.tweetId;
+  const senderId = req.body.senderId;
+
   try {
     const tweet = await Tweet.findById(tweetId).populate('creatorId');
+    if (senderId == tweet.creatorId._id) {
+      return;
+    }
+
     if (!tweet.creatorId.username) {
       return;
     }
     const notification = initNotification('like', req);
     let savedNotification = await notification.save();
+
     await User.findOneAndUpdate(
       { username: tweet.creatorId.username },
       { $push: { notifications: notification._id } },
       { new: true }
-    );
+    )
+
+    let tweetDetails = await Notification.findOne({ targetId: tweetId }).populate('targetId');
 
     res.status(200).json({
       message: 'notification saved',
-      notification: savedNotification
+      notification: savedNotification,
+      tweetDetails: tweetDetails
     })
   } catch (err) {
     console.log(err);
@@ -86,10 +95,16 @@ router.post('/:tweetId/like', async (req, res, next) => {
 });
 
 
-router.delete('/:tweetId/like', async (req, res, next) => {
+router.delete('/:tweetId/like/:senderId', async (req, res, next) => {
+  const senderId = req.params.senderId;
   const tweetId = req.params.tweetId;
   try {
     const tweet = await Tweet.findById(tweetId).populate('creatorId')
+
+    if(tweet.creatorId._id == senderId){
+        return
+    }
+
     let notificationId = "";
     if (tweet.creatorId.notifications.length > 0) {
       notificationId = tweet.creatorId.notifications[tweet.creatorId.notifications.length - 1];
@@ -148,8 +163,31 @@ router.post('/:tweetId/reply', async (req, res, next) => {
   }
 });
 
+router.put('/readAll', async (req, res, next) => {
+  try {
+    const notifications = req.body.notifications;
+    if (!notifications) {
+      throw new Error('Missing notifications array in request body');
+    }
+    const ids = notifications.map(notification => notification._id);
+    // console.log(ids);
+    const result = await Notification.updateMany(
+      { _id: { $in: ids } },
+      { $set: { read: true } }
+    );
 
+    const updatedNotifications = await Notification.find({ _id: { $in: ids } })
+      .populate([
+        { path: 'senderId', select: '-_id' },
+        { path: 'targetId', select: '_id text username author' }
+      ])
+    res.status(200).send(updatedNotifications);
 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating notifications');
+  }
+});
 
 
 module.exports = router;

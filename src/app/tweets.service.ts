@@ -277,6 +277,8 @@ export class TweetsService {
 
   likeTweet(tweetId: string) {
     const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
+    let currentUser = this.authService.getUsername();
+
     let result = this.notificationService.sendLikeNotification(tweetId);
     result.subscribe({
       next: (res) => {
