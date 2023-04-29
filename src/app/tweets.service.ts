@@ -235,6 +235,7 @@ export class TweetsService {
 
 
   deleteTweet(tweetId: string): Observable<any> {
+
     return this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
       .pipe(mergeMap(
         (response: any) => {

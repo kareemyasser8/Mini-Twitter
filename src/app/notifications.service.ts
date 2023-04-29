@@ -22,6 +22,7 @@ export class NotificationsService {
   }
 
   getNotifications(username) {
+    if(!username) return;
     const url = "http://localhost:3000/api/notifications/" + username
     const result = this.http.get(url);
     result.subscribe({
@@ -41,21 +42,7 @@ export class NotificationsService {
       senderId: senderId,
       targetId: tweetId
     }
-
     return this.http.post(url, like)
-      // .pipe(
-      //   tap((result: any) => {
-      //     if (result.tweetDetails.targetId.creatorId != senderId) {
-      //       this.notifications.push(result.notification);
-      //       this.notificationsUpdateListener.next(this.notifications);
-      //     }
-      //   }),
-      //   catchError((error) => {
-      //     this.notifications.pop();
-      //     this.notificationsUpdateListener.next(this.notifications);
-      //     return throwError(error);
-      //   })
-      // );
   }
 
   sendReplyNotification(tweetId) {
@@ -66,26 +53,12 @@ export class NotificationsService {
       senderId: senderId,
       targetId: tweetId
     }
-    // return this.http.post(url, reply);
-    return this.http.post(url, reply).pipe(
-      tap((result: any) => {
-        this.notifications.push(result.notification);
-        this.notificationsUpdateListener.next(this.notifications);
-      }),
-      catchError((error) => {
-        this.notifications.pop();
-        this.notificationsUpdateListener.next(this.notifications);
-        return throwError(error);
-      })
-    );
+    return this.http.post(url, reply)
   }
 
   removeLikeNotification(tweetId): Observable<any> {
     const senderId = this.authService.getUserId();
     const url = `http://localhost:3000/api/notifications/${tweetId}/like/${senderId}`;
-
-    // this.notifications.pop();
-    // this.notificationsUpdateListener.next(this.notifications);
 
     return this.http.delete(url).pipe(
       catchError((error) => {
@@ -101,6 +74,43 @@ export class NotificationsService {
           },
           targetId: {
             _id: '',
+            text: '',
+            username: '',
+            author: ''
+          }
+        };
+        this.notifications.push(notification);
+        this.notificationsUpdateListener.next(this.notifications);
+        return throwError(error);
+      })
+    );
+  }
+
+  removeCommentNotification(tweetId) {
+    const senderId = this.authService.getUserId();
+    const url = `http://localhost:3000/api/notifications/${tweetId}/reply/${senderId}`;
+
+    return this.http.delete(url).pipe(
+      tap(() => {
+        // Remove the notification from the notifications array
+        this.notifications = this.notifications.filter(n => n.targetId._id !== tweetId);
+        this.notificationsUpdateListener.next(this.notifications);
+        console.log("notification removed successfully!!!");
+      }),
+      catchError((error) => {
+        // Handle the error and emit a new notification
+        const notification: Notification = {
+          type: 'reply',
+          message: `Failed to remove comment notification for tweet ${tweetId}`,
+          timestamp: new Date(),
+          read: false,
+          senderId: {
+            fname: '',
+            lname: '',
+            username: ''
+          },
+          targetId: {
+            _id: tweetId,
             text: '',
             username: '',
             author: ''

@@ -122,7 +122,7 @@ router.delete('/:tweetId/like/:senderId', async (req, res, next) => {
       return res.status(404).json({ message: 'Notification not found' });
     }
 
-    let result = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { username: tweet.creatorId.username },
       { $pull: { notifications: notificationId } },
       { new: true }
@@ -138,10 +138,61 @@ router.delete('/:tweetId/like/:senderId', async (req, res, next) => {
   }
 });
 
-router.post('/:tweetId/reply', async (req, res, next) => {
+
+router.delete('/:tweetId/like/:senderId', async (req, res, next) => {
+  const senderId = req.params.senderId;
   const tweetId = req.params.tweetId;
   try {
+    const tweet = await Tweet.findById(tweetId).populate('creatorId')
+
+    if(tweet.creatorId._id == senderId){
+        return
+    }
+
+    let notificationId = "";
+    if (tweet.creatorId.notifications.length > 0) {
+      notificationId = tweet.creatorId.notifications[tweet.creatorId.notifications.length - 1];
+    }
+
+    if (!tweet.creatorId.username) {
+      return;
+    }
+
+    const notification = await Notification.findOne({
+      notificationId
+    });
+
+    if (!notification) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+
+    await User.findOneAndUpdate(
+      { username: tweet.creatorId.username },
+      { $pull: { notifications: notificationId } },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: 'Notification removed successfully',
+      notification
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
+
+
+router.post('/:tweetId/reply', async (req, res, next) => {
+  const tweetId = req.params.tweetId;
+  const senderId = req.body.senderId;
+  try {
     const tweet = await Tweet.findById(tweetId).populate('creatorId');
+    if (senderId == tweet.creatorId._id) {
+      return;
+    }
     if (!tweet.creatorId.username) {
       return;
     }

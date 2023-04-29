@@ -30,6 +30,7 @@ import { NotificationCardComponent } from './notification-card/notification-card
 import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
 import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
 import { NotificationTimeAgoPipe } from './notification-time-ago.pipe';
+import { ErrorInterceptor } from './error.interceptor';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { NotificationTimeAgoPipe } from './notification-time-ago.pipe';
 
   ],
   providers: [TweetsService, AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

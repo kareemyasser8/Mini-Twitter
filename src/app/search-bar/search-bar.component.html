@@ -2,13 +2,13 @@
   <div class="search-panel-container">
     <div class="search-section">
       <div class="form-group has-search">
-        <input maxlength="30" (blur)="searching=false" (focus)="searching = true" autocomplete="off" value="" #query
-          (keyup)="filter(query.value)" type="text" class="form-control" placeholder="Search..">
+        <input maxlength="30" (blur)="searching=false" (input)="searching = true" autocomplete="off" value="" #query
+        (keyup)="filter(query.value)" type="text" class="form-control" placeholder="Search..">
 
         <i class="bi bi-search"></i>
-        <div class="resultBox" *ngIf="searching || focusOnList" (mouseleave)="focusOnList=false"
+        <div class="resultBox" *ngIf="(searching || focusOnList) && filteredProfiles.length > 0" (mouseleave)="focusOnList=false"
           (mouseover)="focusOnList=true" (focus)="focusOnList=true">
-          <li class="result-text" *ngFor="let t of filteredProfiles" (click)="goToUserProfile(t)">
+          <li class="result-text" *ngFor="let t of filteredProfiles" (click)="goToUserProfile(t); query.value=''" >
             {{ t.fname + ' ' + t.lname }}</li>
           <!-- <li class="result-text">Hello</li> -->
         </div>
