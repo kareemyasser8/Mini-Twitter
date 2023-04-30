@@ -6,19 +6,25 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private errorDialog: ErrorDialogComponent) { }
 
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse)=>{
-        // alert(error);
-        return throwError(()=> error);
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = `Error ${error.status}: ${error.statusText}`;
+        alert(errorMessage)
+        // this.errorDialog.errorMessage = errorMessage;
+        // console.log("this.errorDialog.errorMessage => ", this.errorDialog.errorMessage)
+        // if (errorMessage) this.errorDialog.show();
+        return throwError(() => error);
       })
-    )
+    );
   }
 }

@@ -31,6 +31,7 @@ import { EmptyTweetsComponent } from './empty-tweets/empty-tweets.component';
 import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
 import { NotificationTimeAgoPipe } from './notification-time-ago.pipe';
 import { ErrorInterceptor } from './error.interceptor';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ErrorInterceptor } from './error.interceptor';
     NotificationCardComponent,
     EmptyTweetsComponent,
     TweetDetailsComponent,
-    NotificationTimeAgoPipe
+    NotificationTimeAgoPipe,
+    ErrorDialogComponent
 
   ],
   imports: [
@@ -71,7 +73,8 @@ import { ErrorInterceptor } from './error.interceptor';
   ],
   providers: [TweetsService, AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    ErrorDialogComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
     }
     this.authService.createUser(newUser).subscribe({
       next: () => { this.isloading = false; this.router.navigate(['/welcome/login']) },
-      error: (err) => { console.log(err.error.message.message); this.isloading = false }
+      error: (err) => { if(err) console.log(err); this.isloading = false }
     })
 
   }
