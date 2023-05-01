@@ -32,6 +32,7 @@ import { TweetDetailsComponent } from './tweet-details/tweet-details.component';
 import { NotificationTimeAgoPipe } from './notification-time-ago.pipe';
 import { ErrorInterceptor } from './error.interceptor';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { GuestInstructionsComponent } from './guest-instructions/guest-instructions.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     EmptyTweetsComponent,
     TweetDetailsComponent,
     NotificationTimeAgoPipe,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    GuestInstructionsComponent
 
   ],
   imports: [

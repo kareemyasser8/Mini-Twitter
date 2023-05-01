@@ -1,0 +1,11 @@
+.instructions-container{
+  background-color: rgb(255, 232, 201);
+  padding: 30px;
+  border-radius: 3px;
+  border: 1.5px solid rgb(235, 202, 72);
+  margin-bottom: 10px;
+}
+
+.instructions-container p{
+  color:rgb(82, 53, 7);
+}

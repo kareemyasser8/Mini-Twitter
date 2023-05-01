@@ -1,6 +1,10 @@
 <div class="home-feed-container">
+
   <h3 class="page-title">Home</h3>
+
+  <guest-instructions *ngIf="!userIsAuthenticated"></guest-instructions>
   <create-tweet *ngIf="userIsAuthenticated"></create-tweet>
+
 
   <div class="text-center" *ngIf="!(allTweets$ | async)">
     <div class="spinner-border" style="width: 3rem; height: 3rem; color:#1DA1F2" role="status"></div>

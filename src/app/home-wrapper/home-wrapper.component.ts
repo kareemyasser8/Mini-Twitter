@@ -25,6 +25,8 @@ export class HomeWrapperComponent implements OnInit, OnDestroy {
     this.storedTweets.push(tweet);
   }
 
+
+
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.username = this.authService.getUsername();
