@@ -14,6 +14,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
   username: string
   notificationSubscription: Subscription;
   notifications: Notification[];
+  unreadNotifications: Notification[];
 
   constructor(private authService: AuthService, private notificationsService: NotificationsService) { }
 
@@ -25,7 +26,8 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (result: any) => {
           this.notifications = result.reverse()
-          this.notificationsService.updateNotifications()
+          this.unreadNotifications = result.filter(n => !n.read)
+          this.notifications = this.notifications.filter(n => n.read);
         },
         error: (err) => console.log(err)
       })
@@ -42,6 +44,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.notificationsService.updateNotifications()
     if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
   }
 

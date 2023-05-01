@@ -5,11 +5,17 @@
     <div class="spinner-border" style="width: 3rem; height: 3rem; color: #1DA1F2;" role="status"></div>
   </div>
 
+  <div *ngIf="unreadNotifications?.length > 0" style="margin-bottom: 20px;">
+    <div *ngFor="let n of unreadNotifications trackBy: trackById">
+      <notification-card [notification]="n"></notification-card>
+    </div>
+  </div>
+
   <div *ngFor="let n of notifications trackBy: trackById">
     <notification-card [notification]="n"></notification-card>
   </div>
 
-  <div *ngIf="notifications?.length === 0">
+  <div *ngIf="notifications?.length == 0 && unreadNotifications?.length == 0">
     <empty-tweets [emptyNotification]="true"></empty-tweets>
   </div>
 
