@@ -5,11 +5,21 @@
 
   <div class="tweet-name-and-text">
     <div class="user-name" [routerLink]="['/home/profile/', tweetBody.username]">{{tweetBody.author}}</div>
-    <div class="tweet-text">
-      <span class="mention" *ngIf="username" [routerLink]="['/home/profile/', username.slice(1)]">{{username}}</span>
+    <!-- <div class="tweet-text"> -->
+      <!-- <span class="mention" *ngIf="username" [routerLink]="['/home/profile/', username.slice(1)]">{{username}}</span> -->
 
-      <span class= "text" [routerLink]="['/home/tweet/', tweetBody.id]" [innerHTML]="highlightedText">{{tweetBody.text}}</span>
+      <!-- <span class= "text" [routerLink]="['/home/tweet/', tweetBody.id]" [innerHTML]="highlightedText">{{tweetBody.text}}</span> -->
+    <!-- </div> -->
+
+    <div class="tweet-text" (click)="onTweetClick($event)">
+      <ng-container *ngIf="!username; else mentionLink">
+        <span class= "text" [innerHTML]="highlightedText"></span>
+      </ng-container>
+      <ng-template #mentionLink>
+        <span class="mention" [routerLink]="['/home/profile/', username.slice(1)]">{{ username }}</span>
+      </ng-template>
     </div>
+
   </div>
   <div class="tweet-time">
     <span> {{tweetBody.date | timeAgo}}</span>

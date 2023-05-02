@@ -68,8 +68,14 @@
   color: #AAB8C2;
 }
 
+.text:hover {
+  background-color: #f1eded;
+  cursor: pointer;
+}
+
 
 .highlighted {
   color: #1DA1F2;
+  text-decoration: none;
 }
 

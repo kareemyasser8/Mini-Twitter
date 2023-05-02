@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Tweet } from '../tweet.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { Tweet } from '../tweet.model';
   templateUrl: './edit-tweet.component.html',
   styleUrls: ['./edit-tweet.component.css']
 })
-export class EditTweetComponent implements OnInit {
+export class EditTweetComponent implements OnInit, OnChanges {
 
   @Input() tweetToBeEdited: Tweet = {
     id: null,
@@ -27,13 +27,16 @@ export class EditTweetComponent implements OnInit {
   constructor() {
 
   }
+
   ngOnInit(): void {
 
   }
 
-  closeModel() {
-
-    this.close.emit(null);
+  ngOnChanges(changes: any) {
+    console.log('tweetToBeEdited changed:', this.tweetToBeEdited);
   }
 
+  closeModel() {
+    this.close.emit(null);
+  }
 }
