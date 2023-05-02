@@ -33,7 +33,9 @@ exports.editTweet = (req, res, next) => {
   }
   Tweet.updateOne({ _id: req.params.id, creatorId: req.userData.userId }, { $set: update }).then(
     (result) => {
-      if (result.modifiedCount > 0) {
+      console.log(result)
+      if (result.matchedCount > 0) {
+        console.log(result)
         res.status(200).json({ message: 'tweet edited successfully' })
       } else {
         res.status(401).json({ message: 'Not authorized!' })
