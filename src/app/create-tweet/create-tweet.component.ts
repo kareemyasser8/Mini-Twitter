@@ -94,7 +94,7 @@ export class CreateTweetComponent implements OnInit {
     if (this.tweetToEdit) {
       this.editTweet(tweetform.value.tweet).subscribe({
         next: (response) => {
-          console.log("edit response: ", response)
+          // console.log("edit response: ", response)
           this.isloading = false;
           this.clearTweetForm(tweetform)
           this.formSubmitted.emit();

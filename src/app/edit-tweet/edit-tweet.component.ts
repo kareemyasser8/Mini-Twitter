@@ -6,7 +6,7 @@ import { Tweet } from '../tweet.model';
   templateUrl: './edit-tweet.component.html',
   styleUrls: ['./edit-tweet.component.css']
 })
-export class EditTweetComponent implements OnInit, OnChanges {
+export class EditTweetComponent implements OnInit {
 
   @Input() tweetToBeEdited: Tweet = {
     id: null,
@@ -30,10 +30,6 @@ export class EditTweetComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
-  }
-
-  ngOnChanges(changes: any) {
-    console.log('tweetToBeEdited changed:', this.tweetToBeEdited);
   }
 
   closeModel() {
