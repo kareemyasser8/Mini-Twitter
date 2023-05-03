@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
-import { AuthModule } from './auth/auth.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ErrorInterceptor } from './error.interceptor';
 import { HomeWrapperComponent } from './home-wrapper/home-wrapper.component';
@@ -18,6 +17,7 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { SharedModule } from './shared/shared.module';
 import { TweetModule } from './tweet/tweet.module';
 import { TweetsService } from './tweets.service';
+import { AuthModule } from './auth/auth.module';
 
 
 @NgModule({
@@ -35,8 +35,8 @@ import { TweetsService } from './tweets.service';
     ReactiveFormsModule,
     NgPipesModule,
     SharedModule,
-    TweetModule,
     AuthModule,
+    TweetModule,
     NotificationModule,
 
   ],

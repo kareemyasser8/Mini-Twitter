@@ -23,6 +23,7 @@ export class SignUpComponent implements OnInit {
   register(profileData: NgForm) {
     this.isloading = true;
     if (profileData.invalid) {
+      this.isloading = false;
       return
     }
     let newUser: Profile = {

@@ -23,7 +23,7 @@
 }
 
 .text:hover{
-  background-color: rgb(241, 241, 241);
+  /* background-color: rgb(241, 241, 241); */
   border-radius: 2px;
   cursor: pointer;
 }
@@ -56,21 +56,17 @@
   color: #1DA1F2;
   cursor: pointer;
   margin-right: 5px;
+  text-decoration: none;
   /* border: 1px solid red; */
 }
 
-.mention:hover{
+.mention:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
-
 
 .tweet-time span{
   color: #AAB8C2;
-}
-
-.text:hover {
-  background-color: #f1eded;
-  cursor: pointer;
 }
 
 

@@ -60,10 +60,27 @@ export class TweetBodyComponent implements OnInit {
     let text = this.tweetBody.text;
 
     // Highlight links
-    text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" class="highlighted" target="_blank" style="text-decoration: none; color: #1DA1F2;">$1</a>');
+    text = text.replace(
+      /(https?:\/\/[^\s]+)/g,
+      `<a
+      href="$1"
+      class="highlighted"
+      target="_blank"
+      onmouseover="this.style.textDecoration='underline'"
+      onmouseout="this.style.textDecoration='none'"
+      style="text-decoration: none; color: #1DA1F2;">$1</a>`);
 
     // Highlight usernames
-    text = text.replace(/@(\w+)/g, '<a href="/home/profile/$1" class="highlighted" routerLink="/home/profile/$1" style="text-decoration: none;">$&</a>');
+    text = text.replace(
+      /@(\w+)/g,
+      `<a
+      href="/home/profile/$1"
+      class="mention"
+      style="text-decoration: none; color: #1DA1F2;"
+      onmouseover="this.style.textDecoration='underline'"
+      onmouseout="this.style.textDecoration='none'"
+      routerLink="/home/profile/$1">$&</a>`
+    );
 
     return this.sanitizer.bypassSecurityTrustHtml(text);
   }
