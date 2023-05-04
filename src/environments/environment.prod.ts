@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: "http://localhost:3000/api/"
+  apiUrl: "https://mini-twitter-7qvc.onrender.com/api"
 };
+

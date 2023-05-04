@@ -5,7 +5,6 @@ import { mergeMap, Observable, of, Subject } from 'rxjs';
 
 import { Profile } from './profile.modal';
 import { environment } from 'src/environments/environment.prod';
-
 const BACKEND_URL = environment.apiUrl + "user/";
 
 @Injectable({
