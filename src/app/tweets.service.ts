@@ -54,7 +54,7 @@ export class TweetsService {
         this.tweetDetailUpdated.next({ ...this.tweetDetail });
       },
       error: (err) => {
-        console.log(err)
+        // console.log(err)
       }
     })
 
@@ -287,7 +287,7 @@ export class TweetsService {
     let result = this.notificationService.sendLikeNotification(tweetId);
     result.subscribe({
       next: (res) => {
-        console.log(res)
+        // console.log(res)
       },
       error: (err) => { console.log(err) }
     }
@@ -300,7 +300,7 @@ export class TweetsService {
     let result = this.notificationService.removeLikeNotification(tweetId)
     result.subscribe({
       next: (res) => {
-        console.log(res)
+        // console.log(res)
       },
       error: (err) => { console.log(err) }
     })
@@ -334,7 +334,7 @@ export class TweetsService {
 
     result.subscribe({
       next: (res) => {
-        console.log(res)
+        // console.log(res)
       },
       error: (err) => { console.log(err) }
     }

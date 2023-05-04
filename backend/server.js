@@ -1,4 +1,4 @@
-const app = require('./backend/app');
+const app = require('./app');
 const debug = require("debug")("mini-twitter");
 const http = require('http')
 

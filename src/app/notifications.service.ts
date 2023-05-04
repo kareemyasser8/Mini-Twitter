@@ -98,7 +98,7 @@ export class NotificationsService {
         // Remove the notification from the notifications array
         this.notifications = this.notifications.filter(n => n.targetId._id !== tweetId);
         this.notificationsUpdateListener.next(this.notifications);
-        console.log("notification removed successfully!!!");
+        // console.log("notification removed successfully!!!");
       }),
       catchError((error) => {
         // Handle the error and emit a new notification
