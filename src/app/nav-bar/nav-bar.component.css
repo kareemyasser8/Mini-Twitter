@@ -28,7 +28,7 @@
   color: #eff0f1;
 }
 
-.navbar-items-section{
+.navbar-items-section {
   display: flex;
   width: 100%;
   /* border: 1px solid blue; */
@@ -66,17 +66,17 @@
   cursor: pointer;
 }
 
-.bell-Icon{
+.bell-Icon {
   position: relative;
   /* border:1px solid red; */
 }
 
-.number-circle{
+.number-circle {
   position: absolute;
-  top:-3px;
-  left:12px;
-  width:17px;
-  height:17px;
+  top: -3px;
+  left: 12px;
+  width: 17px;
+  height: 17px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,11 +90,44 @@
 
 
 @media screen and (max-width: 990px) {
-  .page-link{
+  .page-link {
     display: none;
   }
 
-  .miniTwitterLogoBar i{
+  .miniTwitterLogoBar i {
     font-size: 120%;
   }
+}
+
+@media screen and (max-width: 540px) {
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    /* justify-content: center; */
+    width: 100%;
+  }
+
+  .miniTwitterLogoBar {
+    display: none;
+  }
+
+  .navbar-items {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* border: 1px solid red; */
+    align-items: center;
+    width: 80%;
+
+  }
+
+  .navbar-items li {
+    flex: 1;
+    margin-top: 0px;
+    /* border: 1px solid red; */
+    align-items: center;
+    justify-content: center;
+  }
+
 }

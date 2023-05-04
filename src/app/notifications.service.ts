@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Notification } from './notification.modal';
+import { environment } from 'src/environments/environment';
+
+const BACKEND_URL = environment.apiUrl + "notifications/";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +26,7 @@ export class NotificationsService {
 
   getNotifications(username) {
     if(!username) return;
-    const url = "http://localhost:3000/api/notifications/" + username
+    const url = BACKEND_URL + username
     const result = this.http.get(url);
     result.subscribe({
       next: (result: any) => {
@@ -35,7 +38,7 @@ export class NotificationsService {
   }
 
   sendLikeNotification(tweetId): Observable<any> {
-    const url = "http://localhost:3000/api/notifications/" + tweetId + "/like"
+    const url = BACKEND_URL + tweetId + "/like"
     const senderId = this.authService.getUserId();
 
     const like = {
@@ -46,7 +49,7 @@ export class NotificationsService {
   }
 
   sendReplyNotification(tweetId) {
-    const url = "http://localhost:3000/api/notifications/" + tweetId + "/reply"
+    const url = BACKEND_URL + tweetId + "/reply"
     const senderId = this.authService.getUserId();
 
     const reply = {
@@ -58,7 +61,7 @@ export class NotificationsService {
 
   removeLikeNotification(tweetId): Observable<any> {
     const senderId = this.authService.getUserId();
-    const url = `http://localhost:3000/api/notifications/${tweetId}/like/${senderId}`;
+    const url = BACKEND_URL + tweetId + "/like/" + senderId;
 
     return this.http.delete(url).pipe(
       catchError((error) => {
@@ -88,7 +91,7 @@ export class NotificationsService {
 
   removeCommentNotification(tweetId) {
     const senderId = this.authService.getUserId();
-    const url = `http://localhost:3000/api/notifications/${tweetId}/reply/${senderId}`;
+    const url = BACKEND_URL + tweetId + "/reply/" + senderId;
 
     return this.http.delete(url).pipe(
       tap(() => {
@@ -130,7 +133,7 @@ export class NotificationsService {
     }
     this.isUpdatingNotifications = true;
 
-    const url = "http://localhost:3000/api/notifications/readAll";
+    const url = BACKEND_URL + "readAll";
     let result;
 
     try {

@@ -24,7 +24,10 @@ app.use((req, res, next) => {
   next()
 })
 
-mongoose.connect("mongodb+srv://Kareem:tPn4h5kOmHfIM58U@cluster0.scdmnkw.mongodb.net/miniTwitterDataBase")
+mongoose.connect(
+      "mongodb+srv://Kareem:" +
+      process.env.MONGO_ATLAS_PW +
+      "@cluster0.scdmnkw.mongodb.net/miniTwitterDataBase")
   .then(() => {
     console.log("Connected to database..")
   })

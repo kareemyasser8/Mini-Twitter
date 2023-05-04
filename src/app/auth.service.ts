@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { mergeMap, Observable, of, Subject } from 'rxjs';
 
 import { Profile } from './profile.modal';
+import { environment } from 'src/environments/environment';
+
+const BACKEND_URL = environment.apiUrl + "user/";
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +31,11 @@ export class AuthService {
   }
 
   fetchProfile(username: string){
-    return this.http.get("http://localhost:3000/api/user/" + username)
+    return this.http.get(BACKEND_URL + username)
   }
 
   getProfiles(){
-     this.http.get<{message: string, users: Profile[]}>("http://localhost:3000/api/user/").subscribe({
+     this.http.get<{message: string, users: Profile[]}>(BACKEND_URL).subscribe({
       next: (response)=>{
           if(!response) return
           this.users = response.users;
@@ -65,7 +68,7 @@ export class AuthService {
   }
 
   createUser(user: Profile) {
-    return this.http.post("http://localhost:3000/api/user/signup", user)
+    return this.http.post(BACKEND_URL + "signup", user)
   }
 
   login(username: string, password: string) {
@@ -73,7 +76,7 @@ export class AuthService {
       username: username,
       password: password
     }
-    return this.http.post<{ token: string, expiresIn: number }>("http://localhost:3000/api/user/login", userdata)
+    return this.http.post<{ token: string, expiresIn: number }>(BACKEND_URL+ "login", userdata)
       .pipe(mergeMap(
         (response) => {
           const token = response.token

@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, forkJoin, map, merge, mergeMap, Observable, of, Subject, tap, throwError } from 'rxjs';
+import { map, mergeMap, Observable, of, Subject } from 'rxjs';
 
-import { Tweet } from './tweet.model';
 import { AuthService } from './auth.service';
 import { NotificationsService } from './notifications.service';
+import { Tweet } from './tweet.model';
+import { environment } from 'src/environments/environment';
 
+const BACKEND_URL = environment.apiUrl + "tweets/";
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +25,6 @@ export class TweetsService {
   private tweetReplies: Tweet[];
   private tweetRepliesUpdated = new Subject<Tweet[]>()
 
-
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -38,7 +39,7 @@ export class TweetsService {
   }
 
   fetchTweet(tweetId: string): void {
-    const tweetUrl = "http://localhost:3000/api/tweets/" + tweetId + "/details"
+    const tweetUrl = BACKEND_URL + tweetId + "/details"
 
     let tweet$ = this.http.get<Tweet>(tweetUrl).pipe(
       map((tweetData: any) => {
@@ -60,7 +61,7 @@ export class TweetsService {
   }
 
   fetchReplies(tweetId: string): void {
-    const repliesUrl = "http://localhost:3000/api/tweets/" + tweetId + "/replies";
+    const repliesUrl = BACKEND_URL + tweetId + "/replies";
 
     let replies$ = this.http.get<Tweet[]>(repliesUrl).pipe(
       map((repliesData: any) => {
@@ -126,7 +127,7 @@ export class TweetsService {
 
   getTweets(): Tweet[] {
     this.http.get<{ message: string, tweets: any }>
-      ('http://localhost:3000/api/tweets')
+      (BACKEND_URL)
       .pipe(map((tweetData) => {
         return tweetData.tweets.map(tweet => {
           return {
@@ -158,7 +159,7 @@ export class TweetsService {
 
 
   getTweetsOfProfile(username: string): Tweet[] {
-    this.http.get<{ message: string, tweets: any }>('http://localhost:3000/api/tweets/' + username)
+    this.http.get<{ message: string, tweets: any }>(BACKEND_URL + username)
       .pipe(map((tweetData) => {
         return tweetData.tweets.map(tweet => {
           return {
@@ -201,7 +202,7 @@ export class TweetsService {
       text: newTweetText
     }
 
-    return this.http.patch('http://localhost:3000/api/tweets/' + id, update)
+    return this.http.patch(BACKEND_URL + id, update)
       .pipe(mergeMap(
         (response) => {
 
@@ -239,7 +240,7 @@ export class TweetsService {
 
   deleteTweet(tweetId: string): Observable<any> {
 
-    return this.http.delete('http://localhost:3000/api/tweets/' + tweetId)
+    return this.http.delete(BACKEND_URL + tweetId)
       .pipe(mergeMap(
         (response: any) => {
 
@@ -280,7 +281,7 @@ export class TweetsService {
 
 
   likeTweet(tweetId: string) {
-    const url = `http://localhost:3000/api/tweets/${tweetId}/like`;
+    const url = BACKEND_URL + tweetId + '/like';
     let currentUser = this.authService.getUsername();
 
     let result = this.notificationService.sendLikeNotification(tweetId);
@@ -295,7 +296,7 @@ export class TweetsService {
   }
 
   unlikeTweet(tweetId: string) {
-    const url = `http://localhost:3000/api/tweets/${tweetId}/unlike`;
+    const url = BACKEND_URL + tweetId + '/unlike';
     let result = this.notificationService.removeLikeNotification(tweetId)
     result.subscribe({
       next: (res) => {
@@ -310,7 +311,7 @@ export class TweetsService {
   addTweet(content: string): Observable<any> {
     const tweet = this.tweetInit(content);
 
-    return this.http.post<{ message: string, tweetId: string }>('http://localhost:3000/api/tweets', tweet)
+    return this.http.post<{ message: string, tweetId: string }>(BACKEND_URL, tweet)
       .pipe(
         mergeMap((responseData) => {
           tweet.id = responseData.tweetId
@@ -322,12 +323,12 @@ export class TweetsService {
   }
 
 
-  addReply(tweet: Tweet, content) {
+  addReply(tweet: any, content): Observable<any>{
 
     const reply = this.tweetInit(content)
 
-    const tweetId = tweet.id;
-    const url = `http://localhost:3000/api/tweets/${tweetId}/reply`;
+    const tweetId = tweet.id || tweet._id;
+    const url = BACKEND_URL + tweetId + '/reply';
 
     let result = this.notificationService.sendReplyNotification(tweetId);
 
@@ -338,7 +339,6 @@ export class TweetsService {
       error: (err) => { console.log(err) }
     }
     )
-
 
     return this.http.patch<{ message: string, updatedTweet: Tweet }>(url, reply)
       .pipe(

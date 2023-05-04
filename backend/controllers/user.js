@@ -81,7 +81,7 @@ exports.login = (req, res, next) => {
             userFullName: fetchedUser.fname + ' ' + fetchedUser.lname,
             userId: fetchedUser._id
           },
-            'MySecretKey1234',
+            process.env.JWT_KEY,
             { expiresIn: '1h' })
           res.status(200).json({
             token: token,
