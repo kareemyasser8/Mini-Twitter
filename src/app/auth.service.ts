@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { mergeMap, Observable, of, Subject } from 'rxjs';
 
 import { Profile } from './profile.modal';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 const BACKEND_URL = environment.apiUrl + "user/";
 

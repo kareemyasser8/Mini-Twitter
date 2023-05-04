@@ -5,7 +5,7 @@ import { map, mergeMap, Observable, of, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { NotificationsService } from './notifications.service';
 import { Tweet } from './tweet.model';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 const BACKEND_URL = environment.apiUrl + "tweets/";
 @Injectable({
