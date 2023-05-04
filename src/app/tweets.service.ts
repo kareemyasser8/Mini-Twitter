@@ -149,7 +149,6 @@ export class TweetsService {
         next: (tweet) => {
           // console.log(tweet);
           this.allTweets = tweet;
-          this.allTweets.reverse();
           this.allTweetsUpdated.next([...this.allTweets])
         }
       })
@@ -182,7 +181,6 @@ export class TweetsService {
         next: (tweet) => {
           // console.log(tweet);
           this.allUserTweets = tweet;
-          this.allUserTweets.reverse();
           this.allUserTweetsUpdated.next([...this.allUserTweets])
         }
       })
