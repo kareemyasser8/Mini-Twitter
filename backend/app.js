@@ -5,15 +5,12 @@ const tweetsRoutes = require("./routes/tweets")
 const userRoutes = require("./routes/user")
 const notificationsRoutes = require("./routes/notification")
 
-const cors = require('cors');
-const corsOptions = {
-  origin: '*',
-  credentials: true,            //access-control-allow-credentials:true
-  optionSuccessStatus: 200
-}
-
-
-
+// const cors = require('cors');
+// const corsOptions = {
+//   origin: '*',
+//   credentials: true,            //access-control-allow-credentials:true
+//   optionSuccessStatus: 200
+// }
 
 const app = express()
 
@@ -35,7 +32,7 @@ mongoose.connect(
     console.log('Connection failed')
   })
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/api/tweets", tweetsRoutes)
