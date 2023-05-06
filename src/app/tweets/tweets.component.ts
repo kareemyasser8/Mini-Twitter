@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { Observable, Subscription, map } from 'rxjs';
 import { Tweet } from '../tweet.model';
 
 @Component({
@@ -7,24 +7,42 @@ import { Tweet } from '../tweet.model';
   templateUrl: './tweets.component.html',
   styleUrls: ['./tweets.component.css']
 })
-export class TweetsComponent {
+export class TweetsComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() tweetsToDisplay$: Observable<Tweet[]>
   @Input() isDeleteLoading: boolean = false;
   @Input() userIsAuthenticated;
   @Input() username;
 
-  reversedTweets$: Observable<Tweet[]>;
+  subscription: Subscription;
+  reversedTweets: Tweet[];
 
   constructor() {
 
   }
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   ngOnInit() {
+    this.subscribeToTweetsToDisplay();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['tweetsToDisplay$'] && !changes['tweetsToDisplay$'].firstChange) {
+      this.subscribeToTweetsToDisplay();
+    }
+  }
+
+  private subscribeToTweetsToDisplay() {
     if (this.tweetsToDisplay$) {
-      this.reversedTweets$ = this.tweetsToDisplay$.pipe(
+      this.subscription = this.tweetsToDisplay$.pipe(
         map(tweets => tweets.slice().reverse())
-      );
+      ).subscribe(reversedTweets => {
+        this.reversedTweets = reversedTweets;
+      });
     }
   }
 
@@ -35,9 +53,5 @@ export class TweetsComponent {
   onDeleteTweetClicked(isLoading: boolean) {
     this.isDeleteLoading = isLoading;
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   console.log('Input changed:', changes['username'].currentValue);
-  // }
 
 }

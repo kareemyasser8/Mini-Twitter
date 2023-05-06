@@ -2,9 +2,9 @@
   <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div>
 </div> -->
 
-<div *ngIf="tweetsToDisplay$ | async as tweetsToDisplay">
+<div *ngIf="reversedTweets">
   <div class="tweet-container" [ngClass]="{'onDeleteLoading': isDeleteLoading}"
-  *ngFor="let tweet of reversedTweets$ | async trackBy: trackById">
+  *ngFor="let tweet of reversedTweets">
 
   <!-- .reverse() trackBy: trackById -->
 
