@@ -155,9 +155,6 @@ export class TweetsService {
     return [...this.allTweets]
   }
 
-
-
-
   getTweetsOfProfile(username: string): Tweet[] {
     this.http.get<{ message: string, tweets: any }>(BACKEND_URL + username)
       .pipe(map((tweetData) => {

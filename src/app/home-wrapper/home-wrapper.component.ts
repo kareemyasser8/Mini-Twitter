@@ -10,22 +10,13 @@ import { TweetsService } from '../tweets.service';
 })
 export class HomeWrapperComponent implements OnInit, OnDestroy {
 
-  storedTweets = [];
   userIsAuthenticated: boolean;
   username: string;
 
   private authListenerSubs: Subscription
   allTweets$: Observable<any[]>
 
-
   constructor(private authService: AuthService, private tweetsService: TweetsService) { }
-
-
-  onTweetAdded(tweet) {
-    this.storedTweets.push(tweet);
-  }
-
-
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
