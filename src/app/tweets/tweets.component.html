@@ -4,7 +4,7 @@
 
 <div *ngIf="tweetsToDisplay$ | async as tweetsToDisplay">
   <div class="tweet-container" [ngClass]="{'onDeleteLoading': isDeleteLoading}"
-  *ngFor="let tweet of tweetsToDisplay">
+  *ngFor="let tweet of reversedTweets$ | async trackBy: trackById">
 
   <!-- .reverse() trackBy: trackById -->
 

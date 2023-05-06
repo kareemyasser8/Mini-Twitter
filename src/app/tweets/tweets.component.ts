@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Tweet } from '../tweet.model';
 
 @Component({
@@ -14,8 +14,18 @@ export class TweetsComponent {
   @Input() userIsAuthenticated;
   @Input() username;
 
+  reversedTweets$: Observable<Tweet[]>;
+
   constructor() {
 
+  }
+
+  ngOnInit() {
+    if (this.tweetsToDisplay$) {
+      this.reversedTweets$ = this.tweetsToDisplay$.pipe(
+        map(tweets => tweets.slice().reverse())
+      );
+    }
   }
 
   trackById(index: number, tweet: Tweet) {
